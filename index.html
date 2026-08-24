@@ -88,7 +88,10 @@ body{
   margin:0;
   min-height:100vh;
   font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);
+  background:
+    linear-gradient(rgba(18,27,55,.12),rgba(18,27,55,.12)),
+    url("background.jpg") center center / cover no-repeat fixed,
+    var(--bg);
   color:var(--text);
   overflow-x:hidden;
 }
@@ -109,7 +112,7 @@ button{cursor:pointer}
 
 .start-panel{
   width:min(880px,100%);
-  background:var(--surface);
+  background:rgba(255,255,255,.92);
   border:2px solid var(--border);
   border-radius:30px;
   padding:34px;
@@ -1497,6 +1500,12 @@ button{cursor:pointer}
       class="effect-caption"
     ></div>
 
+    <div
+      id="tieExtraText"
+      class="effect-caption hidden"
+      style="margin-top:-8px"
+    ></div>
+
     <button
       class="primary"
       onclick="playAgain()"
@@ -2048,6 +2057,13 @@ let planeTextIndex =
   Number(
     localStorage.getItem(
       "planeTextIndex"
+    ) || 0
+  );
+
+let selfEsteemTextIndex =
+  Number(
+    localStorage.getItem(
+      "selfEsteemTextIndex"
     ) || 0
   );
 
@@ -3948,24 +3964,49 @@ function finishGame() {
     .remove("hidden");
 
 
-  runVictoryEffect(
-    victoryIndex,
-    isTie
-  );
+  const tieExtraText =
+    document.getElementById(
+      "tieExtraText"
+    );
+
+  if (isTie) {
+
+    owlTieEffect();
+
+    tieExtraText.classList.remove(
+      "hidden"
+    );
+
+  } else {
+
+    tieExtraText.classList.add(
+      "hidden"
+    );
+
+    runVictoryEffect(
+      victoryIndex,
+      false
+    );
 
 
-  victoryIndex =
-    (
-      victoryIndex + 1
-    )
-    %
-    7;
+    victoryIndex =
+      (
+        victoryIndex + 1
+      )
+      %
+      10;
+
+  }
 
 
-  localStorage.setItem(
-    "victoryIndex",
-    victoryIndex
-  );
+  if (!isTie) {
+
+    localStorage.setItem(
+      "victoryIndex",
+      victoryIndex
+    );
+
+  }
 
 
   if (isTie) {
@@ -3979,7 +4020,7 @@ function finishGame() {
 
 
     document.getElementById(
-      "effectCaption"
+      "tieExtraText"
     ).textContent =
       tieTexts[
         tieTextIndex
@@ -4009,6 +4050,18 @@ function finishGame() {
 function playAgain() {
 
   clearVictoryLoops();
+
+  const tieExtra =
+    document.getElementById(
+      "tieExtraText"
+    );
+
+  if (tieExtra) {
+    tieExtra.classList.add(
+      "hidden"
+    );
+    tieExtra.textContent = "";
+  }
 
 
   document
@@ -4066,7 +4119,10 @@ function runVictoryEffect(
     catsEffect,
     heartsEffect,
     fireworksEffect,
-    lightningEffect
+    lightningEffect,
+    rubleEffect,
+    selfEsteemEffect,
+    gasEffect
   ];
 
 
@@ -4142,6 +4198,85 @@ function capEffectElements(
 }
 
 
+
+.ruble-drop{
+  position:absolute;
+  top:-80px;
+  font-weight:900;
+  animation:rubleFall linear forwards;
+  filter:drop-shadow(0 5px 8px rgba(0,0,0,.15));
+}
+
+@keyframes rubleFall{
+  0%{
+    opacity:0;
+    transform:translateY(-80px) scale(.9);
+  }
+  12%{opacity:1}
+  100%{
+    opacity:.95;
+    transform:translateY(calc(100vh + 160px)) scale(1.06);
+  }
+}
+
+.esteem-rise{
+  position:absolute;
+  bottom:-80px;
+  font-weight:900;
+  animation:esteemRise linear forwards;
+  filter:drop-shadow(0 5px 8px rgba(0,0,0,.12));
+}
+
+@keyframes esteemRise{
+  0%{
+    opacity:0;
+    transform:translateY(60px) scale(.85);
+  }
+  12%{opacity:1}
+  88%{opacity:1}
+  100%{
+    opacity:0;
+    transform:translateY(-120vh) scale(1.15);
+  }
+}
+
+.gas-float{
+  position:absolute;
+  bottom:-70px;
+  animation:gasRise linear forwards;
+}
+
+@keyframes gasRise{
+  0%{
+    opacity:0;
+    transform:translateY(60px);
+  }
+  10%{opacity:1}
+  100%{
+    opacity:0;
+    transform:translateY(-120vh) translateX(var(--drift));
+  }
+}
+
+.owl-drop{
+  position:absolute;
+  top:-90px;
+  animation:owlFall linear forwards;
+  filter:drop-shadow(0 5px 8px rgba(0,0,0,.16));
+}
+
+@keyframes owlFall{
+  0%{
+    opacity:0;
+    transform:translateY(-90px);
+  }
+  12%{opacity:1}
+  100%{
+    opacity:.95;
+    transform:translateY(calc(100vh + 160px)) translateX(var(--drift));
+  }
+}
+
 /* ---------- САМОЛЁТЫ ---------- */
 
 function planesEffect(
@@ -4152,7 +4287,7 @@ function planesEffect(
 
     const planeTexts = [
       "Билеты на Авиасейлс нихера не дешевые.",
-      "Здесь могла бы быть реклама Авиасейлс."
+      "Тут могла бы быть реклама Авиасейлс."
     ];
 
     document.getElementById(
@@ -4281,7 +4416,7 @@ function fireEffect(
     document.getElementById(
       "effectCaption"
     ).textContent =
-      "Ты пушка, ракета, приора.";
+      "Ты торпеда, пушка, ПРИОРА!!!";
 
   }
 
@@ -4983,7 +5118,8 @@ function heartsEffect(
   const texts = [
     "Ну ты, конечно, краш.",
     "Победитель определён. Краш тоже.",
-    "Ладно. За такое можно и сердечко отдать."
+    "Ладно. За такое можно и сердечко отдать.",
+    "Кажется, ты мой краш..тест"
   ];
 
 
@@ -5458,6 +5594,517 @@ function lightningEffect(
     setInterval(
       spawn,
       7000
+    )
+  );
+
+}
+
+
+
+
+/* ---------- КУРС РУБЛЯ ---------- */
+
+function rubleEffect(
+  isTie
+) {
+
+  if (!isTie) {
+
+    document.getElementById(
+      "effectCaption"
+    ).textContent =
+      "О, смотри, курс рубля наконец-то падает.";
+
+  }
+
+
+  const spawn =
+    () => {
+
+      const container =
+        document.getElementById(
+          "effects"
+        );
+
+      const symbols = [
+        "₽","📉","₽","₽","↘"
+      ];
+
+
+      for (
+        let i = 0;
+        i < 18;
+        i++
+      ) {
+
+        if (
+          container
+            .querySelectorAll(
+              ".ruble-drop"
+            )
+            .length
+          >= 48
+        ) {
+          break;
+        }
+
+
+        const e =
+          document.createElement(
+            "div"
+          );
+
+        e.className =
+          "ruble-drop";
+
+        e.textContent =
+          symbols[
+            i % symbols.length
+          ];
+
+        e.style.left =
+          Math.random()
+          *
+          100
+          +
+          "%";
+
+        e.style.fontSize =
+          (
+            28
+            +
+            Math.random()
+            *
+            34
+          )
+          +
+          "px";
+
+        e.style.animationDuration =
+          (
+            7
+            +
+            Math.random()
+            *
+            4
+          )
+          +
+          "s";
+
+        container.appendChild(
+          e
+        );
+
+        victoryTimeouts.push(
+          setTimeout(
+            () => e.remove(),
+            12000
+          )
+        );
+
+      }
+
+    };
+
+
+  spawn();
+
+  victoryIntervals.push(
+    setInterval(
+      spawn,
+      6500
+    )
+  );
+
+}
+
+
+/* ---------- САМООЦЕНКА ---------- */
+
+function selfEsteemEffect(
+  isTie
+) {
+
+  const texts = [
+    "О, смотри, это твоя самооценка растёт)))",
+    "Самооценка пробила потолок."
+  ];
+
+
+  if (!isTie) {
+
+    document.getElementById(
+      "effectCaption"
+    ).textContent =
+      texts[
+        selfEsteemTextIndex
+        %
+        texts.length
+      ];
+
+
+    selfEsteemTextIndex =
+      (
+        selfEsteemTextIndex + 1
+      )
+      %
+      texts.length;
+
+
+    localStorage.setItem(
+      "selfEsteemTextIndex",
+      selfEsteemTextIndex
+    );
+
+  }
+
+
+  const spawn =
+    () => {
+
+      const container =
+        document.getElementById(
+          "effects"
+        );
+
+      const symbols = [
+        "📈","↑","+100","👑","⭐"
+      ];
+
+
+      for (
+        let i = 0;
+        i < 16;
+        i++
+      ) {
+
+        if (
+          container
+            .querySelectorAll(
+              ".esteem-rise"
+            )
+            .length
+          >= 42
+        ) {
+          break;
+        }
+
+
+        const e =
+          document.createElement(
+            "div"
+          );
+
+        e.className =
+          "esteem-rise";
+
+        e.textContent =
+          symbols[
+            i % symbols.length
+          ];
+
+        e.style.left =
+          Math.random()
+          *
+          100
+          +
+          "%";
+
+        e.style.fontSize =
+          (
+            26
+            +
+            Math.random()
+            *
+            32
+          )
+          +
+          "px";
+
+        e.style.animationDuration =
+          (
+            7
+            +
+            Math.random()
+            *
+            4
+          )
+          +
+          "s";
+
+        container.appendChild(
+          e
+        );
+
+        victoryTimeouts.push(
+          setTimeout(
+            () => e.remove(),
+            12000
+          )
+        );
+
+      }
+
+    };
+
+
+  spawn();
+
+  victoryIntervals.push(
+    setInterval(
+      spawn,
+      6500
+    )
+  );
+
+}
+
+
+/* ---------- БЕНЗИН ---------- */
+
+function gasEffect(
+  isTie
+) {
+
+  if (!isTie) {
+
+    document.getElementById(
+      "effectCaption"
+    ).textContent =
+      "Че стоишь? Это не очередь на бензин. Идём играть!";
+
+  }
+
+
+  const spawn =
+    () => {
+
+      const container =
+        document.getElementById(
+          "effects"
+        );
+
+      const symbols = [
+        "⛽","💸","🪙","⛽","💰"
+      ];
+
+
+      for (
+        let i = 0;
+        i < 14;
+        i++
+      ) {
+
+        if (
+          container
+            .querySelectorAll(
+              ".gas-float"
+            )
+            .length
+          >= 38
+        ) {
+          break;
+        }
+
+
+        const e =
+          document.createElement(
+            "div"
+          );
+
+        e.className =
+          "gas-float";
+
+        e.textContent =
+          symbols[
+            i % symbols.length
+          ];
+
+        e.style.left =
+          Math.random()
+          *
+          100
+          +
+          "%";
+
+        e.style.fontSize =
+          (
+            28
+            +
+            Math.random()
+            *
+            32
+          )
+          +
+          "px";
+
+        e.style.setProperty(
+          "--drift",
+          (
+            -80
+            +
+            Math.random()
+            *
+            160
+          )
+          +
+          "px"
+        );
+
+        e.style.animationDuration =
+          (
+            8
+            +
+            Math.random()
+            *
+            4
+          )
+          +
+          "s";
+
+        container.appendChild(
+          e
+        );
+
+        victoryTimeouts.push(
+          setTimeout(
+            () => e.remove(),
+            13000
+          )
+        );
+
+      }
+
+    };
+
+
+  spawn();
+
+  victoryIntervals.push(
+    setInterval(
+      spawn,
+      7000
+    )
+  );
+
+}
+
+
+/* ---------- СОВЫ — ТОЛЬКО НИЧЬЯ ---------- */
+
+function owlTieEffect() {
+
+  clearVictoryLoops();
+
+
+  document.getElementById(
+    "effectCaption"
+  ).textContent =
+    "СОВпадение))))";
+
+
+  const spawn =
+    () => {
+
+      const container =
+        document.getElementById(
+          "effects"
+        );
+
+
+      for (
+        let i = 0;
+        i < 16;
+        i++
+      ) {
+
+        if (
+          container
+            .querySelectorAll(
+              ".owl-drop"
+            )
+            .length
+          >= 40
+        ) {
+          break;
+        }
+
+
+        const e =
+          document.createElement(
+            "div"
+          );
+
+        e.className =
+          "owl-drop";
+
+        e.textContent =
+          "🦉";
+
+        e.style.left =
+          Math.random()
+          *
+          100
+          +
+          "%";
+
+        e.style.fontSize =
+          (
+            30
+            +
+            Math.random()
+            *
+            36
+          )
+          +
+          "px";
+
+        e.style.setProperty(
+          "--drift",
+          (
+            -70
+            +
+            Math.random()
+            *
+            140
+          )
+          +
+          "px"
+        );
+
+        e.style.animationDuration =
+          (
+            7
+            +
+            Math.random()
+            *
+            4
+          )
+          +
+          "s";
+
+        container.appendChild(
+          e
+        );
+
+        victoryTimeouts.push(
+          setTimeout(
+            () => e.remove(),
+            12000
+          )
+        );
+
+      }
+
+    };
+
+
+  spawn();
+
+  victoryIntervals.push(
+    setInterval(
+      spawn,
+      6500
     )
   );
 
