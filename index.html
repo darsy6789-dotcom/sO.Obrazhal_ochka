@@ -26,7 +26,39 @@
       --border: #eeeeee;
       --shadow: rgba(0, 0, 0, 0.45);
     }
+/* ---------- МИНИ-АНИМАЦИЯ ЗА ОЧКО ---------- */
 
+.mini-effect {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 38px;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+}
+
+.mini-effect.play {
+  animation: miniWin 0.8s ease-out forwards;
+}
+
+@keyframes miniWin {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20%) scale(0.5) rotate(-10deg);
+  }
+
+  35% {
+    opacity: 1;
+    transform: translate(-50%, -80%) scale(1.4) rotate(8deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -150%) scale(0.9) rotate(18deg);
+  }
+}
     * {
       box-sizing: border-box;
     }
