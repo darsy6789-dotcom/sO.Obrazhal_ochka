@@ -1118,6 +1118,277 @@ button{cursor:pointer}
   }
 }
 
+
+.question-mode-wrap{
+  margin-top:16px;
+}
+
+.question-mode-label{
+  font-size:14px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.question-mode-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+}
+
+.question-mode-card{
+  border:2px solid var(--surface2);
+  background:rgba(255,255,255,.72);
+  color:var(--text);
+  border-radius:15px;
+  padding:11px 10px;
+  min-height:68px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  gap:4px;
+  text-align:left;
+  transition:.14s ease;
+}
+
+.question-mode-card:hover{
+  transform:translateY(-1px);
+  border-color:var(--border);
+}
+
+.question-mode-card.selected{
+  border-color:#1f1f1f;
+  box-shadow:0 0 0 2px rgba(31,31,31,.08);
+  background:#fff;
+}
+
+.question-mode-title{
+  font-size:14px;
+  font-weight:900;
+}
+
+.question-mode-count{
+  font-size:11px;
+  color:var(--muted);
+  font-weight:700;
+}
+
+body.dark .question-mode-card{
+  background:#2a2a2a;
+  border-color:#444;
+}
+
+body.dark .question-mode-card.selected{
+  border-color:#f1f1f1;
+  background:#222;
+}
+
+@media(max-width:700px){
+  .question-mode-grid{
+    grid-template-columns:1fr;
+  }
+
+  .question-mode-card{
+    min-height:52px;
+    padding:10px 12px;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+  }
+}
+
+
+/* ===== MODE PICKER — desktop ===== */
+.question-mode-wrap{
+  grid-column:1 / -1;
+  width:100%;
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid var(--surface2);
+}
+.question-mode-label{
+  font-size:14px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+.question-mode-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.question-mode-card{
+  position:relative;
+  overflow:hidden;
+  min-height:94px;
+  padding:14px 15px;
+  border:2px solid var(--surface2);
+  border-radius:18px;
+  background:rgba(255,255,255,.72);
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:3px;
+  text-align:left;
+  cursor:pointer;
+  transform:translateY(0);
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
+}
+.question-mode-card::after{
+  content:"";
+  position:absolute;
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  right:-18px;
+  bottom:-25px;
+  opacity:.13;
+  background:currentColor;
+}
+.question-mode-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 24px rgba(0,0,0,.10);
+}
+.question-mode-card.selected{
+  transform:translateY(-2px);
+  border-color:var(--text);
+  background:#fff;
+  box-shadow:0 9px 22px rgba(0,0,0,.13);
+}
+.question-mode-card.selected::before{
+  content:"✓";
+  position:absolute;
+  right:12px;
+  top:10px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--text);
+  color:var(--surface);
+  font-size:12px;
+  font-weight:900;
+}
+.question-mode-card[data-mode="warmup"]{ color:#4d7d54; }
+.question-mode-card[data-mode="questions"]{ color:#6b5ca5; }
+.question-mode-card[data-mode="adult"]{ color:#a74f62; }
+.question-mode-title{
+  color:var(--text);
+  font-size:16px;
+  font-weight:950;
+}
+.question-mode-count{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+}
+.question-mode-note{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+.start-main-button{
+  grid-column:1 / -1;
+  width:100%;
+  margin-top:14px;
+}
+body.dark .question-mode-wrap{ border-top-color:#3b3b3b; }
+body.dark .question-mode-card{
+  background:#292929;
+  border-color:#414141;
+}
+body.dark .question-mode-card.selected{
+  background:#303030;
+  border-color:#f0f0f0;
+}
+@media(max-width:700px){
+  .question-mode-grid{ grid-template-columns:1fr; gap:8px; }
+  .question-mode-card{
+    min-height:62px;
+    padding:11px 14px;
+  }
+  .question-mode-note{ display:none; }
+}
+
+
+/* ===== MODE PICKER FIX: full-width block ===== */
+.question-mode-wrap{
+  width:100%;
+  margin-top:22px;
+  padding-top:18px;
+  border-top:1px solid var(--surface2);
+}
+
+.question-mode-label{
+  font-size:15px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.question-mode-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  width:100%;
+}
+
+.question-mode-card{
+  min-width:0;
+  min-height:104px;
+  padding:15px 16px;
+}
+
+.question-mode-title{
+  display:block;
+  width:100%;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-size:16px;
+  line-height:1.2;
+}
+
+.question-mode-count{
+  display:block;
+  font-size:12px;
+  line-height:1.2;
+}
+
+.question-mode-note{
+  display:block;
+  font-size:11px;
+  line-height:1.25;
+}
+
+.start-main-button{
+  display:block;
+  width:100%;
+  margin-top:15px;
+}
+
+@media(max-width:700px){
+  .question-mode-wrap{
+    margin-top:16px;
+    padding-top:14px;
+  }
+
+  .question-mode-grid{
+    grid-template-columns:1fr;
+  }
+
+  .question-mode-card{
+    min-height:60px;
+  }
+
+  .question-mode-title{
+    white-space:normal;
+    overflow:visible;
+    text-overflow:clip;
+  }
+}
+
 </style>
 </head>
 
@@ -1236,9 +1507,7 @@ button{cursor:pointer}
 
         </div>
 
-        <button class="primary start-main-button" onclick="startGame()">
-          Начать игру
-        </button>
+
 
       </div>
 
@@ -1253,6 +1522,61 @@ button{cursor:pointer}
       </div>
 
     </div>
+
+        <div class="question-mode-wrap">
+
+          <div class="question-mode-label">
+            Режим
+          </div>
+
+          <div class="question-mode-grid">
+
+            <button
+              type="button"
+              class="question-mode-card"
+              data-mode="warmup"
+              onclick="setQuestionMode('warmup')"
+            >
+              <span class="question-mode-title">
+                🌱 Разогрев
+              </span>
+              <span class="question-mode-count"></span>
+              <span class="question-mode-note">Быстрые темы</span>
+            </button>
+
+            <button
+              type="button"
+              class="question-mode-card"
+              data-mode="questions"
+              onclick="setQuestionMode('questions')"
+            >
+              <span class="question-mode-title">
+                ❓ Вопросики
+              </span>
+              <span class="question-mode-count"></span>
+              <span class="question-mode-note">Надо подумать</span>
+            </button>
+
+            <button
+              type="button"
+              class="question-mode-card"
+              data-mode="adult"
+              onclick="setQuestionMode('adult')"
+            >
+              <span class="question-mode-title">
+                🔞 18+
+              </span>
+              <span class="question-mode-count"></span>
+              <span class="question-mode-note">Для взрослой компании</span>
+            </button>
+
+          </div>
+
+        </div>
+
+        <button class="primary start-main-button" onclick="startGame()">
+          Начать игру
+        </button>
 
   </div>
 </section>
@@ -1603,7 +1927,7 @@ button{cursor:pointer}
    ВОПРОСЫ
 ========================================================= */
 
-const questions = [
+const warmupQuestions = [
   "Может быть красного цвета",
   "Город",
   "Еда",
@@ -1632,6 +1956,210 @@ const questions = [
   "Знаменитая личность",
   "Страна"
 ];
+
+const questionQuestions = [
+  "Что может быть в рюкзаке?",
+  "Что ты возьмёшь с собой на необитаемый остров?",
+  "Из-за чего можно опоздать на работу?",
+  "Что не хочется услышать от врача?",
+  "Что можно делать вместо работы?",
+  "Что подозрительно дарить на первом свидании?",
+  "Что может испортить отпуск?",
+  "Что нельзя забывать дома?",
+  "Что можно случайно сломать?",
+  "Что можно найти в чужом холодильнике?",
+  "Что может разбудить тебя ночью?",
+  "Что ты купишь, если внезапно разбогатеешь?",
+  "Что может закончиться в самый неподходящий момент?",
+  "Что странно брать с собой в самолёт?",
+  "Что может лежать в багажнике машины?",
+  "Что можно делать, когда никто не видит?",
+  "Что может быть очень дорогим?",
+  "Что может внезапно упасть?",
+  "Что ты точно не хочешь встретить в лесу?",
+  "Что может быть причиной расставания?",
+  "Что можно потерять?",
+  "Что может неожиданно появиться дома?",
+  "Что можно найти на пляже?",
+  "Что обычно откладывают на потом?",
+  "Что можно делать всю ночь?",
+  "Что может довести до истерики?",
+  "Что можно заказать с доставкой?",
+  "Что может застрять?",
+  "Что ты спрячешь от родителей?",
+  "Что может быть липким?",
+  "Что можно делать в очереди?",
+  "Что может испугать соседа?",
+  "Что можно обнаружить в кармане старой куртки?",
+  "Что можно взять в аренду?",
+  "Что может испортиться за ночь?",
+  "Что можно сделать за пять минут?",
+  "Что бывает огромным?",
+  "Что можно услышать за стеной?",
+  "Что может случиться на вечеринке?",
+  "Что ты не одолжишь даже другу?"
+];
+
+const adultQuestions = [
+  "Что можно снять на первом свидании?",
+  "Что может оказаться слишком большим?",
+  "Что лучше делать вдвоём?",
+  "Что можно найти в спальне?",
+  "Что может испортить свидание?",
+  "Что можно делать после полуночи?",
+  "Что может быть горячим?",
+  "Что можно сказать после неудачного свидания?",
+  "Что может закончиться слишком быстро?",
+  "Что лучше не показывать родителям?",
+  "Что можно услышать из соседней комнаты?",
+  "Что можно делать в темноте?",
+  "Что может оставить след на шее?",
+  "Что можно принести на свидание?",
+  "Что может неожиданно порваться?",
+  "Что может заставить покраснеть?",
+  "Что можно делать под одеялом?",
+  "Что странно услышать утром от незнакомого человека?",
+  "Что может быть причиной неловкого молчания?",
+  "Что не стоит говорить на первом свидании?",
+  "Что утром заставит пожалеть о вчерашнем вечере?",
+  "Что подозрительно обнаружить у себя в кровати?",
+  "Что может испортить романтический момент?",
+  "Что не хочется услышать сразу после свидания?",
+  "Что может внезапно закончиться ночью?",
+  "Что лучше удалить из истории браузера?",
+  "Что неловко покупать, когда за тобой очередь?",
+  "Что может заставить срочно одеться?",
+  "Что не стоит отправлять человеку, по которому скучаешь, в три часа ночи?",
+  "Что может оказаться не таким большим, как обещали?",
+  "Что подозрительно хранить в прикроватной тумбочке?",
+  "Что может разбудить соседей ночью?",
+  "Чьё имя лучше случайно не произносить на свидании?",
+  "Что может заставить сказать: «Это не то, что ты думаешь»?",
+  "Что может неожиданно оказаться на полу утром?",
+  "Что не стоит гуглить на рабочем компьютере?",
+  "Что может испортить репутацию за один вечер?",
+  "Что странно услышать из ванной на первом свидании?",
+  "Что может заставить сбежать со свидания?",
+  "Что утром хочется сделать вид, что не происходило?",
+  "Что может заставить сказать: «Да ну нахер»?",
+  "Что можно просрать за один вечер?",
+  "Что хреново делать пьяным?",
+  "Что может превратить свидание в полный пиздец?",
+  "Что можно по пьяни написать не тому человеку?",
+  "Что утром выглядит хуже, чем ночью?",
+  "Что может застрять там, где не должно?",
+  "Что может закончиться фразой «Блять, только никому»?",
+  "Что хреново обнаружить утром рядом с собой?",
+  "Что может заставить удалить переписку к херам?",
+  "Что можно делать очень уверенно, вообще не умея этого делать?",
+  "Что может оказаться очень плохой идеей?",
+  "Что можно случайно отправить в рабочий чат?",
+  "Что лучше не фотографировать после полуночи?",
+  "Что может заставить притвориться спящим?",
+  "Что нельзя исправить фразой «Я был пьян»?",
+  "Что может заставить больше никогда не звонить человеку?",
+  "Что может быть стыдно объяснять друзьям утром?",
+  "Что способно уничтожить твою репутацию за пять секунд?",
+  "Что может заставить подумать: «Надо было сидеть дома»?",
+  "Что можно лизнуть, но лучше сначала уточнить?",
+  "Что подозрительно долго искать под одеялом?",
+  "Что может неожиданно оказаться мокрым?",
+  "Что можно схватить не за тот конец?",
+  "Что лучше не нюхать из любопытства?",
+  "Что можно случайно засунуть не туда?",
+  "Что странно доставать во время свидания?",
+  "Что может издавать подозрительные звуки ночью?",
+  "Что можно сломать, если слишком стараться?",
+  "Что может прилипнуть к жопе?",
+  "Что лучше не трогать голыми руками?",
+  "Что подозрительно обнаружить у себя на трусах?",
+  "Что может оказаться волосатым?",
+  "Что можно делать ртом кроме очевидного?",
+  "Что может внезапно начать вибрировать?",
+  "Что можно услышать и сразу решить не заходить?",
+  "Что может выпасть в самый неподходящий момент?",
+  "Что подозрительно держать обеими руками?",
+  "Что можно случайно показать всей компании?",
+  "Что можно случайно погнуть и сделать вид, что так и было?"
+];
+
+const QUESTION_MODES = {
+  warmup: {
+    label: "Разогрев",
+    questions: warmupQuestions
+  },
+  questions: {
+    label: "Вопросики",
+    questions: questionQuestions
+  },
+  adult: {
+    label: "18+",
+    questions: adultQuestions
+  }
+};
+
+let questionMode =
+  localStorage.getItem("questionMode") || "warmup";
+
+if (!QUESTION_MODES[questionMode]) {
+  questionMode = "warmup";
+}
+
+let questions =
+  QUESTION_MODES[questionMode].questions;
+
+function setQuestionMode(mode) {
+  if (!QUESTION_MODES[mode]) return;
+
+  questionMode = mode;
+  questions = QUESTION_MODES[mode].questions;
+
+  localStorage.setItem(
+    "questionMode",
+    mode
+  );
+
+  document
+    .querySelectorAll(".question-mode-card")
+    .forEach(button => {
+      button.classList.toggle(
+        "selected",
+        button.dataset.mode === mode
+      );
+    });
+}
+
+function refreshQuestionModeCounts() {
+  const counts = {
+    warmup: warmupQuestions.length,
+    questions: questionQuestions.length,
+    adult: adultQuestions.length
+  };
+
+  document
+    .querySelectorAll(".question-mode-card")
+    .forEach(button => {
+      const count =
+        button.querySelector(
+          ".question-mode-count"
+        );
+
+      if (!count) return;
+
+      const amount =
+        counts[button.dataset.mode];
+
+      count.textContent =
+        amount
+        +
+        (
+          button.dataset.mode === "warmup"
+            ? " карточек"
+            : " вопросов"
+        );
+    });
+}
+
 
 
 /* =========================================================
@@ -4168,6 +4696,12 @@ function playAgain() {
 
 
   renderPlayerSetup();
+
+  refreshQuestionModeCounts();
+
+  setQuestionMode(
+    questionMode
+  );
 
 }
 
