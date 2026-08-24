@@ -4,9 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Игра на букву</title>
+  <title>Кто быстрее?</title>
 
   <style>
+    :root {
+      --bg: #f4f1ec;
+      --surface: #ffffff;
+      --surface-2: #ebe7e1;
+      --text: #1f1f1f;
+      --muted: #77736d;
+      --border: #252525;
+      --shadow: rgba(0, 0, 0, 0.12);
+    }
+
+    body.dark {
+      --bg: #151515;
+      --surface: #222222;
+      --surface-2: #303030;
+      --text: #f3f3f3;
+      --muted: #aaaaaa;
+      --border: #eeeeee;
+      --shadow: rgba(0, 0, 0, 0.45);
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -14,133 +34,610 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: #f3f3f3;
-      color: #222;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.25s, color 0.25s;
+    }
 
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ---------- СТАРТОВЫЙ ЭКРАН ---------- */
+
+    .start-screen {
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 24px;
     }
 
-    .game {
-      width: min(900px, 92%);
+    .start-card {
+      width: min(520px, 100%);
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 28px;
+      padding: 36px;
+      box-shadow: 0 15px 40px var(--shadow);
       text-align: center;
     }
 
-    h1 {
+    .start-card h1 {
+      font-size: 42px;
+      margin: 0 0 8px;
+    }
+
+    .start-card p {
+      color: var(--muted);
       margin-bottom: 30px;
     }
 
-    .cards {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 20px;
-      margin-bottom: 25px;
+    .name-field {
+      text-align: left;
+      margin-bottom: 18px;
     }
 
-    .card {
-      background: white;
-      border: 3px solid #222;
+    .name-field label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .name-field input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 2px solid var(--surface-2);
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+    }
+
+    .name-field input:focus {
+      border-color: var(--border);
+    }
+
+    .primary-button {
+      border: none;
+      border-radius: 16px;
+      padding: 15px 24px;
+      font-weight: bold;
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    .start-button {
+      width: 100%;
+      margin-top: 12px;
+      font-size: 19px;
+    }
+
+    /* ---------- ИГРА ---------- */
+
+    .game {
+      width: min(1050px, 94%);
+      margin: 0 auto;
+      padding: 24px 0 45px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .game-title {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .top-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .icon-button {
+      border: 1px solid var(--surface-2);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 10px 14px;
+    }
+
+    /* ---------- ПРОГРЕСС БУКВ ---------- */
+
+    .progress-area {
+      background: var(--surface);
       border-radius: 20px;
+      padding: 15px 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 5px 18px var(--shadow);
+    }
+
+    .round-text {
+      text-align: center;
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--muted);
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .letters-progress {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .letter-chip {
+      width: 39px;
+      height: 39px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 11px;
+      font-weight: bold;
+      background: var(--surface-2);
+      border: 2px solid transparent;
+      transition: 0.2s;
+    }
+
+    .letter-chip.done {
+      opacity: 0.35;
+      text-decoration: line-through;
+    }
+
+    .letter-chip.current {
+      border-color: var(--border);
+      transform: scale(1.15);
+      background: var(--surface);
+    }
+
+    /* ---------- ВОПРОС + БУКВА ---------- */
+
+    .main-cards {
+      display: grid;
+      grid-template-columns: 2fr 0.72fr;
+      gap: 16px;
+    }
+
+    .question-card,
+    .letter-card {
+      background: var(--surface);
+      border: 3px solid var(--border);
+      border-radius: 25px;
+      min-height: 245px;
       padding: 25px;
-      min-height: 230px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      box-shadow: 0 8px 25px var(--shadow);
+    }
+
+    .card-label {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    #question {
+      font-size: clamp(27px, 4vw, 42px);
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.18;
+    }
+
+    #letter {
+      font-size: clamp(90px, 13vw, 145px);
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    /* ---------- ТАЙМЕР ---------- */
+
+    .timer-area {
+      text-align: center;
+      padding: 22px 0 16px;
+    }
+
+    #timer {
+      font-size: 60px;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #statusMessage {
+      min-height: 30px;
+      font-size: 19px;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+
+    /* ---------- ИГРОКИ ---------- */
+
+    .players {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .player-card {
+      min-height: 155px;
+      border: none;
+      border-radius: 24px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
 
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+
+      box-shadow: 0 8px 22px var(--shadow);
+      transition: transform 0.12s, opacity 0.2s;
+      user-select: none;
     }
 
-    .label {
-      font-size: 18px;
-      opacity: 0.6;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+    .player-card:not(:disabled):hover {
+      transform: translateY(-3px);
     }
 
-    #question {
-      font-size: 34px;
-      font-weight: bold;
-      line-height: 1.25;
-    }
-
-    #letter {
-      font-size: 110px;
-      font-weight: bold;
-    }
-
-    .timer {
-      font-size: 56px;
-      font-weight: bold;
-      margin: 20px 0;
-    }
-
-    .players {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-top: 25px;
-    }
-
-    .player {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-    }
-
-    .score {
-      font-size: 38px;
-      font-weight: bold;
-      margin: 10px 0 15px;
-    }
-
-    button {
-      border: none;
-      border-radius: 12px;
-      padding: 14px 22px;
-      font-size: 18px;
-      cursor: pointer;
-    }
-
-    .score-button {
-      width: 100%;
-    }
-
-    .next-button {
-      margin-top: 25px;
-      font-size: 20px;
-      padding: 16px 32px;
-    }
-
-    button:hover {
-      transform: scale(1.02);
-    }
-
-    button:active {
+    .player-card:not(:disabled):active {
       transform: scale(0.98);
     }
 
-    .time-over {
-      margin-top: 10px;
-      font-size: 24px;
-      font-weight: bold;
-      min-height: 30px;
+    .player-card:disabled {
+      cursor: default;
     }
 
+    .player-name {
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .player-score {
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1;
+      margin: 8px 0;
+    }
+
+    .point-hint {
+      font-size: 13px;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .plus-one {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-size: 30px;
+      font-weight: 900;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+    }
+
+    .plus-one.show {
+      animation: plusAnimation 0.55s ease;
+    }
+
+    @keyframes plusAnimation {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.7);
+      }
+
+      35% {
+        opacity: 1;
+        transform: translateY(-2px) scale(1.15);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(-25px) scale(1);
+      }
+    }
+
+    /* ---------- НИЖНИЕ КНОПКИ ---------- */
+
+    .round-controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .secondary-button {
+      border: none;
+      border-radius: 15px;
+      padding: 13px 20px;
+      background: var(--surface-2);
+      color: var(--text);
+      font-weight: bold;
+    }
+
+    .next-button {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    /* ---------- МОДАЛЬНОЕ ОКНО НАСТРОЕК ---------- */
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 18px;
+      z-index: 100;
+    }
+
+    .settings-modal {
+      width: min(620px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 26px;
+      padding: 26px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+    }
+
+    .settings-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .settings-header h2 {
+      margin: 0;
+    }
+
+    .close-button {
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 50%;
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 22px;
+    }
+
+    .setting-section {
+      padding: 18px 0;
+      border-top: 1px solid var(--surface-2);
+    }
+
+    .setting-section:first-of-type {
+      border-top: none;
+    }
+
+    .setting-title {
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .theme-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .theme-button {
+      border: 2px solid transparent;
+      border-radius: 14px;
+      background: var(--surface-2);
+      color: var(--text);
+      padding: 12px;
+    }
+
+    .theme-button.selected {
+      border-color: var(--border);
+    }
+
+    .settings-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--surface-2);
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* ---------- ЦВЕТА ---------- */
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 9px;
+    }
+
+    .color-option {
+      height: 45px;
+      border-radius: 13px;
+      border: 3px solid transparent;
+      position: relative;
+    }
+
+    .color-option.selected {
+      border-color: var(--text);
+    }
+
+    .color-option.selected::after {
+      content: "✓";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 900;
+      font-size: 20px;
+      color: inherit;
+    }
+
+    /* ---------- ПЕРЕКЛЮЧАТЕЛЬ ---------- */
+
+    .switch-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .switch-description {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .switch {
+      position: relative;
+      width: 54px;
+      height: 30px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      border-radius: 30px;
+      background: var(--surface-2);
+      transition: 0.25s;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      top: 4px;
+      left: 4px;
+      border-radius: 50%;
+      background: var(--text);
+      transition: 0.25s;
+    }
+
+    .switch input:checked + .slider {
+      background: #7bd67b;
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(24px);
+    }
+
+    /* ---------- ФИНАЛ ---------- */
+
+    .winner-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: var(--bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .winner-card {
+      width: min(600px, 100%);
+      background: var(--surface);
+      padding: 45px 30px;
+      border-radius: 30px;
+      text-align: center;
+      box-shadow: 0 20px 60px var(--shadow);
+    }
+
+    .winner-card h2 {
+      font-size: 42px;
+      margin: 0 0 15px;
+    }
+
+    #winnerText {
+      font-size: 25px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    #finalScore {
+      font-size: 55px;
+      font-weight: 900;
+      margin: 20px 0 30px;
+    }
+
+    /* ---------- МОБИЛЬНАЯ ВЕРСИЯ ---------- */
+
     @media (max-width: 700px) {
-      .cards,
+      .game {
+        width: 94%;
+        padding-top: 15px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .main-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .question-card {
+        min-height: 180px;
+      }
+
+      .letter-card {
+        min-height: 150px;
+      }
+
       .players {
         grid-template-columns: 1fr;
       }
 
-      #question {
-        font-size: 28px;
+      #timer {
+        font-size: 48px;
       }
 
-      #letter {
-        font-size: 90px;
+      .color-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+
+      .game-title {
+        font-size: 22px;
       }
     }
   </style>
@@ -148,58 +645,449 @@
 
 <body>
 
-  <main class="game">
+  <!-- =========================
+       СТАРТОВЫЙ ЭКРАН
+  ========================== -->
 
-    <h1>Кто быстрее?</h1>
+  <section id="startScreen" class="start-screen">
 
-    <section class="cards">
+    <div class="start-card">
 
-      <div class="card">
-        <div class="label">Вопрос</div>
-        <div id="question">Нажмите «Следующий раунд»</div>
+      <h1>Кто быстрее?</h1>
+
+      <p>
+        10 букв. 30 секунд. Кто первым назовёт подходящее слово?
+      </p>
+
+      <div class="name-field">
+        <label for="startName1">Игрок 1</label>
+        <input
+          id="startName1"
+          type="text"
+          maxlength="20"
+          placeholder="Введите имя"
+        >
       </div>
 
-      <div class="card">
-        <div class="label">Буква</div>
-        <div id="letter">?</div>
+      <div class="name-field">
+        <label for="startName2">Игрок 2</label>
+        <input
+          id="startName2"
+          type="text"
+          maxlength="20"
+          placeholder="Введите имя"
+        >
+      </div>
+
+      <button
+        class="primary-button start-button"
+        onclick="startGame()"
+      >
+        Начать игру
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       ОСНОВНАЯ ИГРА
+  ========================== -->
+
+  <main id="gameScreen" class="game hidden">
+
+    <header class="topbar">
+
+      <h1 class="game-title">
+        Кто быстрее?
+      </h1>
+
+      <div class="top-buttons">
+
+        <button
+          class="icon-button"
+          onclick="restartGame()"
+          title="Новая партия"
+        >
+          ↻ Новая партия
+        </button>
+
+        <button
+          class="icon-button"
+          onclick="openSettings()"
+          title="Настройки"
+        >
+          ⚙ Настройки
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- Прогресс -->
+
+    <section class="progress-area">
+
+      <div
+        id="roundText"
+        class="round-text"
+      >
+        Буква 1 из 10
+      </div>
+
+      <div
+        id="lettersProgress"
+        class="letters-progress"
+      ></div>
+
+    </section>
+
+
+    <!-- Вопрос и буква -->
+
+    <section class="main-cards">
+
+      <div class="question-card">
+
+        <div class="card-label">
+          Вопрос
+        </div>
+
+        <div id="question">
+          —
+        </div>
+
+      </div>
+
+
+      <div class="letter-card">
+
+        <div class="card-label">
+          Буква
+        </div>
+
+        <div id="letter">
+          ?
+        </div>
+
       </div>
 
     </section>
 
-    <div class="timer" id="timer">00:30</div>
 
-    <div class="time-over" id="message"></div>
+    <!-- Таймер -->
+
+    <section class="timer-area">
+
+      <div id="timer">
+        00:30
+      </div>
+
+      <div id="statusMessage"></div>
+
+    </section>
+
+
+    <!-- Игроки -->
 
     <section class="players">
 
-      <div class="player">
-        <div>Игрок 1</div>
-        <div class="score" id="score1">0</div>
+      <button
+        id="playerCard1"
+        class="player-card"
+        onclick="givePoint(1)"
+      >
 
-        <button class="score-button" onclick="givePoint(1)">
-          +1 Игроку 1
-        </button>
-      </div>
+        <div
+          id="playerName1"
+          class="player-name"
+        >
+          Игрок 1
+        </div>
 
-      <div class="player">
-        <div>Игрок 2</div>
-        <div class="score" id="score2">0</div>
+        <div
+          id="score1"
+          class="player-score"
+        >
+          0
+        </div>
 
-        <button class="score-button" onclick="givePoint(2)">
-          +1 Игроку 2
-        </button>
-      </div>
+        <div class="point-hint">
+          Нажми, если ответил первым
+        </div>
+
+        <div
+          id="plus1"
+          class="plus-one"
+        >
+          +1
+        </div>
+
+      </button>
+
+
+      <button
+        id="playerCard2"
+        class="player-card"
+        onclick="givePoint(2)"
+      >
+
+        <div
+          id="playerName2"
+          class="player-name"
+        >
+          Игрок 2
+        </div>
+
+        <div
+          id="score2"
+          class="player-score"
+        >
+          0
+        </div>
+
+        <div class="point-hint">
+          Нажми, если ответил первым
+        </div>
+
+        <div
+          id="plus2"
+          class="plus-one"
+        >
+          +1
+        </div>
+
+      </button>
 
     </section>
 
-    <button class="next-button" onclick="nextRound()">
-      Следующий раунд
-    </button>
+
+    <!-- Управление раундом -->
+
+    <section class="round-controls">
+
+      <button
+        id="skipButton"
+        class="secondary-button"
+        onclick="skipLetter()"
+      >
+        Не знаем — отложить букву
+      </button>
+
+      <button
+        id="nextButton"
+        class="secondary-button next-button hidden"
+        onclick="nextRoundAfterPoint()"
+      >
+        Следующий раунд →
+      </button>
+
+    </section>
 
   </main>
 
 
+  <!-- =========================
+       НАСТРОЙКИ
+  ========================== -->
+
+  <div
+    id="settingsBackdrop"
+    class="modal-backdrop hidden"
+    onclick="backdropClick(event)"
+  >
+
+    <div class="settings-modal">
+
+      <div class="settings-header">
+
+        <h2>⚙ Настройки</h2>
+
+        <button
+          class="close-button"
+          onclick="closeSettings()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- Имена -->
+
+      <div class="setting-section">
+
+        <div class="setting-title">
+          Имена игроков
+        </div>
+
+        <div class="name-field">
+
+          <label>Игрок 1</label>
+
+          <input
+            id="settingsName1"
+            class="settings-input"
+            maxlength="20"
+            oninput="updateNamesFromSettings()"
+          >
+
+        </div>
+
+        <div class="name-field">
+
+          <label>Игрок 2</label>
+
+          <input
+            id="settingsName2"
+            class="settings-input"
+            maxlength="20"
+            oninput="updateNamesFromSettings()"
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- Тема -->
+
+      <div class="setting-section">
+
+        <div class="setting-title">
+          Тема
+        </div>
+
+        <div class="theme-options">
+
+          <button
+            id="lightThemeButton"
+            class="theme-button"
+            onclick="setTheme('light')"
+          >
+            ☀ Светлая
+          </button>
+
+          <button
+            id="darkThemeButton"
+            class="theme-button"
+            onclick="setTheme('dark')"
+          >
+            ☾ Тёмная
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- Цвет игрока 1 -->
+
+      <div class="setting-section">
+
+        <div class="setting-title">
+          Цвет карточки игрока 1
+        </div>
+
+        <div
+          id="colorsPlayer1"
+          class="color-grid"
+        ></div>
+
+      </div>
+
+
+      <!-- Цвет игрока 2 -->
+
+      <div class="setting-section">
+
+        <div class="setting-title">
+          Цвет карточки игрока 2
+        </div>
+
+        <div
+          id="colorsPlayer2"
+          class="color-grid"
+        ></div>
+
+      </div>
+
+
+      <!-- Автопереход -->
+
+      <div class="setting-section">
+
+        <div class="switch-row">
+
+          <div>
+
+            <div class="setting-title">
+              Автопереход
+            </div>
+
+            <div class="switch-description">
+              Сразу открывать следующий раунд после получения очка
+            </div>
+
+          </div>
+
+          <label class="switch">
+
+            <input
+              id="autoNextToggle"
+              type="checkbox"
+              onchange="changeAutoNext()"
+            >
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       ФИНАЛ
+  ========================== -->
+
+  <section
+    id="winnerScreen"
+    class="winner-screen hidden"
+  >
+
+    <div class="winner-card">
+
+      <h2>Игра окончена!</h2>
+
+      <div id="winnerText"></div>
+
+      <div id="finalScore"></div>
+
+      <button
+        class="primary-button"
+        onclick="playAgain()"
+      >
+        Сыграть ещё раз
+      </button>
+
+    </div>
+
+  </section>
+
+
   <script>
+
+    /* =========================
+       ВОПРОСЫ
+    ========================== */
 
     const questions = [
       "Может быть красного цвета",
@@ -232,7 +1120,12 @@
     ];
 
 
-    const letters = [
+    /* =========================
+       БУКВЫ
+       Ъ, Ы, Ь исключены
+    ========================== */
+
+    const allLetters = [
       "А", "Б", "В", "Г", "Д",
       "Е", "Ё", "Ж", "З", "И",
       "Й", "К", "Л", "М", "Н",
@@ -242,88 +1135,369 @@
     ];
 
 
+    /* =========================
+       ЦВЕТА КАРТОЧЕК
+    ========================== */
+
+    const playerColors = [
+      {
+        id: "red",
+        name: "Красный",
+        background: "#e85b5b",
+        text: "#ffffff"
+      },
+
+      {
+        id: "orange",
+        name: "Оранжевый",
+        background: "#ef9950",
+        text: "#1d1d1d"
+      },
+
+      {
+        id: "yellow",
+        name: "Жёлтый",
+        background: "#f3d75c",
+        text: "#1d1d1d"
+      },
+
+      {
+        id: "green",
+        name: "Зелёный",
+        background: "#6cc488",
+        text: "#162319"
+      },
+
+      {
+        id: "cyan",
+        name: "Голубой",
+        background: "#79c9dd",
+        text: "#142428"
+      },
+
+      {
+        id: "blue",
+        name: "Синий",
+        background: "#587bd8",
+        text: "#ffffff"
+      },
+
+      {
+        id: "violet",
+        name: "Фиолетовый",
+        background: "#9170d7",
+        text: "#ffffff"
+      },
+
+      {
+        id: "pink",
+        name: "Розовый",
+        background: "#ef8fbb",
+        text: "#24151c"
+      },
+
+      {
+        id: "white",
+        name: "Белый",
+        background: "#ffffff",
+        text: "#1d1d1d"
+      },
+
+      {
+        id: "black",
+        name: "Чёрный",
+        background: "#191919",
+        text: "#ffffff"
+      }
+    ];
+
+
+    /* =========================
+       СОСТОЯНИЕ ИГРЫ
+    ========================== */
+
+    let player1Name = "Игрок 1";
+    let player2Name = "Игрок 2";
+
+    let player1Color = "red";
+    let player2Color = "blue";
+
     let score1 = 0;
     let score2 = 0;
+
+    let theme = "light";
+
+    let autoNext = true;
+
+    let letterQueue = [];
+    let completedLetters = [];
+
+    let currentLetter = null;
+    let currentQuestion = null;
+
+    let completedCount = 0;
 
     let timeLeft = 30;
     let timerInterval = null;
 
     let roundActive = false;
+    let pointWasGiven = false;
+
+    let lastQuestionForLetter = {};
 
 
-    function randomItem(array) {
-      const index = Math.floor(Math.random() * array.length);
-      return array[index];
+    /* =========================
+       СОХРАНЕНИЕ НАСТРОЕК
+    ========================== */
+
+    function loadSettings() {
+
+      player1Name =
+        localStorage.getItem("player1Name") || "Игрок 1";
+
+      player2Name =
+        localStorage.getItem("player2Name") || "Игрок 2";
+
+      player1Color =
+        localStorage.getItem("player1Color") || "red";
+
+      player2Color =
+        localStorage.getItem("player2Color") || "blue";
+
+      theme =
+        localStorage.getItem("gameTheme") || "light";
+
+      const savedAutoNext =
+        localStorage.getItem("autoNext");
+
+      if (savedAutoNext !== null) {
+        autoNext = savedAutoNext === "true";
+      }
+
+      document.getElementById("startName1").value =
+        player1Name;
+
+      document.getElementById("startName2").value =
+        player2Name;
+
+      document.getElementById("settingsName1").value =
+        player1Name;
+
+      document.getElementById("settingsName2").value =
+        player2Name;
+
+      document.getElementById("autoNextToggle").checked =
+        autoNext;
+
+      applyTheme();
+
+      renderColorOptions();
+
     }
 
 
-    function nextRound() {
+    function saveSettings() {
+
+      localStorage.setItem(
+        "player1Name",
+        player1Name
+      );
+
+      localStorage.setItem(
+        "player2Name",
+        player2Name
+      );
+
+      localStorage.setItem(
+        "player1Color",
+        player1Color
+      );
+
+      localStorage.setItem(
+        "player2Color",
+        player2Color
+      );
+
+      localStorage.setItem(
+        "gameTheme",
+        theme
+      );
+
+      localStorage.setItem(
+        "autoNext",
+        autoNext
+      );
+
+    }
+
+
+    /* =========================
+       СТАРТ
+    ========================== */
+
+    function startGame() {
+
+      player1Name =
+        document.getElementById("startName1").value.trim()
+        || "Игрок 1";
+
+      player2Name =
+        document.getElementById("startName2").value.trim()
+        || "Игрок 2";
+
+      document.getElementById("settingsName1").value =
+        player1Name;
+
+      document.getElementById("settingsName2").value =
+        player2Name;
+
+      saveSettings();
+
+      document.getElementById("startScreen")
+        .classList.add("hidden");
+
+      document.getElementById("gameScreen")
+        .classList.remove("hidden");
+
+      newGame();
+
+    }
+
+
+    function newGame() {
 
       clearInterval(timerInterval);
 
-      const question = randomItem(questions);
-      const letter = randomItem(letters);
+      score1 = 0;
+      score2 = 0;
 
-      document.getElementById("question").textContent = question;
-      document.getElementById("letter").textContent = letter;
+      completedCount = 0;
+      completedLetters = [];
 
-      document.getElementById("message").textContent = "";
+      lastQuestionForLetter = {};
+
+      document.getElementById("score1").textContent = "0";
+      document.getElementById("score2").textContent = "0";
+
+      document.getElementById("winnerScreen")
+        .classList.add("hidden");
+
+      /* Берём случайные 10 букв */
+
+      const shuffled =
+        shuffleArray([...allLetters]);
+
+      letterQueue =
+        shuffled.slice(0, 10);
+
+      updatePlayerCards();
+
+      startNextLetter();
+
+    }
+
+
+    /* =========================
+       НОВЫЙ РАУНД
+    ========================== */
+
+    function startNextLetter() {
+
+      clearInterval(timerInterval);
+
+      pointWasGiven = false;
+
+      document.getElementById("nextButton")
+        .classList.add("hidden");
+
+      document.getElementById("skipButton")
+        .classList.remove("hidden");
+
+      document.getElementById("statusMessage")
+        .textContent = "";
+
+      if (completedCount >= 10) {
+
+        finishGame();
+        return;
+
+      }
+
+      currentLetter = letterQueue.shift();
+
+      currentQuestion =
+        getQuestionForLetter(currentLetter);
+
+      document.getElementById("letter")
+        .textContent = currentLetter;
+
+      document.getElementById("question")
+        .textContent = currentQuestion;
 
       timeLeft = 30;
+
       roundActive = true;
 
+      enablePlayerCards();
+
       updateTimer();
+      renderProgress();
 
-      timerInterval = setInterval(() => {
+      timerInterval =
+        setInterval(() => {
 
-        timeLeft--;
+          timeLeft--;
 
-        updateTimer();
+          updateTimer();
 
-        if (timeLeft <= 0) {
+          if (timeLeft <= 0) {
 
-          clearInterval(timerInterval);
+            clearInterval(timerInterval);
 
-          roundActive = false;
+            roundActive = false;
 
-          document.getElementById("message").textContent =
-            "Время вышло!";
+            disablePlayerCards();
 
-        }
+            document.getElementById("statusMessage")
+              .textContent =
+              "Время вышло — можно отложить букву";
 
-      }, 1000);
+          }
 
-    }
-
-
-    function updateTimer() {
-
-      const seconds = String(timeLeft).padStart(2, "0");
-
-      document.getElementById("timer").textContent =
-        "00:" + seconds;
+        }, 1000);
 
     }
 
+
+    /* =========================
+       ПОЛУЧЕНИЕ ОЧКА
+    ========================== */
 
     function givePoint(player) {
 
-      if (!roundActive) {
+      if (!roundActive || pointWasGiven) {
         return;
       }
 
+      pointWasGiven = true;
       roundActive = false;
 
       clearInterval(timerInterval);
+
+      disablePlayerCards();
 
       if (player === 1) {
 
         score1++;
 
-        document.getElementById("score1").textContent = score1;
+        document.getElementById("score1")
+          .textContent = score1;
 
-        document.getElementById("message").textContent =
-          "Очко получает Игрок 1!";
+        showPlusAnimation(1);
+
+        document.getElementById("statusMessage")
+          .textContent =
+          "Очко: " + player1Name;
 
       }
 
@@ -331,14 +1505,690 @@
 
         score2++;
 
-        document.getElementById("score2").textContent = score2;
+        document.getElementById("score2")
+          .textContent = score2;
 
-        document.getElementById("message").textContent =
-          "Очко получает Игрок 2!";
+        showPlusAnimation(2);
+
+        document.getElementById("statusMessage")
+          .textContent =
+          "Очко: " + player2Name;
+
+      }
+
+      completedLetters.push(currentLetter);
+
+      completedCount++;
+
+      renderProgress();
+
+      document.getElementById("skipButton")
+        .classList.add("hidden");
+
+      if (completedCount >= 10) {
+
+        setTimeout(
+          finishGame,
+          autoNext ? 350 : 0
+        );
+
+        return;
+
+      }
+
+      if (autoNext) {
+
+        /*
+          При включённом автопереходе
+          новый раунд начинается почти сразу.
+        */
+
+        setTimeout(
+          startNextLetter,
+          350
+        );
+
+      } else {
+
+        /*
+          Без автоперехода появляется
+          большая понятная кнопка.
+        */
+
+        document.getElementById("nextButton")
+          .classList.remove("hidden");
 
       }
 
     }
+
+
+    function nextRoundAfterPoint() {
+
+      document.getElementById("nextButton")
+        .classList.add("hidden");
+
+      startNextLetter();
+
+    }
+
+
+    /* =========================
+       НЕ ЗНАЕМ
+    ========================== */
+
+    function skipLetter() {
+
+      if (!currentLetter || pointWasGiven) {
+        return;
+      }
+
+      clearInterval(timerInterval);
+
+      roundActive = false;
+
+      disablePlayerCards();
+
+      /*
+        Буква возвращается
+        В КОНЕЦ ОЧЕРЕДИ.
+      */
+
+      letterQueue.push(currentLetter);
+
+      document.getElementById("statusMessage")
+        .textContent =
+        currentLetter + " отправляется в конец";
+
+      renderProgress();
+
+      setTimeout(
+        startNextLetter,
+        350
+      );
+
+    }
+
+
+    /* =========================
+       ВОПРОСЫ
+    ========================== */
+
+    function getQuestionForLetter(letter) {
+
+      let possibleQuestions =
+        questions.filter(
+          question =>
+            question !== lastQuestionForLetter[letter]
+        );
+
+      if (possibleQuestions.length === 0) {
+        possibleQuestions = [...questions];
+      }
+
+      const question =
+        randomItem(possibleQuestions);
+
+      lastQuestionForLetter[letter] =
+        question;
+
+      return question;
+
+    }
+
+
+    /* =========================
+       ПРОГРЕСС БУКВ
+    ========================== */
+
+    function renderProgress() {
+
+      const container =
+        document.getElementById("lettersProgress");
+
+      container.innerHTML = "";
+
+      completedLetters.forEach(letter => {
+
+        const chip =
+          createLetterChip(letter, "done");
+
+        container.appendChild(chip);
+
+      });
+
+
+      if (
+        currentLetter &&
+        completedCount < 10 &&
+        !pointWasGiven
+      ) {
+
+        const chip =
+          createLetterChip(
+            currentLetter,
+            "current"
+          );
+
+        container.appendChild(chip);
+
+      }
+
+
+      letterQueue.forEach(letter => {
+
+        const chip =
+          createLetterChip(letter, "");
+
+        container.appendChild(chip);
+
+      });
+
+
+      const visibleRound =
+        Math.min(
+          completedCount + 1,
+          10
+        );
+
+      document.getElementById("roundText")
+        .textContent =
+        "Буква " +
+        visibleRound +
+        " из 10";
+
+    }
+
+
+    function createLetterChip(letter, state) {
+
+      const chip =
+        document.createElement("div");
+
+      chip.className =
+        "letter-chip " + state;
+
+      chip.textContent = letter;
+
+      return chip;
+
+    }
+
+
+    /* =========================
+       ТАЙМЕР
+    ========================== */
+
+    function updateTimer() {
+
+      const seconds =
+        String(timeLeft).padStart(2, "0");
+
+      document.getElementById("timer")
+        .textContent =
+        "00:" + seconds;
+
+    }
+
+
+    /* =========================
+       ИГРОКИ
+    ========================== */
+
+    function updatePlayerCards() {
+
+      document.getElementById("playerName1")
+        .textContent =
+        player1Name;
+
+      document.getElementById("playerName2")
+        .textContent =
+        player2Name;
+
+      applyPlayerColor(
+        1,
+        player1Color
+      );
+
+      applyPlayerColor(
+        2,
+        player2Color
+      );
+
+    }
+
+
+    function applyPlayerColor(player, colorId) {
+
+      const color =
+        playerColors.find(
+          item => item.id === colorId
+        );
+
+      if (!color) {
+        return;
+      }
+
+      const card =
+        document.getElementById(
+          "playerCard" + player
+        );
+
+      card.style.background =
+        color.background;
+
+      card.style.color =
+        color.text;
+
+      /*
+        Для белой карточки добавляем
+        лёгкую границу.
+      */
+
+      if (colorId === "white") {
+
+        card.style.border =
+          "2px solid #d8d8d8";
+
+      } else {
+
+        card.style.border =
+          "none";
+
+      }
+
+    }
+
+
+    function enablePlayerCards() {
+
+      document.getElementById("playerCard1")
+        .disabled = false;
+
+      document.getElementById("playerCard2")
+        .disabled = false;
+
+    }
+
+
+    function disablePlayerCards() {
+
+      document.getElementById("playerCard1")
+        .disabled = true;
+
+      document.getElementById("playerCard2")
+        .disabled = true;
+
+    }
+
+
+    function showPlusAnimation(player) {
+
+      const element =
+        document.getElementById(
+          "plus" + player
+        );
+
+      element.classList.remove("show");
+
+      void element.offsetWidth;
+
+      element.classList.add("show");
+
+    }
+
+
+    /* =========================
+       НАСТРОЙКИ
+    ========================== */
+
+    function openSettings() {
+
+      document.getElementById("settingsName1")
+        .value = player1Name;
+
+      document.getElementById("settingsName2")
+        .value = player2Name;
+
+      document.getElementById("autoNextToggle")
+        .checked = autoNext;
+
+      updateThemeButtons();
+      renderColorOptions();
+
+      document.getElementById("settingsBackdrop")
+        .classList.remove("hidden");
+
+    }
+
+
+    function closeSettings() {
+
+      document.getElementById("settingsBackdrop")
+        .classList.add("hidden");
+
+    }
+
+
+    function backdropClick(event) {
+
+      if (
+        event.target.id ===
+        "settingsBackdrop"
+      ) {
+
+        closeSettings();
+
+      }
+
+    }
+
+
+    function updateNamesFromSettings() {
+
+      player1Name =
+        document.getElementById("settingsName1")
+          .value.trim()
+        || "Игрок 1";
+
+      player2Name =
+        document.getElementById("settingsName2")
+          .value.trim()
+        || "Игрок 2";
+
+      updatePlayerCards();
+
+      saveSettings();
+
+    }
+
+
+    /* =========================
+       ТЕМА
+    ========================== */
+
+    function setTheme(newTheme) {
+
+      theme = newTheme;
+
+      applyTheme();
+      saveSettings();
+
+    }
+
+
+    function applyTheme() {
+
+      if (theme === "dark") {
+
+        document.body.classList.add("dark");
+
+      } else {
+
+        document.body.classList.remove("dark");
+
+      }
+
+      updateThemeButtons();
+
+    }
+
+
+    function updateThemeButtons() {
+
+      const light =
+        document.getElementById(
+          "lightThemeButton"
+        );
+
+      const dark =
+        document.getElementById(
+          "darkThemeButton"
+        );
+
+      light.classList.toggle(
+        "selected",
+        theme === "light"
+      );
+
+      dark.classList.toggle(
+        "selected",
+        theme === "dark"
+      );
+
+    }
+
+
+    /* =========================
+       ЦВЕТА В НАСТРОЙКАХ
+    ========================== */
+
+    function renderColorOptions() {
+
+      renderColorsForPlayer(
+        1,
+        "colorsPlayer1",
+        player1Color
+      );
+
+      renderColorsForPlayer(
+        2,
+        "colorsPlayer2",
+        player2Color
+      );
+
+    }
+
+
+    function renderColorsForPlayer(
+      player,
+      containerId,
+      selectedColor
+    ) {
+
+      const container =
+        document.getElementById(containerId);
+
+      container.innerHTML = "";
+
+      playerColors.forEach(color => {
+
+        const button =
+          document.createElement("button");
+
+        button.className =
+          "color-option";
+
+        if (color.id === selectedColor) {
+
+          button.classList.add("selected");
+
+        }
+
+        button.style.background =
+          color.background;
+
+        button.style.color =
+          color.text;
+
+        button.title =
+          color.name;
+
+        button.onclick =
+          () => selectPlayerColor(
+            player,
+            color.id
+          );
+
+        container.appendChild(button);
+
+      });
+
+    }
+
+
+    function selectPlayerColor(
+      player,
+      colorId
+    ) {
+
+      if (player === 1) {
+
+        player1Color = colorId;
+
+      } else {
+
+        player2Color = colorId;
+
+      }
+
+      applyPlayerColor(
+        player,
+        colorId
+      );
+
+      renderColorOptions();
+
+      saveSettings();
+
+    }
+
+
+    /* =========================
+       АВТОПЕРЕХОД
+    ========================== */
+
+    function changeAutoNext() {
+
+      autoNext =
+        document.getElementById(
+          "autoNextToggle"
+        ).checked;
+
+      saveSettings();
+
+    }
+
+
+    /* =========================
+       ФИНАЛ ИГРЫ
+    ========================== */
+
+    function finishGame() {
+
+      clearInterval(timerInterval);
+
+      roundActive = false;
+
+      disablePlayerCards();
+
+      const winnerText =
+        document.getElementById(
+          "winnerText"
+        );
+
+      if (score1 > score2) {
+
+        winnerText.textContent =
+          "Победил " + player1Name + "!";
+
+      } else if (score2 > score1) {
+
+        winnerText.textContent =
+          "Победил " + player2Name + "!";
+
+      } else {
+
+        winnerText.textContent =
+          "Ничья!";
+
+      }
+
+      document.getElementById("finalScore")
+        .textContent =
+        score1 + " : " + score2;
+
+      document.getElementById("winnerScreen")
+        .classList.remove("hidden");
+
+    }
+
+
+    function playAgain() {
+
+      document.getElementById("winnerScreen")
+        .classList.add("hidden");
+
+      newGame();
+
+    }
+
+
+    function restartGame() {
+
+      const confirmed =
+        confirm(
+          "Начать новую партию? Текущий счёт сбросится."
+        );
+
+      if (confirmed) {
+
+        newGame();
+
+      }
+
+    }
+
+
+    /* =========================
+       ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+    ========================== */
+
+    function randomItem(array) {
+
+      const index =
+        Math.floor(
+          Math.random() * array.length
+        );
+
+      return array[index];
+
+    }
+
+
+    function shuffleArray(array) {
+
+      for (
+        let i = array.length - 1;
+        i > 0;
+        i--
+      ) {
+
+        const j =
+          Math.floor(
+            Math.random() * (i + 1)
+          );
+
+        [
+          array[i],
+          array[j]
+        ] = [
+          array[j],
+          array[i]
+        ];
+
+      }
+
+      return array;
+
+    }
+
+
+    /* =========================
+       ЗАПУСК
+    ========================== */
+
+    loadSettings();
 
   </script>
 
