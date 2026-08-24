@@ -64,6 +64,13 @@ body.dark .admin-toggle-note{
   color:#d2c179;
 }
 
+
+body.dark .back-start-btn{
+  background:#4b3d10;
+  color:#ffe8a0;
+  border-color:#b78717;
+}
+
 body.dark .defer-letter-btn{
   background:#4b3d10 !important;
   color:#ffe8a0 !important;
@@ -173,7 +180,7 @@ button{cursor:pointer}
 
 .name-row{
   display:grid;
-  grid-template-columns:1fr auto auto;
+  grid-template-columns:1fr auto;
   gap:8px;
   align-items:center;
 }
@@ -348,6 +355,74 @@ button{cursor:pointer}
   transform:translateX(24px);
 }
 
+
+.start-layout{
+  display:grid;
+  grid-template-columns:minmax(250px,.8fr) minmax(0,1.5fr);
+  gap:24px;
+  align-items:start;
+}
+
+.start-settings-column{
+  min-width:0;
+}
+
+.start-players-column{
+  min-width:0;
+}
+
+.start-column-title{
+  font-size:15px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.timer-admin-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:9px;
+  align-items:center;
+}
+
+.timer-admin-row select{
+  width:100%;
+}
+
+.admin-open-button{
+  width:46px;
+  height:46px;
+  border-radius:13px;
+  border:2px solid var(--surface2);
+  background:var(--surface);
+  color:var(--text);
+  font-weight:900;
+  font-size:18px;
+}
+
+.admin-open-button:hover{
+  border-color:var(--border);
+  transform:translateY(-1px);
+}
+
+.start-main-button{
+  margin-top:18px;
+}
+
+.start-players-column .players-setup{
+  margin-top:0;
+  grid-template-columns:1fr;
+}
+
+
+.custom-timer-input{
+  margin-top:8px;
+}
+
+.timer-admin-row .custom-timer-input{
+  grid-column:1 / -1;
+  margin-top:0;
+}
+
 /* ---------- ИГРА ---------- */
 
 .game{
@@ -377,22 +452,26 @@ button{cursor:pointer}
 }
 
 .back-start-btn{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  border:1px solid var(--surface2);
-  background:var(--surface);
-  color:var(--text);
-  font-size:24px;
+  width:48px;
+  height:48px;
+  border-radius:15px;
+  border:2px solid #e2a51b;
+  background:#fff1b8;
+  color:#332500;
+  font-size:28px;
   line-height:1;
   display:flex;
   align-items:center;
   justify-content:center;
   padding:0;
+  box-shadow:0 4px 0 rgba(176,120,0,.16);
+  font-weight:900;
 }
 
 .back-start-btn:hover{
-  transform:translateX(-2px);
+  transform:translateX(-3px);
+  background:#ffe48a;
+  border-color:#c98a00;
 }
 
 
@@ -764,6 +843,36 @@ button{cursor:pointer}
   border-bottom:1px solid var(--surface2);
 }
 
+
+.lightning-bolt{
+  position:absolute;
+  top:-120px;
+  opacity:0;
+  animation:lightningDrift linear forwards;
+  filter:drop-shadow(0 0 8px rgba(255,220,70,.7));
+  user-select:none;
+}
+
+@keyframes lightningDrift{
+  0%{
+    opacity:0;
+    transform:translateY(-120px) translateX(0) scale(.9);
+  }
+
+  12%{
+    opacity:1;
+  }
+
+  82%{
+    opacity:1;
+  }
+
+  100%{
+    opacity:0;
+    transform:translateY(calc(100vh + 160px)) translateX(var(--drift)) scale(1.05);
+  }
+}
+
 /* ---------- ПОБЕДА ---------- */
 
 .winner-screen{
@@ -912,6 +1021,7 @@ button{cursor:pointer}
 @media(max-width:900px){
   .players{grid-template-columns:repeat(2,1fr)}
   .players-setup{grid-template-columns:1fr}
+  .start-layout{grid-template-columns:1fr}
 }
 
 @media(max-width:700px){
@@ -945,72 +1055,122 @@ button{cursor:pointer}
       <b>Торопись — придумай подходящее слово раньше соперников и забери очко!</b>
     </div>
 
-    <div class="start-grid">
+    <div class="start-layout">
 
-      <div class="field">
-        <label for="playerCount">Количество игроков</label>
-        <select id="playerCount" onchange="renderPlayerSetup()">
-          <option value="2" selected>2 игрока</option>
-          <option value="3">3 игрока</option>
-          <option value="4">4 игрока</option>
-          <option value="5">5 игроков</option>
-          <option value="6">6 игроков</option>
-        </select>
-      </div>
+      <div class="start-settings-column">
 
-      <div class="field">
-        <label for="roundCount">Количество букв</label>
-        <select id="roundCount">
-          <option value="3">3 буквы</option>
-          <option value="4">4 буквы</option>
-          <option value="5">5 букв</option>
-          <option value="6">6 букв</option>
-          <option value="7">7 букв</option>
-          <option value="8">8 букв</option>
-          <option value="9">9 букв</option>
-          <option value="10" selected>10 букв</option>
-        </select>
-      </div>
-
-    </div>
-
-    <div id="playersSetup" class="players-setup"></div>
-
-    <div id="adminPanel" class="admin-panel">
-
-      <div class="admin-toggle-row">
-
-        <div>
-          <div class="admin-toggle-label">
-            Админ разрешил ругаться
-          </div>
-
-          <div class="admin-toggle-note">
-            Если включено — ограничения на имя отключаются.
-          </div>
-
-          <div id="adminMessage" class="admin-message"></div>
+        <div class="field">
+          <label for="playerCount">Количество игроков</label>
+          <select id="playerCount" onchange="renderPlayerSetup()">
+            <option value="2" selected>2 игрока</option>
+            <option value="3">3 игрока</option>
+            <option value="4">4 игрока</option>
+            <option value="5">5 игроков</option>
+            <option value="6">6 игроков</option>
+          </select>
         </div>
 
-        <label class="switch" title="Разрешить любое имя">
+        <div class="field">
+          <label for="roundCount">Количество букв</label>
+          <select id="roundCount">
+            <option value="3">3 буквы</option>
+            <option value="4">4 буквы</option>
+            <option value="5">5 букв</option>
+            <option value="6">6 букв</option>
+            <option value="7">7 букв</option>
+            <option value="8">8 букв</option>
+            <option value="9">9 букв</option>
+            <option value="10" selected>10 букв</option>
+          </select>
+        </div>
 
-          <input
-            id="adminRudeToggle"
-            type="checkbox"
-            onchange="toggleAdminRude()"
-          >
+        <div class="field">
+          <label for="startTimerSelect">Время на ответ</label>
 
-          <span class="switch-slider"></span>
+          <div class="timer-admin-row">
 
-        </label>
+            <select
+              id="startTimerSelect"
+              onchange="changeStartTimerSetting()"
+            >
+              <option value="5">5 секунд</option>
+              <option value="10">10 секунд</option>
+              <option value="30">30 секунд</option>
+              <option value="custom">Своё число</option>
+            </select>
+
+            <input
+              id="startCustomTimer"
+              class="custom-timer-input hidden"
+              type="number"
+              min="1"
+              max="120"
+              value="30"
+              placeholder="сек."
+              oninput="changeStartCustomTimer()"
+            >
+
+            <button
+              class="admin-open-button"
+              onclick="toggleAdminPanel()"
+              type="button"
+              title="Админ"
+            >
+              A
+            </button>
+
+          </div>
+        </div>
+
+        <div id="adminPanel" class="admin-panel">
+
+          <div class="admin-toggle-row">
+
+            <div>
+              <div class="admin-toggle-label">
+                Админ разрешил ругаться
+              </div>
+
+              <div class="admin-toggle-note">
+                Если включено — ограничения на имя отключаются.
+              </div>
+
+              <div id="adminMessage" class="admin-message"></div>
+            </div>
+
+            <label class="switch" title="Разрешить любое имя">
+
+              <input
+                id="adminRudeToggle"
+                type="checkbox"
+                onchange="toggleAdminRude()"
+              >
+
+              <span class="switch-slider"></span>
+
+            </label>
+
+          </div>
+
+        </div>
+
+        <button class="primary start-main-button" onclick="startGame()">
+          Начать игру
+        </button>
+
+      </div>
+
+      <div class="start-players-column">
+
+        <div class="start-column-title">
+          Игроки
+        </div>
+
+        <div id="playersSetup" class="players-setup"></div>
 
       </div>
 
     </div>
-
-    <button class="primary" style="margin-top:22px" onclick="startGame()">
-      Начать игру
-    </button>
 
   </div>
 </section>
@@ -1197,11 +1357,22 @@ button{cursor:pointer}
             id="timerSelect"
             onchange="changeTimerSetting()"
           >
+            <option value="5">5 секунд</option>
+            <option value="10">10 секунд</option>
             <option value="30">30 секунд</option>
-            <option value="40">40 секунд</option>
-            <option value="50">50 секунд</option>
-            <option value="60">60 секунд</option>
+            <option value="custom">Своё число</option>
           </select>
+
+          <input
+            id="customTimer"
+            class="custom-timer-input hidden"
+            type="number"
+            min="1"
+            max="120"
+            value="30"
+            placeholder="сек."
+            oninput="changeCustomTimer()"
+          >
 
         </div>
 
@@ -1873,7 +2044,16 @@ let heartTextIndex =
     ) || 0
   );
 
+let planeTextIndex =
+  Number(
+    localStorage.getItem(
+      "planeTextIndex"
+    ) || 0
+  );
+
 let victoryIntervals = [];
+
+let victoryTimeouts = [];
 
 
 /* =========================================================
@@ -1966,14 +2146,6 @@ function renderPlayerSetup() {
 
         </div>
 
-        <button
-          class="name-admin-mini"
-          onclick="toggleAdminPanel()"
-          title="Админ"
-          type="button"
-        >
-          A
-        </button>
 
       </div>
 
@@ -3238,6 +3410,8 @@ function openSettings() {
 
   applyTheme();
 
+  syncTimerControls();
+
   document
     .getElementById(
       "timerSelect"
@@ -3276,6 +3450,34 @@ function closeSettings() {
 }
 
 
+
+function changeStartTimerSetting() {
+
+  answerTime =
+    Number(
+      document.getElementById(
+        "startTimerSelect"
+      ).value
+    );
+
+  localStorage.setItem(
+    "answerTime",
+    answerTime
+  );
+
+  const settingsTimer =
+    document.getElementById(
+      "timerSelect"
+    );
+
+  if (settingsTimer) {
+    settingsTimer.value =
+      String(answerTime);
+  }
+
+}
+
+
 function changeTimerSetting() {
 
   answerTime =
@@ -3290,6 +3492,16 @@ function changeTimerSetting() {
     "answerTime",
     answerTime
   );
+
+  const startTimer =
+    document.getElementById(
+      "startTimerSelect"
+    );
+
+  if (startTimer) {
+    startTimer.value =
+      String(answerTime);
+  }
 
 }
 
@@ -3718,12 +3930,56 @@ function clearVictoryLoops() {
   );
 
 
+  victoryTimeouts.forEach(
+    id => clearTimeout(id)
+  );
+
+
   victoryIntervals = [];
+
+  victoryTimeouts = [];
 
 
   document.getElementById(
     "effects"
   ).innerHTML = "";
+
+}
+
+
+
+
+function capEffectElements(
+  selector,
+  maxCount
+) {
+
+  const container =
+    document.getElementById(
+      "effects"
+    );
+
+
+  const nodes =
+    [
+      ...container.querySelectorAll(
+        selector
+      )
+    ];
+
+
+  while (
+    nodes.length > maxCount
+  ) {
+
+    const node =
+      nodes.shift();
+
+    if (node) {
+      node.remove();
+    }
+
+  }
 
 }
 
@@ -3736,10 +3992,31 @@ function planesEffect(
 
   if (!isTie) {
 
+    const planeTexts = [
+      "Билеты на Авиасейлс нихера не дешевые.",
+      "Здесь могла бы быть реклама Авиасейлс."
+    ];
+
     document.getElementById(
       "effectCaption"
     ).textContent =
-      "Билеты на Авиасейлс нихера не дешевые.";
+      planeTexts[
+        planeTextIndex
+        %
+        planeTexts.length
+      ];
+
+    planeTextIndex =
+      (
+        planeTextIndex + 1
+      )
+      %
+      planeTexts.length;
+
+    localStorage.setItem(
+      "planeTextIndex",
+      planeTextIndex
+    );
 
   }
 
@@ -3812,10 +4089,10 @@ function planesEffect(
         );
 
 
-        setTimeout(
+        victoryTimeouts.push(setTimeout(
           () => e.remove(),
           9500
-        );
+        ));
 
       }
 
@@ -3915,10 +4192,10 @@ function fireEffect(
         );
 
 
-        setTimeout(
+        victoryTimeouts.push(setTimeout(
           () => e.remove(),
           9000
-        );
+        ));
 
       }
 
@@ -3927,11 +4204,22 @@ function fireEffect(
 
   spawn();
 
+  capEffectElements(
+    ".fire",
+    45
+  );
+
 
   victoryIntervals.push(
     setInterval(
-      spawn,
-      6500
+      () => {
+        spawn();
+        capEffectElements(
+          ".fire",
+          45
+        );
+      },
+      7000
     )
   );
 
@@ -4169,10 +4457,10 @@ function confettiEffect(
         );
 
 
-        setTimeout(
+        victoryTimeouts.push(setTimeout(
           () => e.remove(),
           9000
-        );
+        ));
 
       }
 
@@ -4181,11 +4469,22 @@ function confettiEffect(
 
   spawn();
 
+  capEffectElements(
+    ".conf",
+    100
+  );
+
 
   victoryIntervals.push(
     setInterval(
-      spawn,
-      6200
+      () => {
+        spawn();
+        capEffectElements(
+          ".conf",
+          100
+        );
+      },
+      7000
     )
   );
 
@@ -4337,7 +4636,7 @@ function catsEffect(
     document.getElementById(
       "effectCaption"
     ).textContent =
-      "Лови падающих котиков хд";
+      "Лови падающих котиков";
 
   }
 
@@ -4480,10 +4779,10 @@ function catsEffect(
         );
 
 
-        setTimeout(
+        victoryTimeouts.push(setTimeout(
           () => cat.remove(),
           12000
-        );
+        ));
 
       }
 
@@ -4495,11 +4794,22 @@ function catsEffect(
 
   spawn();
 
+  capEffectElements(
+    ".cat-fall",
+    28
+  );
+
 
   victoryIntervals.push(
     setInterval(
-      spawn,
-      7000
+      () => {
+        spawn();
+        capEffectElements(
+          ".cat-fall",
+          28
+        );
+      },
+      8000
     )
   );
 
@@ -4620,10 +4930,10 @@ function heartsEffect(
         );
 
 
-        setTimeout(
+        victoryTimeouts.push(setTimeout(
           () => e.remove(),
           10000
-        );
+        ));
 
       }
 
@@ -4632,11 +4942,22 @@ function heartsEffect(
 
   spawn();
 
+  capEffectElements(
+    ".heart",
+    42
+  );
+
 
   victoryIntervals.push(
     setInterval(
-      spawn,
-      6500
+      () => {
+        spawn();
+        capEffectElements(
+          ".heart",
+          42
+        );
+      },
+      7000
     )
   );
 
@@ -4785,10 +5106,10 @@ function fireworksEffect(
       );
 
 
-      setTimeout(
+      victoryTimeouts.push(setTimeout(
         () => fw.remove(),
         1800
-      );
+      ));
 
     };
 
@@ -4851,19 +5172,39 @@ function lightningEffect(
   const spawn =
     () => {
 
+      const effectsContainer =
+        document.getElementById(
+          "effects"
+        );
+
+
+      /* Побольше молний, но меньше тяжёлых грозовых emoji. */
       const bolts = [
-        "⚡",
-        "🌩️",
-        "⚡",
-        "⚡"
+        "⚡","⚡","⚡","⚡","⚡","🌩️"
       ];
 
 
       for (
         let i = 0;
-        i < 10;
+        i < 22;
         i++
       ) {
+
+        /* Ограничиваем количество элементов, чтобы не тормозило. */
+        if (
+          effectsContainer
+            .querySelectorAll(
+              ".lightning-bolt"
+            )
+            .length
+          >=
+          55
+        ) {
+
+          break;
+
+        }
+
 
         const e =
           document.createElement(
@@ -4872,7 +5213,7 @@ function lightningEffect(
 
 
         e.className =
-          "fall";
+          "lightning-bolt";
 
 
         e.textContent =
@@ -4891,7 +5232,7 @@ function lightningEffect(
 
         e.style.fontSize =
           (
-            34
+            30
             +
             Math.random()
             *
@@ -4901,10 +5242,23 @@ function lightningEffect(
           "px";
 
 
-        /* Молнии специально очень медленные */
+        e.style.setProperty(
+          "--drift",
+          (
+            -70
+            +
+            Math.random()
+            *
+            140
+          )
+          +
+          "px"
+        );
+
+
         e.style.animationDuration =
           (
-            9
+            10
             +
             Math.random()
             *
@@ -4918,23 +5272,21 @@ function lightningEffect(
           (
             Math.random()
             *
-            2
+            2.5
           )
           +
           "s";
 
 
-        document.getElementById(
-          "effects"
-        ).appendChild(
+        effectsContainer.appendChild(
           e
         );
 
 
-        setTimeout(
+        victoryTimeouts.push(setTimeout(
           () => e.remove(),
-          17000
-        );
+          18000
+        ));
 
       }
 
@@ -4947,7 +5299,7 @@ function lightningEffect(
   victoryIntervals.push(
     setInterval(
       spawn,
-      10500
+      7000
     )
   );
 
@@ -5049,12 +5401,7 @@ function escapeHtml(
 
 function init() {
 
-  document.getElementById(
-    "timerSelect"
-  ).value =
-    String(
-      answerTime
-    );
+  syncTimerControls();
 
 
   document.getElementById(
