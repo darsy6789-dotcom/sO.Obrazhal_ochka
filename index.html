@@ -3414,15 +3414,6 @@ function openSettings() {
 
   document
     .getElementById(
-      "timerSelect"
-    ).value =
-      String(
-        answerTime
-      );
-
-
-  document
-    .getElementById(
       "autoToggle"
     ).checked =
       autoNext;
@@ -3451,13 +3442,110 @@ function closeSettings() {
 
 
 
+
+function syncTimerControls() {
+
+  const standardValues = [5, 10, 30];
+
+  const isStandard =
+    standardValues.includes(
+      Number(answerTime)
+    );
+
+  const startSelect =
+    document.getElementById(
+      "startTimerSelect"
+    );
+
+  const startCustom =
+    document.getElementById(
+      "startCustomTimer"
+    );
+
+  const settingsSelect =
+    document.getElementById(
+      "timerSelect"
+    );
+
+  const settingsCustom =
+    document.getElementById(
+      "customTimer"
+    );
+
+
+  if (startSelect) {
+
+    startSelect.value =
+      isStandard
+        ? String(answerTime)
+        : "custom";
+
+  }
+
+
+  if (settingsSelect) {
+
+    settingsSelect.value =
+      isStandard
+        ? String(answerTime)
+        : "custom";
+
+  }
+
+
+  if (startCustom) {
+
+    startCustom.value =
+      String(answerTime);
+
+    startCustom.classList.toggle(
+      "hidden",
+      isStandard
+    );
+
+  }
+
+
+  if (settingsCustom) {
+
+    settingsCustom.value =
+      String(answerTime);
+
+    settingsCustom.classList.toggle(
+      "hidden",
+      isStandard
+    );
+
+  }
+
+}
+
+
 function changeStartTimerSetting() {
+
+  const select =
+    document.getElementById(
+      "startTimerSelect"
+    );
+
+  if (
+    select.value === "custom"
+  ) {
+
+    document
+      .getElementById(
+        "startCustomTimer"
+      )
+      .classList
+      .remove("hidden");
+
+    return;
+
+  }
 
   answerTime =
     Number(
-      document.getElementById(
-        "startTimerSelect"
-      ).value
+      select.value
     );
 
   localStorage.setItem(
@@ -3465,45 +3553,115 @@ function changeStartTimerSetting() {
     answerTime
   );
 
-  const settingsTimer =
+  syncTimerControls();
+
+}
+
+
+function changeStartCustomTimer() {
+
+  const input =
     document.getElementById(
-      "timerSelect"
+      "startCustomTimer"
     );
 
-  if (settingsTimer) {
-    settingsTimer.value =
-      String(answerTime);
-  }
+  const value =
+    Math.min(
+      120,
+      Math.max(
+        1,
+        Math.round(
+          Number(input.value) || 1
+        )
+      )
+    );
+
+  answerTime =
+    value;
+
+  input.value =
+    String(value);
+
+  localStorage.setItem(
+    "answerTime",
+    answerTime
+  );
+
+  syncTimerControls();
 
 }
 
 
 function changeTimerSetting() {
 
-  answerTime =
-    Number(
-      document.getElementById(
-        "timerSelect"
-      ).value
+  const select =
+    document.getElementById(
+      "timerSelect"
     );
 
+  if (
+    select.value === "custom"
+  ) {
+
+    document
+      .getElementById(
+        "customTimer"
+      )
+      .classList
+      .remove("hidden");
+
+    return;
+
+  }
+
+  answerTime =
+    Number(
+      select.value
+    );
 
   localStorage.setItem(
     "answerTime",
     answerTime
   );
 
-  const startTimer =
-    document.getElementById(
-      "startTimerSelect"
-    );
-
-  if (startTimer) {
-    startTimer.value =
-      String(answerTime);
-  }
+  syncTimerControls();
 
 }
+
+
+function changeCustomTimer() {
+
+  const input =
+    document.getElementById(
+      "customTimer"
+    );
+
+  const value =
+    Math.min(
+      120,
+      Math.max(
+        1,
+        Math.round(
+          Number(input.value) || 1
+        )
+      )
+    );
+
+  answerTime =
+    value;
+
+  input.value =
+    String(value);
+
+  localStorage.setItem(
+    "answerTime",
+    answerTime
+  );
+
+  syncTimerControls();
+
+}
+
 
 
 function changeAuto() {
