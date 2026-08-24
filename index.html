@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Кто быстрее?</title>
 
   <style>
+
+    /* =========================================================
+       ОСНОВНЫЕ ЦВЕТА
+    ========================================================= */
+
     :root {
       --bg: #f4f1ec;
       --surface: #ffffff;
-      --surface-2: #ebe7e1;
+      --surface-2: #e9e5df;
       --text: #1f1f1f;
       --muted: #77736d;
       --border: #252525;
@@ -24,41 +33,9 @@
       --text: #f3f3f3;
       --muted: #aaaaaa;
       --border: #eeeeee;
-      --shadow: rgba(0, 0, 0, 0.45);
+      --shadow: rgba(0, 0, 0, 0.42);
     }
-/* ---------- МИНИ-АНИМАЦИЯ ЗА ОЧКО ---------- */
 
-.mini-effect {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  font-size: 38px;
-  pointer-events: none;
-  z-index: 10;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.6);
-}
-
-.mini-effect.play {
-  animation: miniWin 0.8s ease-out forwards;
-}
-
-@keyframes miniWin {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -20%) scale(0.5) rotate(-10deg);
-  }
-
-  35% {
-    opacity: 1;
-    transform: translate(-50%, -80%) scale(1.4) rotate(8deg);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -150%) scale(0.9) rotate(18deg);
-  }
-}
     * {
       box-sizing: border-box;
     }
@@ -69,7 +46,10 @@
       font-family: Arial, Helvetica, sans-serif;
       background: var(--bg);
       color: var(--text);
-      transition: background 0.25s, color 0.25s;
+      transition:
+        background 0.25s,
+        color 0.25s;
+      overflow-x: hidden;
     }
 
     button,
@@ -86,7 +66,10 @@
       display: none !important;
     }
 
-    /* ---------- СТАРТОВЫЙ ЭКРАН ---------- */
+
+    /* =========================================================
+       СТАРТОВЫЙ ЭКРАН
+    ========================================================= */
 
     .start-screen {
       min-height: 100vh;
@@ -97,38 +80,40 @@
     }
 
     .start-card {
-      width: min(520px, 100%);
+      width: min(540px, 100%);
+      padding: 38px;
       background: var(--surface);
       border: 2px solid var(--border);
-      border-radius: 28px;
-      padding: 36px;
-      box-shadow: 0 15px 40px var(--shadow);
-      text-align: center;
+      border-radius: 30px;
+      box-shadow: 0 18px 50px var(--shadow);
     }
 
     .start-card h1 {
-      font-size: 42px;
-      margin: 0 0 8px;
+      text-align: center;
+      margin: 0;
+      font-size: 44px;
     }
 
-    .start-card p {
+    .start-description {
+      text-align: center;
       color: var(--muted);
-      margin-bottom: 30px;
+      margin: 10px 0 30px;
+      line-height: 1.5;
     }
 
-    .name-field {
-      text-align: left;
+    .field {
       margin-bottom: 18px;
     }
 
-    .name-field label {
+    .field label {
       display: block;
+      margin-bottom: 7px;
       font-size: 14px;
       font-weight: bold;
-      margin-bottom: 7px;
     }
 
-    .name-field input {
+    .field input,
+    .field select {
       width: 100%;
       padding: 14px 16px;
       border-radius: 14px;
@@ -138,38 +123,38 @@
       outline: none;
     }
 
-    .name-field input:focus {
+    .field input:focus,
+    .field select:focus {
       border-color: var(--border);
     }
 
     .primary-button {
+      width: 100%;
       border: none;
       border-radius: 16px;
-      padding: 15px 24px;
-      font-weight: bold;
+      padding: 15px 22px;
       background: var(--text);
       color: var(--bg);
+      font-weight: bold;
+      font-size: 18px;
     }
 
-    .start-button {
-      width: 100%;
-      margin-top: 12px;
-      font-size: 19px;
-    }
 
-    /* ---------- ИГРА ---------- */
+    /* =========================================================
+       ИГРА
+    ========================================================= */
 
     .game {
-      width: min(1050px, 94%);
+      width: min(1080px, 94%);
       margin: 0 auto;
-      padding: 24px 0 45px;
+      padding: 22px 0 45px;
     }
 
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 15px;
+      gap: 14px;
       margin-bottom: 18px;
     }
 
@@ -180,69 +165,77 @@
 
     .top-buttons {
       display: flex;
-      gap: 10px;
+      gap: 9px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
-    .icon-button {
+    .small-button {
       border: 1px solid var(--surface-2);
+      border-radius: 14px;
+      padding: 10px 13px;
       background: var(--surface);
       color: var(--text);
-      border-radius: 14px;
-      padding: 10px 14px;
     }
 
-    /* ---------- ПРОГРЕСС БУКВ ---------- */
+
+    /* =========================================================
+       ПРОГРЕСС
+    ========================================================= */
 
     .progress-area {
       background: var(--surface);
       border-radius: 20px;
       padding: 15px 18px;
-      margin-bottom: 18px;
+      margin-bottom: 17px;
       box-shadow: 0 5px 18px var(--shadow);
     }
 
     .round-text {
       text-align: center;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
       font-size: 13px;
       font-weight: bold;
-      color: var(--muted);
-      margin-bottom: 10px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      margin-bottom: 11px;
     }
 
     .letters-progress {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 8px;
     }
 
     .letter-chip {
-      width: 39px;
-      height: 39px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 40px;
+      height: 40px;
       border-radius: 11px;
-      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background: var(--surface-2);
+      font-weight: bold;
       border: 2px solid transparent;
       transition: 0.2s;
     }
 
     .letter-chip.done {
-      opacity: 0.35;
+      opacity: 0.32;
       text-decoration: line-through;
     }
 
     .letter-chip.current {
-      border-color: var(--border);
-      transform: scale(1.15);
       background: var(--surface);
+      border-color: var(--border);
+      transform: scale(1.14);
     }
 
-    /* ---------- ВОПРОС + БУКВА ---------- */
+
+    /* =========================================================
+       ВОПРОС И БУКВА
+    ========================================================= */
 
     .main-cards {
       display: grid;
@@ -252,33 +245,32 @@
 
     .question-card,
     .letter-card {
-      background: var(--surface);
-      border: 3px solid var(--border);
-      border-radius: 25px;
-      min-height: 245px;
+      min-height: 240px;
       padding: 25px;
+      border-radius: 25px;
+      border: 3px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 25px var(--shadow);
 
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-
-      box-shadow: 0 8px 25px var(--shadow);
+      align-items: center;
     }
 
     .card-label {
+      margin-bottom: 19px;
+      color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 2px;
-      color: var(--muted);
       font-size: 14px;
-      margin-bottom: 20px;
     }
 
     #question {
-      font-size: clamp(27px, 4vw, 42px);
-      font-weight: 800;
       text-align: center;
+      font-size: clamp(27px, 4vw, 42px);
       line-height: 1.18;
+      font-weight: 800;
     }
 
     #letter {
@@ -287,27 +279,33 @@
       font-weight: 900;
     }
 
-    /* ---------- ТАЙМЕР ---------- */
+
+    /* =========================================================
+       ТАЙМЕР
+    ========================================================= */
 
     .timer-area {
+      padding: 20px 0 15px;
       text-align: center;
-      padding: 22px 0 16px;
     }
 
     #timer {
-      font-size: 60px;
+      font-size: 58px;
       font-weight: 900;
       font-variant-numeric: tabular-nums;
     }
 
     #statusMessage {
-      min-height: 30px;
-      font-size: 19px;
+      min-height: 28px;
+      margin-top: 3px;
+      font-size: 18px;
       font-weight: bold;
-      margin-top: 4px;
     }
 
-    /* ---------- ИГРОКИ ---------- */
+
+    /* =========================================================
+       ИГРОКИ
+    ========================================================= */
 
     .players {
       display: grid;
@@ -316,11 +314,11 @@
     }
 
     .player-card {
-      min-height: 155px;
-      border: none;
-      border-radius: 24px;
-      padding: 20px;
       position: relative;
+      min-height: 165px;
+      padding: 20px;
+      border: none;
+      border-radius: 25px;
       overflow: hidden;
 
       display: flex;
@@ -328,13 +326,18 @@
       justify-content: center;
       align-items: center;
 
-      box-shadow: 0 8px 22px var(--shadow);
-      transition: transform 0.12s, opacity 0.2s;
+      box-shadow: 0 8px 24px var(--shadow);
+
+      transition:
+        transform 0.12s,
+        filter 0.2s;
+
       user-select: none;
     }
 
     .player-card:not(:disabled):hover {
       transform: translateY(-3px);
+      filter: brightness(1.03);
     }
 
     .player-card:not(:disabled):active {
@@ -346,57 +349,110 @@
     }
 
     .player-name {
-      font-size: 21px;
+      font-size: 22px;
       font-weight: bold;
     }
 
     .player-score {
-      font-size: 52px;
-      font-weight: 900;
-      line-height: 1;
       margin: 8px 0;
+      font-size: 54px;
+      line-height: 1;
+      font-weight: 900;
     }
 
     .point-hint {
       font-size: 13px;
-      opacity: 0.7;
+      opacity: 0.72;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
     }
 
     .plus-one {
       position: absolute;
-      top: 20px;
-      right: 24px;
+      top: 18px;
+      right: 23px;
       font-size: 30px;
       font-weight: 900;
       opacity: 0;
-      transform: translateY(10px);
       pointer-events: none;
     }
 
     .plus-one.show {
-      animation: plusAnimation 0.55s ease;
+      animation: plusAnimation 0.6s ease;
     }
 
     @keyframes plusAnimation {
+
       0% {
         opacity: 0;
-        transform: translateY(10px) scale(0.7);
+        transform: translateY(10px) scale(0.6);
       }
 
       35% {
         opacity: 1;
-        transform: translateY(-2px) scale(1.15);
+        transform: translateY(-2px) scale(1.2);
       }
 
       100% {
         opacity: 0;
-        transform: translateY(-25px) scale(1);
+        transform: translateY(-28px) scale(1);
       }
+
     }
 
-    /* ---------- НИЖНИЕ КНОПКИ ---------- */
+
+    /* =========================================================
+       МИНИ-ПРАЗДНИК КАЖДЫЕ 5 ОЧКОВ
+    ========================================================= */
+
+    .mini-celebration {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    .mini-particle {
+      position: absolute;
+      left: 50%;
+      top: 55%;
+      font-size: 30px;
+      opacity: 0;
+      pointer-events: none;
+      animation: miniBurst 1.1s ease-out forwards;
+    }
+
+    @keyframes miniBurst {
+
+      0% {
+        opacity: 0;
+        transform:
+          translate(-50%, -50%)
+          scale(0.3);
+      }
+
+      20% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        transform:
+          translate(
+            calc(-50% + var(--x)),
+            calc(-50% + var(--y))
+          )
+          rotate(var(--r))
+          scale(1.25);
+      }
+
+    }
+
+
+    /* =========================================================
+       КНОПКИ РАУНДА
+    ========================================================= */
 
     .round-controls {
       display: flex;
@@ -420,35 +476,42 @@
       color: var(--bg);
     }
 
-    /* ---------- МОДАЛЬНОЕ ОКНО НАСТРОЕК ---------- */
+
+    /* =========================================================
+       НАСТРОЙКИ
+    ========================================================= */
 
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.55);
+      z-index: 1000;
+      padding: 18px;
+
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 18px;
-      z-index: 100;
+
+      background: rgba(0, 0, 0, 0.58);
     }
 
     .settings-modal {
       width: min(620px, 100%);
       max-height: 90vh;
       overflow-y: auto;
+      padding: 27px;
+
       background: var(--surface);
       color: var(--text);
-      border-radius: 26px;
-      padding: 26px;
-      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+      border-radius: 28px;
+
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.38);
     }
 
     .settings-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 25px;
+      margin-bottom: 19px;
     }
 
     .settings-header h2 {
@@ -456,17 +519,17 @@
     }
 
     .close-button {
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border: none;
       border-radius: 50%;
       background: var(--surface-2);
       color: var(--text);
-      font-size: 22px;
+      font-size: 23px;
     }
 
     .setting-section {
-      padding: 18px 0;
+      padding: 19px 0;
       border-top: 1px solid var(--surface-2);
     }
 
@@ -475,26 +538,8 @@
     }
 
     .setting-title {
-      font-weight: bold;
       margin-bottom: 12px;
-    }
-
-    .theme-options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .theme-button {
-      border: 2px solid transparent;
-      border-radius: 14px;
-      background: var(--surface-2);
-      color: var(--text);
-      padding: 12px;
-    }
-
-    .theme-button.selected {
-      border-color: var(--border);
+      font-weight: bold;
     }
 
     .settings-input {
@@ -506,7 +551,28 @@
       color: var(--text);
     }
 
-    /* ---------- ЦВЕТА ---------- */
+    .theme-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .theme-button {
+      padding: 12px;
+      border: 2px solid transparent;
+      border-radius: 14px;
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .theme-button.selected {
+      border-color: var(--border);
+    }
+
+
+    /* =========================================================
+       ЦВЕТА ИГРОКОВ
+    ========================================================= */
 
     .color-grid {
       display: grid;
@@ -515,10 +581,10 @@
     }
 
     .color-option {
-      height: 45px;
+      position: relative;
+      height: 46px;
       border-radius: 13px;
       border: 3px solid transparent;
-      position: relative;
     }
 
     .color-option.selected {
@@ -529,15 +595,20 @@
       content: "✓";
       position: absolute;
       inset: 0;
+
       display: flex;
       justify-content: center;
       align-items: center;
+
+      font-size: 21px;
       font-weight: 900;
-      font-size: 20px;
       color: inherit;
     }
 
-    /* ---------- ПЕРЕКЛЮЧАТЕЛЬ ---------- */
+
+    /* =========================================================
+       ПЕРЕКЛЮЧАТЕЛЬ
+    ========================================================= */
 
     .switch-row {
       display: flex;
@@ -547,15 +618,15 @@
     }
 
     .switch-description {
+      margin-top: 4px;
       color: var(--muted);
       font-size: 13px;
-      margin-top: 4px;
     }
 
     .switch {
       position: relative;
-      width: 54px;
-      height: 30px;
+      width: 55px;
+      height: 31px;
       flex-shrink: 0;
     }
 
@@ -568,7 +639,7 @@
     .slider {
       position: absolute;
       inset: 0;
-      border-radius: 30px;
+      border-radius: 31px;
       background: var(--surface-2);
       transition: 0.25s;
     }
@@ -576,8 +647,8 @@
     .slider::before {
       content: "";
       position: absolute;
-      width: 22px;
-      height: 22px;
+      width: 23px;
+      height: 23px;
       top: 4px;
       left: 4px;
       border-radius: 50%;
@@ -586,62 +657,237 @@
     }
 
     .switch input:checked + .slider {
-      background: #7bd67b;
+      background: #74d07b;
     }
 
     .switch input:checked + .slider::before {
       transform: translateX(24px);
     }
 
-    /* ---------- ФИНАЛ ---------- */
+
+    /* =========================================================
+       ФИНАЛ
+    ========================================================= */
 
     .winner-screen {
       position: fixed;
       inset: 0;
-      z-index: 150;
-      background: var(--bg);
+      z-index: 2000;
+
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+
+      padding: 22px;
+      overflow: hidden;
+
+      background: var(--bg);
     }
 
     .winner-card {
-      width: min(600px, 100%);
-      background: var(--surface);
-      padding: 45px 30px;
-      border-radius: 30px;
+      position: relative;
+      z-index: 5;
+
+      width: min(620px, 100%);
+      padding: 46px 32px;
+
       text-align: center;
-      box-shadow: 0 20px 60px var(--shadow);
+
+      background: var(--surface);
+      border-radius: 32px;
+      box-shadow: 0 22px 70px var(--shadow);
     }
 
     .winner-card h2 {
-      font-size: 42px;
       margin: 0 0 15px;
+      font-size: 43px;
     }
 
     #winnerText {
-      font-size: 25px;
+      font-size: 26px;
       font-weight: bold;
-      margin-bottom: 10px;
     }
 
     #finalScore {
-      font-size: 55px;
+      margin: 22px 0 30px;
+      font-size: 58px;
       font-weight: 900;
-      margin: 20px 0 30px;
     }
 
-    /* ---------- МОБИЛЬНАЯ ВЕРСИЯ ---------- */
+
+    /* =========================================================
+       БОЛЬШИЕ ПОБЕДНЫЕ ЭФФЕКТЫ
+    ========================================================= */
+
+    #victoryEffects {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .falling-effect {
+      position: absolute;
+      top: -70px;
+      animation: fallDown linear forwards;
+      user-select: none;
+    }
+
+    @keyframes fallDown {
+
+      from {
+        transform:
+          translateY(-100px)
+          rotate(0deg);
+      }
+
+      to {
+        transform:
+          translateY(calc(100vh + 150px))
+          rotate(540deg);
+      }
+
+    }
+
+    .heart-effect {
+      position: absolute;
+      bottom: -60px;
+      animation: heartUp linear forwards;
+      user-select: none;
+    }
+
+    @keyframes heartUp {
+
+      from {
+        transform:
+          translateY(0)
+          scale(0.7)
+          rotate(-10deg);
+        opacity: 1;
+      }
+
+      to {
+        transform:
+          translateY(-120vh)
+          scale(1.45)
+          rotate(25deg);
+        opacity: 0;
+      }
+
+    }
+
+    .balloon-effect {
+      position: absolute;
+      bottom: -100px;
+      animation: balloonUp linear forwards;
+      user-select: none;
+    }
+
+    @keyframes balloonUp {
+
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform:
+          translateY(-125vh)
+          translateX(var(--drift));
+      }
+
+    }
+
+    .plane-effect {
+      position: absolute;
+      left: -250px;
+      font-size: 46px;
+
+      animation: planeFly linear forwards;
+
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    @keyframes planeFly {
+
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform:
+          translateX(calc(100vw + 500px));
+      }
+
+    }
+
+    .firework {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+    }
+
+    .firework-piece {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+
+      animation: fireworkBurst 1.3s ease-out forwards;
+    }
+
+    @keyframes fireworkBurst {
+
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+
+      100% {
+        opacity: 0;
+        transform:
+          translate(var(--x), var(--y))
+          scale(0.2);
+      }
+
+    }
+
+    .confetti-piece {
+      position: absolute;
+      top: -20px;
+      width: 11px;
+      height: 18px;
+      animation: confettiFall linear forwards;
+    }
+
+    @keyframes confettiFall {
+
+      to {
+        transform:
+          translateY(115vh)
+          rotate(720deg);
+      }
+
+    }
+
+
+    /* =========================================================
+       МОБИЛЬНАЯ ВЕРСИЯ
+    ========================================================= */
 
     @media (max-width: 700px) {
+
       .game {
         width: 94%;
-        padding-top: 15px;
       }
 
       .topbar {
         align-items: flex-start;
+      }
+
+      .game-title {
+        font-size: 22px;
       }
 
       .main-cards {
@@ -649,11 +895,11 @@
       }
 
       .question-card {
-        min-height: 180px;
+        min-height: 175px;
       }
 
       .letter-card {
-        min-height: 150px;
+        min-height: 145px;
       }
 
       .players {
@@ -664,55 +910,89 @@
         font-size: 48px;
       }
 
-      .color-grid {
-        grid-template-columns: repeat(5, 1fr);
-      }
-
-      .game-title {
-        font-size: 22px;
-      }
     }
+
   </style>
 </head>
 
+
 <body>
 
-  <!-- =========================
-       СТАРТОВЫЙ ЭКРАН
-  ========================== -->
 
-  <section id="startScreen" class="start-screen">
+  <!-- =======================================================
+       СТАРТОВЫЙ ЭКРАН
+  ======================================================== -->
+
+  <section
+    id="startScreen"
+    class="start-screen"
+  >
 
     <div class="start-card">
 
       <h1>Кто быстрее?</h1>
 
-      <p>
-        10 букв. 30 секунд. Кто первым назовёт подходящее слово?
-      </p>
+      <div class="start-description">
+        Получи букву и придумай подходящее слово быстрее соперника.
+      </div>
 
-      <div class="name-field">
-        <label for="startName1">Игрок 1</label>
+
+      <div class="field">
+
+        <label for="startName1">
+          Имя первого игрока
+        </label>
+
         <input
           id="startName1"
           type="text"
           maxlength="20"
-          placeholder="Введите имя"
+          placeholder="Игрок 1"
         >
+
       </div>
 
-      <div class="name-field">
-        <label for="startName2">Игрок 2</label>
+
+      <div class="field">
+
+        <label for="startName2">
+          Имя второго игрока
+        </label>
+
         <input
           id="startName2"
           type="text"
           maxlength="20"
-          placeholder="Введите имя"
+          placeholder="Игрок 2"
         >
+
       </div>
 
+
+      <div class="field">
+
+        <label for="roundCount">
+          Сколько букв будет в партии?
+        </label>
+
+        <select id="roundCount">
+
+          <option value="3">3 буквы</option>
+          <option value="4">4 буквы</option>
+          <option value="5">5 букв</option>
+          <option value="6">6 букв</option>
+          <option value="7">7 букв</option>
+          <option value="8">8 букв</option>
+          <option value="9">9 букв</option>
+          <option value="10" selected>10 букв</option>
+
+        </select>
+
+      </div>
+
+
       <button
-        class="primary-button start-button"
+        class="primary-button"
         onclick="startGame()"
       >
         Начать игру
@@ -723,11 +1003,14 @@
   </section>
 
 
-  <!-- =========================
-       ОСНОВНАЯ ИГРА
-  ========================== -->
+  <!-- =======================================================
+       ИГРА
+  ======================================================== -->
 
-  <main id="gameScreen" class="game hidden">
+  <main
+    id="gameScreen"
+    class="game hidden"
+  >
 
     <header class="topbar">
 
@@ -735,20 +1018,19 @@
         Кто быстрее?
       </h1>
 
+
       <div class="top-buttons">
 
         <button
-          class="icon-button"
+          class="small-button"
           onclick="restartGame()"
-          title="Новая партия"
         >
           ↻ Новая партия
         </button>
 
         <button
-          class="icon-button"
+          class="small-button"
           onclick="openSettings()"
-          title="Настройки"
         >
           ⚙ Настройки
         </button>
@@ -758,16 +1040,14 @@
     </header>
 
 
-    <!-- Прогресс -->
+    <!-- ПРОГРЕСС -->
 
     <section class="progress-area">
 
       <div
         id="roundText"
         class="round-text"
-      >
-        Буква 1 из 10
-      </div>
+      ></div>
 
       <div
         id="lettersProgress"
@@ -777,7 +1057,7 @@
     </section>
 
 
-    <!-- Вопрос и буква -->
+    <!-- ВОПРОС -->
 
     <section class="main-cards">
 
@@ -809,7 +1089,7 @@
     </section>
 
 
-    <!-- Таймер -->
+    <!-- ТАЙМЕР -->
 
     <section class="timer-area">
 
@@ -822,9 +1102,10 @@
     </section>
 
 
-    <!-- Игроки -->
+    <!-- ИГРОКИ -->
 
     <section class="players">
+
 
       <button
         id="playerCard1"
@@ -856,6 +1137,11 @@
         >
           +1
         </div>
+
+        <div
+          id="miniCelebration1"
+          class="mini-celebration"
+        ></div>
 
       </button>
 
@@ -891,12 +1177,18 @@
           +1
         </div>
 
+        <div
+          id="miniCelebration2"
+          class="mini-celebration"
+        ></div>
+
       </button>
+
 
     </section>
 
 
-    <!-- Управление раундом -->
+    <!-- УПРАВЛЕНИЕ -->
 
     <section class="round-controls">
 
@@ -907,6 +1199,7 @@
       >
         Не знаем — отложить букву
       </button>
+
 
       <button
         id="nextButton"
@@ -921,9 +1214,9 @@
   </main>
 
 
-  <!-- =========================
+  <!-- =======================================================
        НАСТРОЙКИ
-  ========================== -->
+  ======================================================== -->
 
   <div
     id="settingsBackdrop"
@@ -933,9 +1226,12 @@
 
     <div class="settings-modal">
 
+
       <div class="settings-header">
 
-        <h2>⚙ Настройки</h2>
+        <h2>
+          ⚙ Настройки
+        </h2>
 
         <button
           class="close-button"
@@ -947,7 +1243,7 @@
       </div>
 
 
-      <!-- Имена -->
+      <!-- ИМЕНА -->
 
       <div class="setting-section">
 
@@ -955,9 +1251,12 @@
           Имена игроков
         </div>
 
-        <div class="name-field">
 
-          <label>Игрок 1</label>
+        <div class="field">
+
+          <label>
+            Игрок 1
+          </label>
 
           <input
             id="settingsName1"
@@ -968,9 +1267,12 @@
 
         </div>
 
-        <div class="name-field">
 
-          <label>Игрок 2</label>
+        <div class="field">
+
+          <label>
+            Игрок 2
+          </label>
 
           <input
             id="settingsName2"
@@ -984,13 +1286,14 @@
       </div>
 
 
-      <!-- Тема -->
+      <!-- ТЕМА -->
 
       <div class="setting-section">
 
         <div class="setting-title">
           Тема
         </div>
+
 
         <div class="theme-options">
 
@@ -1001,6 +1304,7 @@
           >
             ☀ Светлая
           </button>
+
 
           <button
             id="darkThemeButton"
@@ -1015,7 +1319,7 @@
       </div>
 
 
-      <!-- Цвет игрока 1 -->
+      <!-- ЦВЕТ ИГРОКА 1 -->
 
       <div class="setting-section">
 
@@ -1031,7 +1335,7 @@
       </div>
 
 
-      <!-- Цвет игрока 2 -->
+      <!-- ЦВЕТ ИГРОКА 2 -->
 
       <div class="setting-section">
 
@@ -1047,7 +1351,7 @@
       </div>
 
 
-      <!-- Автопереход -->
+      <!-- АВТОПЕРЕХОД -->
 
       <div class="setting-section">
 
@@ -1060,10 +1364,11 @@
             </div>
 
             <div class="switch-description">
-              Сразу открывать следующий раунд после получения очка
+              После получения очка сразу открывать следующую букву
             </div>
 
           </div>
+
 
           <label class="switch">
 
@@ -1081,23 +1386,29 @@
 
       </div>
 
+
     </div>
 
   </div>
 
 
-  <!-- =========================
+  <!-- =======================================================
        ФИНАЛ
-  ========================== -->
+  ======================================================== -->
 
   <section
     id="winnerScreen"
     class="winner-screen hidden"
   >
 
+    <div id="victoryEffects"></div>
+
+
     <div class="winner-card">
 
-      <h2>Игра окончена!</h2>
+      <h2>
+        Партия окончена!
+      </h2>
 
       <div id="winnerText"></div>
 
@@ -1115,13 +1426,16 @@
   </section>
 
 
+
   <script>
 
-    /* =========================
+
+    /* =========================================================
        ВОПРОСЫ
-    ========================== */
+    ========================================================= */
 
     const questions = [
+
       "Может быть красного цвета",
       "Город",
       "Еда",
@@ -1149,29 +1463,33 @@
       "Техническое устройство",
       "Знаменитая личность",
       "Страна"
+
     ];
 
 
-    /* =========================
+    /* =========================================================
        БУКВЫ
-       Ъ, Ы, Ь исключены
-    ========================== */
+       Ъ, Ы и Ь не используем
+    ========================================================= */
 
     const allLetters = [
+
       "А", "Б", "В", "Г", "Д",
       "Е", "Ё", "Ж", "З", "И",
       "Й", "К", "Л", "М", "Н",
       "О", "П", "Р", "С", "Т",
       "У", "Ф", "Х", "Ц", "Ч",
       "Ш", "Щ", "Э", "Ю", "Я"
+
     ];
 
 
-    /* =========================
-       ЦВЕТА КАРТОЧЕК
-    ========================== */
+    /* =========================================================
+       ЦВЕТА ИГРОКОВ
+    ========================================================= */
 
     const playerColors = [
+
       {
         id: "red",
         name: "Красный",
@@ -1241,12 +1559,13 @@
         background: "#191919",
         text: "#ffffff"
       }
+
     ];
 
 
-    /* =========================
-       СОСТОЯНИЕ ИГРЫ
-    ========================== */
+    /* =========================================================
+       ПЕРЕМЕННЫЕ
+    ========================================================= */
 
     let player1Name = "Игрок 1";
     let player2Name = "Игрок 2";
@@ -1258,8 +1577,9 @@
     let score2 = 0;
 
     let theme = "light";
-
     let autoNext = true;
+
+    let totalRounds = 10;
 
     let letterQueue = [];
     let completedLetters = [];
@@ -1278,33 +1598,44 @@
     let lastQuestionForLetter = {};
 
 
-    /* =========================
-       СОХРАНЕНИЕ НАСТРОЕК
-    ========================== */
+    /* =========================================================
+       ЗАГРУЗКА НАСТРОЕК
+    ========================================================= */
 
     function loadSettings() {
 
       player1Name =
-        localStorage.getItem("player1Name") || "Игрок 1";
+        localStorage.getItem("player1Name")
+        || "Игрок 1";
 
       player2Name =
-        localStorage.getItem("player2Name") || "Игрок 2";
+        localStorage.getItem("player2Name")
+        || "Игрок 2";
 
       player1Color =
-        localStorage.getItem("player1Color") || "red";
+        localStorage.getItem("player1Color")
+        || "red";
 
       player2Color =
-        localStorage.getItem("player2Color") || "blue";
+        localStorage.getItem("player2Color")
+        || "blue";
 
       theme =
-        localStorage.getItem("gameTheme") || "light";
+        localStorage.getItem("gameTheme")
+        || "light";
+
 
       const savedAutoNext =
         localStorage.getItem("autoNext");
 
+
       if (savedAutoNext !== null) {
-        autoNext = savedAutoNext === "true";
+
+        autoNext =
+          savedAutoNext === "true";
+
       }
+
 
       document.getElementById("startName1").value =
         player1Name;
@@ -1320,6 +1651,7 @@
 
       document.getElementById("autoNextToggle").checked =
         autoNext;
+
 
       applyTheme();
 
@@ -1363,19 +1695,35 @@
     }
 
 
-    /* =========================
-       СТАРТ
-    ========================== */
+    /* =========================================================
+       СТАРТ ИГРЫ
+    ========================================================= */
 
     function startGame() {
 
       player1Name =
-        document.getElementById("startName1").value.trim()
+        document
+          .getElementById("startName1")
+          .value
+          .trim()
         || "Игрок 1";
 
+
       player2Name =
-        document.getElementById("startName2").value.trim()
+        document
+          .getElementById("startName2")
+          .value
+          .trim()
         || "Игрок 2";
+
+
+      totalRounds =
+        Number(
+          document
+            .getElementById("roundCount")
+            .value
+        );
+
 
       document.getElementById("settingsName1").value =
         player1Name;
@@ -1383,44 +1731,72 @@
       document.getElementById("settingsName2").value =
         player2Name;
 
+
       saveSettings();
 
-      document.getElementById("startScreen")
-        .classList.add("hidden");
 
-      document.getElementById("gameScreen")
-        .classList.remove("hidden");
+      document
+        .getElementById("startScreen")
+        .classList
+        .add("hidden");
+
+
+      document
+        .getElementById("gameScreen")
+        .classList
+        .remove("hidden");
+
 
       newGame();
 
     }
 
 
+    /* =========================================================
+       НОВАЯ ПАРТИЯ
+    ========================================================= */
+
     function newGame() {
 
       clearInterval(timerInterval);
+
 
       score1 = 0;
       score2 = 0;
 
       completedCount = 0;
+
       completedLetters = [];
 
       lastQuestionForLetter = {};
 
-      document.getElementById("score1").textContent = "0";
-      document.getElementById("score2").textContent = "0";
 
-      document.getElementById("winnerScreen")
-        .classList.add("hidden");
+      document.getElementById("score1").textContent =
+        "0";
 
-      /* Берём случайные 10 букв */
+      document.getElementById("score2").textContent =
+        "0";
 
-      const shuffled =
+
+      document
+        .getElementById("winnerScreen")
+        .classList
+        .add("hidden");
+
+
+      clearVictoryEffects();
+
+
+      const shuffledLetters =
         shuffleArray([...allLetters]);
 
+
       letterQueue =
-        shuffled.slice(0, 10);
+        shuffledLetters.slice(
+          0,
+          totalRounds
+        );
+
 
       updatePlayerCards();
 
@@ -1429,358 +1805,662 @@
     }
 
 
-    /* =========================
+    /* =========================================================
        НОВЫЙ РАУНД
-    ========================== */
+    ========================================================= */
 
     function startNextLetter() {
 
       clearInterval(timerInterval);
 
+
       pointWasGiven = false;
 
-      document.getElementById("nextButton")
-        .classList.add("hidden");
 
-      document.getElementById("skipButton")
-        .classList.remove("hidden");
+      document
+        .getElementById("nextButton")
+        .classList
+        .add("hidden");
 
-      document.getElementById("statusMessage")
-        .textContent = "";
 
-      if (completedCount >= 10) {
+      document
+        .getElementById("skipButton")
+        .classList
+        .remove("hidden");
+
+
+      document.getElementById("statusMessage").textContent =
+        "";
+
+
+      if (completedCount >= totalRounds) {
 
         finishGame();
+
         return;
 
       }
 
-      currentLetter = letterQueue.shift();
+
+      currentLetter =
+        letterQueue.shift();
+
 
       currentQuestion =
-        getQuestionForLetter(currentLetter);
+        getQuestionForLetter(
+          currentLetter
+        );
 
-      document.getElementById("letter")
-        .textContent = currentLetter;
 
-      document.getElementById("question")
-        .textContent = currentQuestion;
+      document.getElementById("letter").textContent =
+        currentLetter;
+
+
+      document.getElementById("question").textContent =
+        currentQuestion;
+
 
       timeLeft = 30;
 
       roundActive = true;
 
+
       enablePlayerCards();
 
       updateTimer();
+
       renderProgress();
 
+
       timerInterval =
-        setInterval(() => {
+        setInterval(
+          function () {
 
-          timeLeft--;
+            timeLeft--;
 
-          updateTimer();
+            updateTimer();
 
-          if (timeLeft <= 0) {
 
-            clearInterval(timerInterval);
+            if (timeLeft <= 0) {
 
-            roundActive = false;
+              clearInterval(
+                timerInterval
+              );
 
-            disablePlayerCards();
 
-            document.getElementById("statusMessage")
-              .textContent =
-              "Время вышло — можно отложить букву";
+              roundActive = false;
 
-          }
+              disablePlayerCards();
 
-        }, 1000);
+
+              document.getElementById(
+                "statusMessage"
+              ).textContent =
+                "Время вышло — можно отложить букву";
+
+            }
+
+          },
+          1000
+        );
 
     }
 
 
-    /* =========================
-       ПОЛУЧЕНИЕ ОЧКА
-    ========================== */
+    /* =========================================================
+       ОЧКО
+    ========================================================= */
 
     function givePoint(player) {
 
-      if (!roundActive || pointWasGiven) {
+      if (
+        !roundActive
+        || pointWasGiven
+      ) {
+
         return;
+
       }
 
+
       pointWasGiven = true;
+
       roundActive = false;
 
-      clearInterval(timerInterval);
+
+      clearInterval(
+        timerInterval
+      );
+
 
       disablePlayerCards();
+
 
       if (player === 1) {
 
         score1++;
 
-        document.getElementById("score1")
-          .textContent = score1;
+
+        document.getElementById("score1").textContent =
+          score1;
+
 
         showPlusAnimation(1);
 
-        document.getElementById("statusMessage")
-          .textContent =
+
+        /*
+          ПРАЗДНИК ТОЛЬКО
+          НА 5, 10, 15... ОЧКАХ
+        */
+
+        if (
+          score1 % 5 === 0
+        ) {
+
+          showMiniCelebration(1);
+
+        }
+
+
+        document.getElementById(
+          "statusMessage"
+        ).textContent =
           "Очко: " + player1Name;
 
       }
+
 
       if (player === 2) {
 
         score2++;
 
-        document.getElementById("score2")
-          .textContent = score2;
+
+        document.getElementById("score2").textContent =
+          score2;
+
 
         showPlusAnimation(2);
 
-        document.getElementById("statusMessage")
-          .textContent =
+
+        if (
+          score2 % 5 === 0
+        ) {
+
+          showMiniCelebration(2);
+
+        }
+
+
+        document.getElementById(
+          "statusMessage"
+        ).textContent =
           "Очко: " + player2Name;
 
       }
 
-      completedLetters.push(currentLetter);
+
+      completedLetters.push(
+        currentLetter
+      );
+
 
       completedCount++;
 
+
       renderProgress();
 
-      document.getElementById("skipButton")
-        .classList.add("hidden");
 
-      if (completedCount >= 10) {
+      document
+        .getElementById("skipButton")
+        .classList
+        .add("hidden");
+
+
+      if (
+        completedCount >= totalRounds
+      ) {
 
         setTimeout(
           finishGame,
-          autoNext ? 350 : 0
+          600
         );
 
         return;
 
       }
 
-      if (autoNext) {
 
-        /*
-          При включённом автопереходе
-          новый раунд начинается почти сразу.
-        */
+      if (autoNext) {
 
         setTimeout(
           startNextLetter,
-          350
+          500
         );
 
       } else {
 
-        /*
-          Без автоперехода появляется
-          большая понятная кнопка.
-        */
-
-        document.getElementById("nextButton")
-          .classList.remove("hidden");
+        document
+          .getElementById("nextButton")
+          .classList
+          .remove("hidden");
 
       }
 
     }
 
 
+    /* =========================================================
+       МИНИ-ПРАЗДНИК НА КАЖДОМ 5-м ОЧКЕ
+    ========================================================= */
+
+    function showMiniCelebration(player) {
+
+      const container =
+        document.getElementById(
+          "miniCelebration" + player
+        );
+
+
+      container.innerHTML = "";
+
+
+      const effectSets = [
+
+        [
+          "✨",
+          "⭐",
+          "💫"
+        ],
+
+        [
+          "❤️",
+          "💗",
+          "💕"
+        ],
+
+        [
+          "🎉",
+          "🎊",
+          "✨"
+        ],
+
+        [
+          "🔥",
+          "⚡",
+          "💥"
+        ],
+
+        [
+          "🏆",
+          "👑",
+          "⭐"
+        ]
+
+      ];
+
+
+      const chosenSet =
+        randomItem(effectSets);
+
+
+      for (
+        let i = 0;
+        i < 11;
+        i++
+      ) {
+
+        const particle =
+          document.createElement("div");
+
+
+        particle.className =
+          "mini-particle";
+
+
+        particle.textContent =
+          randomItem(chosenSet);
+
+
+        const angle =
+          Math.random()
+          * Math.PI
+          * 2;
+
+
+        const distance =
+          60
+          + Math.random()
+          * 90;
+
+
+        const x =
+          Math.cos(angle)
+          * distance;
+
+
+        const y =
+          Math.sin(angle)
+          * distance;
+
+
+        const rotation =
+          -80
+          + Math.random()
+          * 160;
+
+
+        particle.style.setProperty(
+          "--x",
+          x + "px"
+        );
+
+
+        particle.style.setProperty(
+          "--y",
+          y + "px"
+        );
+
+
+        particle.style.setProperty(
+          "--r",
+          rotation + "deg"
+        );
+
+
+        particle.style.animationDelay =
+          Math.random()
+          * 0.15
+          + "s";
+
+
+        container.appendChild(
+          particle
+        );
+
+      }
+
+
+      setTimeout(
+        function () {
+
+          container.innerHTML = "";
+
+        },
+        1500
+      );
+
+    }
+
+
+    /* =========================================================
+       СЛЕДУЮЩИЙ РАУНД ВРУЧНУЮ
+    ========================================================= */
+
     function nextRoundAfterPoint() {
 
-      document.getElementById("nextButton")
-        .classList.add("hidden");
+      document
+        .getElementById("nextButton")
+        .classList
+        .add("hidden");
+
 
       startNextLetter();
 
     }
 
 
-    /* =========================
+    /* =========================================================
        НЕ ЗНАЕМ
-    ========================== */
+    ========================================================= */
 
     function skipLetter() {
 
-      if (!currentLetter || pointWasGiven) {
+      if (
+        !currentLetter
+        || pointWasGiven
+      ) {
+
         return;
+
       }
 
-      clearInterval(timerInterval);
+
+      clearInterval(
+        timerInterval
+      );
+
 
       roundActive = false;
 
+
       disablePlayerCards();
 
+
       /*
-        Буква возвращается
-        В КОНЕЦ ОЧЕРЕДИ.
+        Буква уходит в конец очереди.
       */
 
-      letterQueue.push(currentLetter);
+      letterQueue.push(
+        currentLetter
+      );
 
-      document.getElementById("statusMessage")
-        .textContent =
-        currentLetter + " отправляется в конец";
+
+      document.getElementById(
+        "statusMessage"
+      ).textContent =
+        "Буква "
+        + currentLetter
+        + " вернётся позже";
+
 
       renderProgress();
 
+
       setTimeout(
         startNextLetter,
-        350
+        500
       );
 
     }
 
 
-    /* =========================
-       ВОПРОСЫ
-    ========================== */
+    /* =========================================================
+       СЛУЧАЙНЫЙ ВОПРОС
+    ========================================================= */
 
     function getQuestionForLetter(letter) {
 
       let possibleQuestions =
         questions.filter(
-          question =>
-            question !== lastQuestionForLetter[letter]
+          function (question) {
+
+            return (
+              question
+              !==
+              lastQuestionForLetter[
+                letter
+              ]
+            );
+
+          }
         );
 
-      if (possibleQuestions.length === 0) {
-        possibleQuestions = [...questions];
+
+      if (
+        possibleQuestions.length === 0
+      ) {
+
+        possibleQuestions =
+          [...questions];
+
       }
 
-      const question =
-        randomItem(possibleQuestions);
 
-      lastQuestionForLetter[letter] =
+      const question =
+        randomItem(
+          possibleQuestions
+        );
+
+
+      lastQuestionForLetter[
+        letter
+      ] =
         question;
+
 
       return question;
 
     }
 
 
-    /* =========================
-       ПРОГРЕСС БУКВ
-    ========================== */
+    /* =========================================================
+       ПРОГРЕСС
+    ========================================================= */
 
     function renderProgress() {
 
       const container =
-        document.getElementById("lettersProgress");
+        document.getElementById(
+          "lettersProgress"
+        );
+
 
       container.innerHTML = "";
 
-      completedLetters.forEach(letter => {
 
-        const chip =
-          createLetterChip(letter, "done");
+      completedLetters.forEach(
+        function (letter) {
 
-        container.appendChild(chip);
+          container.appendChild(
+            createLetterChip(
+              letter,
+              "done"
+            )
+          );
 
-      });
+        }
+      );
 
 
       if (
-        currentLetter &&
-        completedCount < 10 &&
+        currentLetter
+        &&
+        completedCount < totalRounds
+        &&
         !pointWasGiven
       ) {
 
-        const chip =
+        container.appendChild(
           createLetterChip(
             currentLetter,
             "current"
-          );
-
-        container.appendChild(chip);
+          )
+        );
 
       }
 
 
-      letterQueue.forEach(letter => {
+      letterQueue.forEach(
+        function (letter) {
 
-        const chip =
-          createLetterChip(letter, "");
+          container.appendChild(
+            createLetterChip(
+              letter,
+              ""
+            )
+          );
 
-        container.appendChild(chip);
-
-      });
+        }
+      );
 
 
       const visibleRound =
         Math.min(
           completedCount + 1,
-          10
+          totalRounds
         );
 
-      document.getElementById("roundText")
-        .textContent =
-        "Буква " +
-        visibleRound +
-        " из 10";
+
+      document.getElementById(
+        "roundText"
+      ).textContent =
+        "Буква "
+        + visibleRound
+        + " из "
+        + totalRounds;
 
     }
 
 
-    function createLetterChip(letter, state) {
+    function createLetterChip(
+      letter,
+      state
+    ) {
 
       const chip =
         document.createElement("div");
 
-      chip.className =
-        "letter-chip " + state;
 
-      chip.textContent = letter;
+      chip.className =
+        "letter-chip "
+        + state;
+
+
+      chip.textContent =
+        letter;
+
 
       return chip;
 
     }
 
 
-    /* =========================
+    /* =========================================================
        ТАЙМЕР
-    ========================== */
+    ========================================================= */
 
     function updateTimer() {
 
       const seconds =
-        String(timeLeft).padStart(2, "0");
+        String(
+          timeLeft
+        ).padStart(
+          2,
+          "0"
+        );
 
-      document.getElementById("timer")
-        .textContent =
+
+      document.getElementById(
+        "timer"
+      ).textContent =
         "00:" + seconds;
 
     }
 
 
-    /* =========================
-       ИГРОКИ
-    ========================== */
+    /* =========================================================
+       КАРТОЧКИ ИГРОКОВ
+    ========================================================= */
 
     function updatePlayerCards() {
 
-      document.getElementById("playerName1")
-        .textContent =
+      document.getElementById(
+        "playerName1"
+      ).textContent =
         player1Name;
 
-      document.getElementById("playerName2")
-        .textContent =
+
+      document.getElementById(
+        "playerName2"
+      ).textContent =
         player2Name;
+
 
       applyPlayerColor(
         1,
         player1Color
       );
+
 
       applyPlayerColor(
         2,
@@ -1790,34 +2470,50 @@
     }
 
 
-    function applyPlayerColor(player, colorId) {
+    function applyPlayerColor(
+      player,
+      colorId
+    ) {
 
       const color =
         playerColors.find(
-          item => item.id === colorId
+          function (item) {
+
+            return (
+              item.id
+              ===
+              colorId
+            );
+
+          }
         );
 
+
       if (!color) {
+
         return;
+
       }
+
 
       const card =
         document.getElementById(
-          "playerCard" + player
+          "playerCard"
+          + player
         );
+
 
       card.style.background =
         color.background;
 
+
       card.style.color =
         color.text;
 
-      /*
-        Для белой карточки добавляем
-        лёгкую границу.
-      */
 
-      if (colorId === "white") {
+      if (
+        colorId === "white"
+      ) {
 
         card.style.border =
           "2px solid #d8d8d8";
@@ -1834,70 +2530,104 @@
 
     function enablePlayerCards() {
 
-      document.getElementById("playerCard1")
-        .disabled = false;
+      document.getElementById(
+        "playerCard1"
+      ).disabled = false;
 
-      document.getElementById("playerCard2")
-        .disabled = false;
+
+      document.getElementById(
+        "playerCard2"
+      ).disabled = false;
 
     }
 
 
     function disablePlayerCards() {
 
-      document.getElementById("playerCard1")
-        .disabled = true;
+      document.getElementById(
+        "playerCard1"
+      ).disabled = true;
 
-      document.getElementById("playerCard2")
-        .disabled = true;
+
+      document.getElementById(
+        "playerCard2"
+      ).disabled = true;
 
     }
 
 
-    function showPlusAnimation(player) {
+    function showPlusAnimation(
+      player
+    ) {
 
       const element =
         document.getElementById(
           "plus" + player
         );
 
-      element.classList.remove("show");
+
+      element.classList.remove(
+        "show"
+      );
+
 
       void element.offsetWidth;
 
-      element.classList.add("show");
+
+      element.classList.add(
+        "show"
+      );
 
     }
 
 
-    /* =========================
+    /* =========================================================
        НАСТРОЙКИ
-    ========================== */
+    ========================================================= */
 
     function openSettings() {
 
-      document.getElementById("settingsName1")
-        .value = player1Name;
+      document.getElementById(
+        "settingsName1"
+      ).value =
+        player1Name;
 
-      document.getElementById("settingsName2")
-        .value = player2Name;
 
-      document.getElementById("autoNextToggle")
-        .checked = autoNext;
+      document.getElementById(
+        "settingsName2"
+      ).value =
+        player2Name;
+
+
+      document.getElementById(
+        "autoNextToggle"
+      ).checked =
+        autoNext;
+
 
       updateThemeButtons();
+
       renderColorOptions();
 
-      document.getElementById("settingsBackdrop")
-        .classList.remove("hidden");
+
+      document
+        .getElementById(
+          "settingsBackdrop"
+        )
+        .classList
+        .remove("hidden");
 
     }
 
 
     function closeSettings() {
 
-      document.getElementById("settingsBackdrop")
-        .classList.add("hidden");
+      document
+        .getElementById(
+          "settingsBackdrop"
+        )
+        .classList
+        .add("hidden");
 
     }
 
@@ -1905,7 +2635,8 @@
     function backdropClick(event) {
 
       if (
-        event.target.id ===
+        event.target.id
+        ===
         "settingsBackdrop"
       ) {
 
@@ -1919,14 +2650,24 @@
     function updateNamesFromSettings() {
 
       player1Name =
-        document.getElementById("settingsName1")
-          .value.trim()
+        document
+          .getElementById(
+            "settingsName1"
+          )
+          .value
+          .trim()
         || "Игрок 1";
 
+
       player2Name =
-        document.getElementById("settingsName2")
-          .value.trim()
+        document
+          .getElementById(
+            "settingsName2"
+          )
+          .value
+          .trim()
         || "Игрок 2";
+
 
       updatePlayerCards();
 
@@ -1935,15 +2676,20 @@
     }
 
 
-    /* =========================
+    /* =========================================================
        ТЕМА
-    ========================== */
+    ========================================================= */
 
-    function setTheme(newTheme) {
+    function setTheme(
+      newTheme
+    ) {
 
-      theme = newTheme;
+      theme =
+        newTheme;
+
 
       applyTheme();
+
       saveSettings();
 
     }
@@ -1951,15 +2697,22 @@
 
     function applyTheme() {
 
-      if (theme === "dark") {
+      if (
+        theme === "dark"
+      ) {
 
-        document.body.classList.add("dark");
+        document.body.classList.add(
+          "dark"
+        );
 
       } else {
 
-        document.body.classList.remove("dark");
+        document.body.classList.remove(
+          "dark"
+        );
 
       }
+
 
       updateThemeButtons();
 
@@ -1973,15 +2726,18 @@
           "lightThemeButton"
         );
 
+
       const dark =
         document.getElementById(
           "darkThemeButton"
         );
 
+
       light.classList.toggle(
         "selected",
         theme === "light"
       );
+
 
       dark.classList.toggle(
         "selected",
@@ -1991,9 +2747,9 @@
     }
 
 
-    /* =========================
-       ЦВЕТА В НАСТРОЙКАХ
-    ========================== */
+    /* =========================================================
+       ЦВЕТА ИГРОКОВ В НАСТРОЙКАХ
+    ========================================================= */
 
     function renderColorOptions() {
 
@@ -2002,6 +2758,7 @@
         "colorsPlayer1",
         player1Color
       );
+
 
       renderColorsForPlayer(
         2,
@@ -2019,42 +2776,69 @@
     ) {
 
       const container =
-        document.getElementById(containerId);
+        document.getElementById(
+          containerId
+        );
+
 
       container.innerHTML = "";
 
-      playerColors.forEach(color => {
 
-        const button =
-          document.createElement("button");
+      playerColors.forEach(
+        function (color) {
 
-        button.className =
-          "color-option";
+          const button =
+            document.createElement(
+              "button"
+            );
 
-        if (color.id === selectedColor) {
 
-          button.classList.add("selected");
+          button.className =
+            "color-option";
 
-        }
 
-        button.style.background =
-          color.background;
-
-        button.style.color =
-          color.text;
-
-        button.title =
-          color.name;
-
-        button.onclick =
-          () => selectPlayerColor(
-            player,
+          if (
             color.id
+            ===
+            selectedColor
+          ) {
+
+            button.classList.add(
+              "selected"
+            );
+
+          }
+
+
+          button.style.background =
+            color.background;
+
+
+          button.style.color =
+            color.text;
+
+
+          button.title =
+            color.name;
+
+
+          button.onclick =
+            function () {
+
+              selectPlayerColor(
+                player,
+                color.id
+              );
+
+            };
+
+
+          container.appendChild(
+            button
           );
 
-        container.appendChild(button);
-
-      });
+        }
+      );
 
     }
 
@@ -2064,20 +2848,26 @@
       colorId
     ) {
 
-      if (player === 1) {
+      if (
+        player === 1
+      ) {
 
-        player1Color = colorId;
+        player1Color =
+          colorId;
 
       } else {
 
-        player2Color = colorId;
+        player2Color =
+          colorId;
 
       }
+
 
       applyPlayerColor(
         player,
         colorId
       );
+
 
       renderColorOptions();
 
@@ -2086,72 +2876,133 @@
     }
 
 
-    /* =========================
+    /* =========================================================
        АВТОПЕРЕХОД
-    ========================== */
+    ========================================================= */
 
     function changeAutoNext() {
 
       autoNext =
-        document.getElementById(
-          "autoNextToggle"
-        ).checked;
+        document
+          .getElementById(
+            "autoNextToggle"
+          )
+          .checked;
+
 
       saveSettings();
 
     }
 
 
-    /* =========================
-       ФИНАЛ ИГРЫ
-    ========================== */
+    /* =========================================================
+       ФИНАЛ
+    ========================================================= */
 
     function finishGame() {
 
-      clearInterval(timerInterval);
+      clearInterval(
+        timerInterval
+      );
+
 
       roundActive = false;
 
+
       disablePlayerCards();
+
 
       const winnerText =
         document.getElementById(
           "winnerText"
         );
 
-      if (score1 > score2) {
+
+      if (
+        score1 > score2
+      ) {
 
         winnerText.textContent =
-          "Победил " + player1Name + "!";
+          "Победил "
+          + player1Name
+          + "! 🎉";
 
-      } else if (score2 > score1) {
+      } else if (
+        score2 > score1
+      ) {
 
         winnerText.textContent =
-          "Победил " + player2Name + "!";
+          "Победил "
+          + player2Name
+          + "! 🎉";
 
       } else {
 
         winnerText.textContent =
-          "Ничья!";
+          "Ничья! 🎉";
 
       }
 
-      document.getElementById("finalScore")
-        .textContent =
-        score1 + " : " + score2;
 
-      document.getElementById("winnerScreen")
-        .classList.remove("hidden");
+      document.getElementById(
+        "finalScore"
+      ).textContent =
+        score1
+        + " : "
+        + score2;
+
+
+      document
+        .getElementById(
+          "winnerScreen"
+        )
+        .classList
+        .remove("hidden");
+
+
+      /*
+        КАЖДЫЙ РАЗ ВЫБИРАЕМ
+        СЛУЧАЙНУЮ БОЛЬШУЮ АНИМАЦИЮ
+      */
+
+      startRandomVictoryEffect();
 
     }
 
 
     function playAgain() {
 
-      document.getElementById("winnerScreen")
-        .classList.add("hidden");
+      clearVictoryEffects();
 
-      newGame();
+
+      document
+        .getElementById(
+          "winnerScreen"
+        )
+        .classList
+        .add("hidden");
+
+
+      /*
+        Возвращаемся к стартовому экрану,
+        чтобы можно было снова выбрать
+        число букв.
+      */
+
+      document
+        .getElementById(
+          "gameScreen"
+        )
+        .classList
+        .add("hidden");
+
+
+      document
+        .getElementById(
+          "startScreen"
+        )
+        .classList
+        .remove("hidden");
 
     }
 
@@ -2163,27 +3014,643 @@
           "Начать новую партию? Текущий счёт сбросится."
         );
 
-      if (confirmed) {
 
-        newGame();
+      if (!confirmed) {
+
+        return;
+
+      }
+
+
+      clearInterval(
+        timerInterval
+      );
+
+
+      document
+        .getElementById(
+          "gameScreen"
+        )
+        .classList
+        .add("hidden");
+
+
+      document
+        .getElementById(
+          "startScreen"
+        )
+        .classList
+        .remove("hidden");
+
+    }
+
+
+    /* =========================================================
+       СЛУЧАЙНЫЕ ПОБЕДНЫЕ АНИМАЦИИ
+    ========================================================= */
+
+    function startRandomVictoryEffect() {
+
+      clearVictoryEffects();
+
+
+      const effects = [
+
+        victoryCats,
+        victoryHearts,
+        victoryBalloons,
+        victoryPlanes,
+        victoryFireworks,
+        victoryConfetti
+
+      ];
+
+
+      const effect =
+        randomItem(
+          effects
+        );
+
+
+      effect();
+
+    }
+
+
+    function clearVictoryEffects() {
+
+      const container =
+        document.getElementById(
+          "victoryEffects"
+        );
+
+
+      container.innerHTML = "";
+
+    }
+
+
+    /* ---------- КОТИКИ ---------- */
+
+    function victoryCats() {
+
+      const container =
+        document.getElementById(
+          "victoryEffects"
+        );
+
+
+      const cats = [
+        "🐱",
+        "😸",
+        "😻",
+        "😹",
+        "🐈"
+      ];
+
+
+      for (
+        let i = 0;
+        i < 34;
+        i++
+      ) {
+
+        const cat =
+          document.createElement(
+            "div"
+          );
+
+
+        cat.className =
+          "falling-effect";
+
+
+        cat.textContent =
+          randomItem(cats);
+
+
+        cat.style.left =
+          Math.random()
+          * 100
+          + "%";
+
+
+        cat.style.fontSize =
+          30
+          + Math.random()
+          * 35
+          + "px";
+
+
+        cat.style.animationDuration =
+          2.8
+          + Math.random()
+          * 3
+          + "s";
+
+
+        cat.style.animationDelay =
+          Math.random()
+          * 1.8
+          + "s";
+
+
+        container.appendChild(
+          cat
+        );
 
       }
 
     }
 
 
-    /* =========================
+    /* ---------- СЕРДЕЧКИ ---------- */
+
+    function victoryHearts() {
+
+      const container =
+        document.getElementById(
+          "victoryEffects"
+        );
+
+
+      const hearts = [
+        "❤️",
+        "💗",
+        "💕",
+        "💖",
+        "💘"
+      ];
+
+
+      for (
+        let i = 0;
+        i < 38;
+        i++
+      ) {
+
+        const heart =
+          document.createElement(
+            "div"
+          );
+
+
+        heart.className =
+          "heart-effect";
+
+
+        heart.textContent =
+          randomItem(
+            hearts
+          );
+
+
+        heart.style.left =
+          Math.random()
+          * 100
+          + "%";
+
+
+        heart.style.fontSize =
+          24
+          + Math.random()
+          * 34
+          + "px";
+
+
+        heart.style.animationDuration =
+          3
+          + Math.random()
+          * 3
+          + "s";
+
+
+        heart.style.animationDelay =
+          Math.random()
+          * 2
+          + "s";
+
+
+        container.appendChild(
+          heart
+        );
+
+      }
+
+    }
+
+
+    /* ---------- ШАРИКИ ---------- */
+
+    function victoryBalloons() {
+
+      const container =
+        document.getElementById(
+          "victoryEffects"
+        );
+
+
+      const balloons = [
+        "🎈",
+        "🎈",
+        "🎈",
+        "🎈"
+      ];
+
+
+      for (
+        let i = 0;
+        i < 28;
+        i++
+      ) {
+
+        const balloon =
+          document.createElement(
+            "div"
+          );
+
+
+        balloon.className =
+          "balloon-effect";
+
+
+        balloon.textContent =
+          randomItem(
+            balloons
+          );
+
+
+        balloon.style.left =
+          Math.random()
+          * 100
+          + "%";
+
+
+        balloon.style.fontSize =
+          35
+          + Math.random()
+          * 38
+          + "px";
+
+
+        balloon.style.setProperty(
+          "--drift",
+          (
+            -100
+            + Math.random()
+            * 200
+          )
+          + "px"
+        );
+
+
+        balloon.style.animationDuration =
+          4
+          + Math.random()
+          * 3
+          + "s";
+
+
+        balloon.style.animationDelay =
+          Math.random()
+          * 2
+          + "s";
+
+
+        container.appendChild(
+          balloon
+        );
+
+      }
+
+    }
+
+
+    /* ---------- САМОЛЁТЫ ---------- */
+
+    function victoryPlanes() {
+
+      const container =
+        document.getElementById(
+          "victoryEffects"
+        );
+
+
+      const messages = [
+
+        "✈️ УРА!",
+        "✈️ ПОБЕДА!",
+        "✈️ МОЛОДЕЦ!",
+        "✈️ ЧЕМПИОН!"
+
+      ];
+
+
+      for (
+        let i = 0;
+        i < 6;
+        i++
+      ) {
+
+        const plane =
+          document.createElement(
+            "div"
+          );
+
+
+        plane.className =
+          "plane-effect";
+
+
+        plane.textContent =
+          messages[
+            i
+            %
+            messages.length
+          ];
+
+
+        plane.style.top =
+          (
+            8
+            + i
+            * 14
+          )
+          + "%";
+
+
+        plane.style.animationDuration =
+          (
+            4
+            + Math.random()
+            * 2
+          )
+          + "s";
+
+
+        plane.style.animationDelay =
+          (
+            i
+            * 0.55
+          )
+          + "s";
+
+
+        container.appendChild(
+          plane
+        );
+
+      }
+
+    }
+
+
+    /* ---------- ФЕЙЕРВЕРК ---------- */
+
+    function victoryFireworks() {
+
+      const container =
+        document.getElementById(
+          "victoryEffects"
+        );
+
+
+      const colors = [
+
+        "#ff4d6d",
+        "#ffd43b",
+        "#51cf66",
+        "#339af0",
+        "#845ef7",
+        "#ff922b",
+        "#f06595"
+
+      ];
+
+
+      for (
+        let burst = 0;
+        burst < 11;
+        burst++
+      ) {
+
+        setTimeout(
+          function () {
+
+            createFirework(
+              container,
+              colors
+            );
+
+          },
+          burst
+          * 350
+        );
+
+      }
+
+    }
+
+
+    function createFirework(
+      container,
+      colors
+    ) {
+
+      const firework =
+        document.createElement(
+          "div"
+        );
+
+
+      firework.className =
+        "firework";
+
+
+      firework.style.left =
+        (
+          10
+          + Math.random()
+          * 80
+        )
+        + "%";
+
+
+      firework.style.top =
+        (
+          10
+          + Math.random()
+          * 65
+        )
+        + "%";
+
+
+      const chosenColor =
+        randomItem(
+          colors
+        );
+
+
+      for (
+        let i = 0;
+        i < 24;
+        i++
+      ) {
+
+        const piece =
+          document.createElement(
+            "div"
+          );
+
+
+        piece.className =
+          "firework-piece";
+
+
+        piece.style.background =
+          chosenColor;
+
+
+        const angle =
+          (
+            Math.PI
+            * 2
+            * i
+          )
+          / 24;
+
+
+        const distance =
+          75
+          + Math.random()
+          * 95;
+
+
+        piece.style.setProperty(
+          "--x",
+          Math.cos(angle)
+          * distance
+          + "px"
+        );
+
+
+        piece.style.setProperty(
+          "--y",
+          Math.sin(angle)
+          * distance
+          + "px"
+        );
+
+
+        firework.appendChild(
+          piece
+        );
+
+      }
+
+
+      container.appendChild(
+        firework
+      );
+
+
+      setTimeout(
+        function () {
+
+          firework.remove();
+
+        },
+        1600
+      );
+
+    }
+
+
+    /* ---------- КОНФЕТТИ ---------- */
+
+    function victoryConfetti() {
+
+      const container =
+        document.getElementById(
+          "victoryEffects"
+        );
+
+
+      const colors = [
+
+        "#ff595e",
+        "#ffca3a",
+        "#8ac926",
+        "#1982c4",
+        "#6a4c93",
+        "#ff8fab",
+        "#ffffff"
+
+      ];
+
+
+      for (
+        let i = 0;
+        i < 90;
+        i++
+      ) {
+
+        const piece =
+          document.createElement(
+            "div"
+          );
+
+
+        piece.className =
+          "confetti-piece";
+
+
+        piece.style.left =
+          Math.random()
+          * 100
+          + "%";
+
+
+        piece.style.background =
+          randomItem(
+            colors
+          );
+
+
+        piece.style.animationDuration =
+          2.5
+          + Math.random()
+          * 3
+          + "s";
+
+
+        piece.style.animationDelay =
+          Math.random()
+          * 2
+          + "s";
+
+
+        container.appendChild(
+          piece
+        );
+
+      }
+
+    }
+
+
+    /* =========================================================
        ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-    ========================== */
+    ========================================================= */
 
     function randomItem(array) {
 
-      const index =
+      return array[
         Math.floor(
-          Math.random() * array.length
-        );
-
-      return array[index];
+          Math.random()
+          * array.length
+        )
+      ];
 
     }
 
@@ -2191,38 +3658,46 @@
     function shuffleArray(array) {
 
       for (
-        let i = array.length - 1;
+        let i =
+          array.length - 1;
         i > 0;
         i--
       ) {
 
         const j =
           Math.floor(
-            Math.random() * (i + 1)
+            Math.random()
+            * (i + 1)
           );
+
 
         [
           array[i],
           array[j]
-        ] = [
+        ]
+        =
+        [
           array[j],
           array[i]
         ];
 
       }
 
+
       return array;
 
     }
 
 
-    /* =========================
+    /* =========================================================
        ЗАПУСК
-    ========================== */
+    ========================================================= */
 
     loadSettings();
+
 
   </script>
 
 </body>
+
 </html>
