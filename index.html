@@ -1,3 +1,8 @@
+<!--
+  КТО БЫСТРЕЕ? — VERSION 10
+  Интегрированная версия после визуального ревью.
+  База визуала: утверждённая версия 9.
+-->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -2496,6 +2501,1425 @@ body.developer-mode .hint-preview-eye{
   transform:translateY(-1px);
 }
 
+
+/* ===== ВЕРСИЯ 10 — прогресс раундов ===== */
+.round-stats-text{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+}
+
+/* ===== ВЕРСИЯ 10 — ничьи ===== */
+.winner-actions{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.tie-handshake{
+  position:fixed;
+  top:-70px;
+  z-index:2200;
+  pointer-events:none;
+  animation:tieHandshakeFall 4.2s linear forwards;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.15));
+}
+@keyframes tieHandshakeFall{
+  0%{transform:translateY(-80px) rotate(-10deg);opacity:0}
+  8%{opacity:1}
+  100%{transform:translateY(115vh) rotate(18deg);opacity:.12}
+}
+
+/* ===== НОЖИЧКИ ===== */
+.knives-screen{
+  position:fixed;
+  inset:0;
+  z-index:2600;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:auto;
+  padding:22px;
+  background:var(--bg);
+}
+.knives-panel{
+  width:min(760px,100%);
+  padding:28px;
+  border:1px solid var(--border);
+  border-radius:28px;
+  background:var(--card);
+  box-shadow:0 24px 80px var(--shadow);
+  text-align:center;
+}
+.knives-panel h2{
+  margin:0 0 7px;
+  font-size:32px;
+}
+.knives-muted{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+}
+.knives-rules{
+  max-width:610px;
+  margin:18px auto 0;
+  padding:17px 19px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  background:var(--soft);
+  text-align:left;
+  line-height:1.5;
+}
+.knives-rules ol{
+  margin:9px 0 0;
+  padding-left:22px;
+}
+.knives-rules li{margin:5px 0}
+.knives-actions{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+.secondary{
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:11px 14px;
+  background:var(--soft);
+  color:var(--text);
+  font-weight:850;
+  cursor:pointer;
+}
+.knives-timer{
+  margin:10px 0 5px;
+  font-size:54px;
+  line-height:1;
+  font-weight:1000;
+}
+.knives-phase{
+  margin-bottom:12px;
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:.08em;
+}
+.knives-deck{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;
+  max-width:620px;
+  margin:0 auto;
+}
+.knife-memory-card{
+  height:104px;
+  border:0;
+  padding:0;
+  background:transparent;
+  perspective:800px;
+  cursor:pointer;
+}
+.knife-memory-inner{
+  position:relative;
+  width:100%;
+  height:100%;
+  transform-style:preserve-3d;
+  transition:transform .42s ease, opacity .28s ease;
+}
+.knife-memory-card.closed .knife-memory-inner{
+  transform:rotateY(180deg);
+}
+.knife-memory-card.matched{
+  pointer-events:none;
+}
+.knife-memory-card.matched .knife-memory-inner{
+  opacity:.12;
+  transform:scale(.9);
+}
+.knife-memory-face{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:8px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:var(--soft);
+  backface-visibility:hidden;
+}
+.knife-memory-back{
+  transform:rotateY(180deg);
+  font-size:31px;
+}
+.knife-memory-emoji{font-size:29px}
+.knife-memory-name{
+  margin-top:5px;
+  font-size:9px;
+  font-weight:950;
+  text-align:center;
+}
+.knives-scores{
+  display:grid;
+  gap:8px;
+  margin:14px auto 0;
+  max-width:620px;
+}
+.knives-score{
+  padding:9px 10px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--soft);
+  font-size:11px;
+  font-weight:900;
+}
+.knives-score.active{
+  outline:2px solid var(--accent);
+}
+.knives-status{
+  min-height:45px;
+  margin-top:11px;
+}
+.knives-status strong{
+  display:block;
+  font-size:15px;
+}
+.knives-status span{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:10px;
+}
+.knives-show-again{
+  margin-top:12px;
+}
+@media(max-width:560px){
+  .knives-panel{padding:21px 13px}
+  .knives-panel h2{font-size:26px}
+  .knives-deck{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .knife-memory-card{height:90px}
+  .knives-timer{font-size:44px}
+}
+
+
+/* =========================================================
+   ПРЕДРЕЛИЗ V10 — утверждённые эффекты
+========================================================= */
+
+/* Рукопожатия: средняя скорость, непрерывный поток */
+.tie-handshake{
+  position:fixed;
+  top:-70px;
+  z-index:2200;
+  pointer-events:none;
+  animation:tieHandshakeMedium linear forwards;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.18));
+}
+@keyframes tieHandshakeMedium{
+  0%{transform:translateY(-80px) rotate(-10deg);opacity:0}
+  8%{opacity:1}
+  88%{opacity:1}
+  100%{transform:translateY(115vh) rotate(22deg);opacity:0}
+}
+
+/* КЧАУ: вспышки, НЕ падение */
+.lightning-bolt{
+  position:fixed !important;
+  z-index:2200;
+  pointer-events:none;
+  opacity:0;
+  filter:drop-shadow(0 0 12px #ffd95a);
+  animation:approvedBoltFlash 1.45s ease-out forwards !important;
+}
+@keyframes approvedBoltFlash{
+  0%{opacity:0;transform:scale(.2) rotate(-20deg)}
+  10%{opacity:1;transform:scale(1.35) rotate(8deg)}
+  26%{opacity:1;transform:scale(.92) rotate(-5deg)}
+  52%{opacity:.9;transform:scale(1.08)}
+  100%{opacity:0;transform:scale(.35)}
+}
+
+/* Яркий фейерверк — серия частых вспышек */
+.approved-fireburst{
+  position:fixed;
+  z-index:2190;
+  width:10px;
+  height:10px;
+  pointer-events:none;
+}
+.approved-fire-core{
+  position:absolute;
+  left:50%;top:50%;
+  width:16px;height:16px;
+  border-radius:50%;
+  background:#fff5b2;
+  box-shadow:0 0 20px #ffe45c,0 0 36px #ff9c3a;
+  animation:approvedCoreBurst 1.5s ease-out forwards;
+}
+@keyframes approvedCoreBurst{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+  12%{opacity:1;transform:translate(-50%,-50%) scale(1.35)}
+  35%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(.55)}
+}
+.approved-spark{
+  position:absolute;
+  left:50%;top:50%;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--c);
+  box-shadow:0 0 14px var(--c),0 0 26px var(--c);
+  transform-origin:0 0;
+  opacity:0;
+  animation:approvedSparkFlash 1.55s ease-out forwards;
+}
+@keyframes approvedSparkFlash{
+  0%{opacity:0;transform:rotate(var(--a)) translateX(0) scale(.2)}
+  10%{opacity:1}
+  28%{opacity:1;transform:rotate(var(--a)) translateX(var(--d1)) scale(1.05)}
+  58%{opacity:.95;transform:rotate(var(--a)) translateX(var(--d2)) scale(.85)}
+  100%{opacity:0;transform:rotate(var(--a)) translateX(var(--d3)) scale(.35)}
+}
+
+/* Ножи вылезают из-под финальной карточки */
+.winner-card{overflow:visible !important}
+.tie-knife-bed{
+  position:absolute;
+  left:5%;right:5%;
+  bottom:-47px;
+  height:100px;
+  pointer-events:none;
+  z-index:-1;
+}
+.tie-stab{
+  position:absolute;
+  bottom:18px;
+  font-size:46px;
+  transform-origin:50% 100%;
+  animation:tieKnifeWobble 1.7s ease-in-out infinite alternate;
+}
+@keyframes tieKnifeWobble{
+  from{transform:rotate(-14deg) translateY(0)}
+  to{transform:rotate(10deg) translateY(-7px)}
+}
+
+/* Короткие правила ножичков */
+.knives-rules{
+  max-width:640px;
+  padding:0;
+  border:0;
+  background:transparent;
+  text-align:center;
+}
+.knives-rule-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;
+}
+.knives-rule-chip{
+  min-height:108px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:13px 8px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:var(--soft);
+}
+.knives-rule-chip .ico{font-size:25px}
+.knives-rule-chip b{font-size:12px;margin-top:6px}
+.knives-rule-chip span{font-size:9px;color:var(--muted);margin-top:4px}
+
+/* Подписи memory больше не сливаются */
+.knife-memory-face{background:#292929}
+.knife-memory-name{
+  color:#f4f1ed !important;
+  font-size:10px;
+  letter-spacing:.02em;
+}
+.knife-memory-emoji{font-size:31px}
+
+@media(max-width:600px){
+  .knives-rule-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+
+/* =========================================================
+   ПЕРЕХОДЫ МЕЖДУ РАУНДАМИ
+========================================================= */
+.round-transition-screen{
+  position:fixed;
+  inset:0;
+  z-index:2500;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:rgba(16,16,16,.96);
+  backdrop-filter:blur(5px);
+}
+.round-transition-panel{
+  width:min(680px,92vw);
+  padding:34px;
+  border:1px solid var(--border);
+  border-radius:28px;
+  background:var(--card);
+  box-shadow:0 28px 90px rgba(0,0,0,.5);
+  text-align:center;
+}
+.round-transition-eyebrow{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:.14em;
+}
+.round-transition-panel h2{
+  margin:10px 0 20px;
+  font-size:34px;
+}
+.round-transition-scores{
+  display:grid;
+  gap:10px;
+  margin:18px 0;
+}
+.round-transition-score{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:13px 16px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:var(--soft);
+  font-weight:900;
+}
+.round-transition-score strong{
+  font-size:24px;
+}
+.round-transition-score.winner{
+  outline:2px solid var(--accent);
+}
+.round-transition-progress{
+  margin-top:20px;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:850;
+}
+.round-transition-track{
+  height:8px;
+  max-width:460px;
+  margin:9px auto 22px;
+  border-radius:999px;
+  overflow:hidden;
+  background:#161616;
+}
+.round-transition-fill{
+  height:100%;
+  width:0;
+  border-radius:999px;
+  background:var(--text);
+  transition:width .35s ease;
+}
+.round-transition-main{
+  width:100%;
+}
+.round-intro-panel{
+  min-height:410px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.round-intro-letter{
+  margin:18px 0 10px;
+  font-family:"Courier New",monospace;
+  font-size:150px;
+  line-height:.9;
+  font-weight:1000;
+  text-shadow:5px 4px 0 #66558e;
+}
+.round-intro-countdown{
+  min-height:52px;
+  font-size:42px;
+  line-height:1;
+  font-weight:1000;
+}
+.round-intro-note{
+  margin-top:12px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+}
+.round-final-badge{
+  margin-top:14px;
+  padding:7px 11px;
+  border:1px solid #7d6035;
+  border-radius:999px;
+  background:#34291d;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.08em;
+}
+@media(max-width:600px){
+  .round-transition-panel{padding:25px 15px}
+  .round-transition-panel h2{font-size:28px}
+  .round-intro-letter{font-size:110px}
+}
+
+
+/* ===== FIX: progress header ===== */
+.progress{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+.round-text{
+  margin:0 !important;
+  text-align:center !important;
+}
+.round-stats-text{
+  width:100%;
+  margin:0 0 2px !important;
+  text-align:center !important;
+  line-height:1.35;
+  color:var(--muted);
+  font-size:10px !important;
+  font-weight:800;
+}
+.letters{
+  width:100%;
+  justify-content:center !important;
+}
+
+
+.milestone-pop{
+  position:fixed;
+  z-index:2600;
+  pointer-events:none;
+  padding:8px 12px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:999px;
+  background:#171717;
+  color:#fff;
+  font-size:12px;
+  font-weight:950;
+  box-shadow:0 8px 30px rgba(0,0,0,.35);
+  animation:milestonePop 1.45s ease forwards;
+}
+@keyframes milestonePop{
+  0%{opacity:0;transform:translateY(8px) scale(.88)}
+  18%{opacity:1;transform:translateY(0) scale(1.04)}
+  72%{opacity:1}
+  100%{opacity:0;transform:translateY(-16px) scale(.96)}
+}
+
+
+#finalPreviewDevButton{
+  position:fixed;right:16px;bottom:16px;z-index:3500;
+  border:1px solid #555;border-radius:10px;background:#202020;color:#fff;
+  padding:9px 12px;font-weight:900;cursor:pointer;
+}
+.final-page-preview{
+  position:fixed;inset:0;z-index:3400;display:flex;align-items:center;justify-content:center;
+  background:rgba(13,13,13,.96);overflow:hidden;
+}
+.final-page-preview.hidden{display:none}
+.final-page-card{
+  position:relative;z-index:3;width:min(700px,88vw);padding:38px 34px;
+  border-radius:28px;background:#232323;border:1px solid #333;
+  box-shadow:0 28px 90px rgba(0,0,0,.6);text-align:center;color:#f5f2ee;
+}
+.final-kicker{font-size:11px;font-weight:950;letter-spacing:.15em;color:#aaa;margin-bottom:12px}
+.final-page-card h1{font-family:inherit;font-size:42px;line-height:1.1;margin:0 0 12px;text-shadow:none}
+.final-winner{font-size:30px;font-weight:1000}
+.final-score{font-size:22px;font-weight:950;margin:10px 0 2px}
+.final-meta{font-size:11px;color:#8f8b87}
+.final-caption{font-size:18px;color:#aaa;font-weight:850;margin:18px 0 24px}
+.final-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.final-primary,.final-secondary{min-width:210px;padding:14px 18px;border-radius:13px;font-weight:950;cursor:pointer}
+.final-primary{border:0;background:#eee8df;color:#171717}
+.final-secondary{border:1px solid #4c4c4c;background:#1e1e1e;color:#eee}
+.final-close{position:absolute;right:20px;top:20px;z-index:5;border:1px solid #555;border-radius:50%;
+ width:38px;height:38px;background:#222;color:white;font-size:22px;cursor:pointer}
+.final-fx{position:absolute;z-index:2;pointer-events:none;font-size:44px;
+ filter:drop-shadow(0 0 10px rgba(255,200,70,.7));animation:finalFlash 1.65s ease-out forwards}
+@keyframes finalFlash{
+  0%{opacity:0;transform:scale(.2) rotate(-10deg)}
+  16%{opacity:1;transform:scale(1.25) rotate(7deg)}
+  58%{opacity:1}
+  100%{opacity:0;transform:scale(.45)}
+}
+
+
+/* ===== DEV: финальные реакции ===== */
+.dev-final-test-row{
+  margin:12px 0 4px;
+}
+.dev-final-test-open{
+  width:100%;
+}
+.victory-tester{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  background:rgba(12,12,12,.96);
+}
+.victory-tester.hidden{display:none}
+.victory-tester-panel{
+  width:min(760px,94vw);
+  padding:24px;
+  border:1px solid var(--border);
+  border-radius:24px;
+  background:var(--card);
+  box-shadow:0 24px 90px rgba(0,0,0,.55);
+}
+.victory-tester-head{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+}
+.victory-tester-kicker{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.12em;
+}
+.victory-tester-head h2{
+  margin:7px 0 4px;
+  font-size:26px;
+}
+.victory-tester-head p{
+  margin:0;
+  color:var(--muted);
+  font-size:12px;
+}
+.victory-tester-close{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  border:1px solid var(--border);
+  border-radius:50%;
+  background:var(--soft);
+  color:var(--text);
+  font-size:22px;
+  cursor:pointer;
+}
+.victory-tester-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;
+  margin-top:20px;
+}
+.victory-tester-grid button{
+  min-height:48px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:var(--soft);
+  color:var(--text);
+  font-weight:900;
+  cursor:pointer;
+}
+.victory-tester-grid button:hover{
+  outline:2px solid var(--accent);
+}
+.victory-tester-note{
+  margin-top:14px;
+  color:var(--muted);
+  font-size:11px;
+  text-align:center;
+}
+@media(max-width:560px){
+  .victory-tester-grid{grid-template-columns:1fr}
+}
+
+
+/* =========================================================
+   ROUND RESULT — облегчённый визуал
+========================================================= */
+.round-transition-panel{
+  max-width:660px;
+  padding:38px 42px !important;
+}
+.round-transition-panel h2{
+  margin:10px 0 25px !important;
+  font-size:34px !important;
+}
+.round-transition-scores{
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:34px !important;
+  margin:22px 0 24px !important;
+}
+.round-transition-score{
+  border:0 !important;
+  background:transparent !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  outline:0 !important;
+  min-width:0;
+  display:flex !important;
+  flex-direction:column;
+  align-items:center;
+  gap:5px !important;
+  color:var(--muted);
+}
+.round-transition-score span{
+  font-size:14px;
+  font-weight:900;
+}
+.round-transition-score strong{
+  font-size:42px !important;
+  line-height:1;
+  color:var(--text);
+}
+.round-transition-score.winner span{
+  color:var(--text);
+}
+.round-transition-score.winner strong{
+  transform:scale(1.08);
+}
+.round-transition-score + .round-transition-score{
+  position:relative;
+}
+.round-transition-score + .round-transition-score::before{
+  content:"·";
+  position:absolute;
+  left:-21px;
+  top:21px;
+  color:var(--muted);
+  font-size:24px;
+  font-weight:900;
+}
+.round-transition-progress{
+  margin-top:5px !important;
+  font-size:11px !important;
+}
+.round-transition-track{
+  height:5px !important;
+  max-width:360px !important;
+  margin:8px auto 22px !important;
+  opacity:.75;
+}
+.round-transition-main{
+  margin-top:2px;
+}
+@media(max-width:560px){
+  .round-transition-panel{
+    padding:30px 18px !important;
+  }
+  .round-transition-scores{
+    gap:24px !important;
+  }
+  .round-transition-score strong{
+    font-size:34px !important;
+  }
+}
+
+
+.round-transition-main{
+  min-height:62px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+.round-next-small{
+  display:block;
+  font-size:10px;
+  line-height:1.2;
+  letter-spacing:.08em;
+  color:var(--muted);
+  font-weight:900;
+}
+.round-transition-main strong{
+  display:block;
+  font-size:16px;
+  color:var(--text);
+}
+.round-inline-countdown{
+  font-size:27px !important;
+  line-height:1 !important;
+  margin-top:2px;
+}
+.round-transition-main:disabled{
+  opacity:1;
+  cursor:default;
+}
+
+
+/* =========================================================
+   START PAGE: ALWAYS DARK
+   Светлая тема больше не влияет на стартовую страницу.
+========================================================= */
+.start-screen{
+  --bg:#151515;
+  --surface:#222222;
+  --surface2:#303030;
+  --text:#f3f3f3;
+  --muted:#aaaaaa;
+  --border:#eeeeee;
+  --shadow:rgba(0,0,0,.42);
+  color:#f3f3f3;
+}
+
+.start-screen .start-panel{
+  background:rgba(29,30,34,.96) !important;
+  color:#f3f3f3 !important;
+  border-color:rgba(255,255,255,.82) !important;
+}
+
+.start-screen .start-title,
+.start-screen .start-desc b,
+.start-screen .start-rule,
+.start-screen label,
+.start-screen .player-setup-card,
+.start-screen .question-mode-card{
+  color:#f3f3f3;
+}
+
+.start-screen .start-desc,
+.start-screen .start-subtitle,
+.start-screen .question-mode-card small,
+.start-screen .round-plan-preview{
+  color:#aaa !important;
+}
+
+.start-screen select,
+.start-screen input[type="text"],
+.start-screen input[type="number"]{
+  background:#1e2025 !important;
+  color:#f5f1ee !important;
+  border-color:#474a53 !important;
+}
+
+.start-screen .player-setup-card,
+.start-screen .start-settings-column{
+  background:#24262b !important;
+  border-color:#3d4048 !important;
+}
+
+.start-screen .question-mode-card{
+  background:#24262c !important;
+  border-color:#41444d !important;
+}
+
+.start-screen .question-mode-card.selected{
+  background:#302b3e !important;
+  border-color:#bca2f0 !important;
+}
+
+.start-screen .start-icon-button{
+  background:#292929 !important;
+  color:#f3f3f3 !important;
+  border-color:#444 !important;
+}
+
+/* На стартовой справа остаётся только шестерёнка. */
+.start-screen .start-corner-actions{
+  gap:0 !important;
+}
+
+
+/* ===== Стартовая: без лишнего заголовка "Игроки" ===== */
+.forbidden-name-message-v10{
+  min-height:0;
+  margin-top:0;
+  font-size:12px;
+  line-height:1.25;
+  font-weight:900;
+  color:#ff765f;
+  opacity:0;
+  transform:translateY(-3px);
+  transition:.16s ease;
+}
+.forbidden-name-message-v10.show{
+  min-height:18px;
+  margin-top:7px;
+  opacity:1;
+  transform:none;
+}
+.forbidden-name-v10{
+  border-color:#b84f42 !important;
+}
+
+
+.settings-head-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.settings-admin-button{
+  width:40px;
+  height:40px;
+  padding:0;
+  border-radius:50%;
+  border:1px solid var(--border);
+  background:var(--soft);
+  color:var(--text);
+  display:grid;
+  place-items:center;
+  font-size:18px;
+  cursor:pointer;
+  transition:.16s ease;
+}
+.settings-admin-button:hover{
+  transform:translateY(-1px);
+}
+.settings-admin-button.active{
+  border-color:#e36b5c;
+  box-shadow:0 0 0 2px rgba(227,107,92,.16);
+  background:#342523;
+}
+
+
+/* Левая часть: настройки + карточки игроков */
+  .start-settings-column{
+    grid-column:1 !important;
+    grid-row:1 !important;
+  }
+
+  /* Правая часть: режимы */
+  .mode-section,
+  .start-mode-section{
+    grid-column:2 !important;
+    grid-row:1 !important;
+    margin-top:0 !important;
+    align-self:start !important;
+  }
+
+  /* Если режимы лежат вне grid-контейнера в старой разметке,
+     ниже JS переносит сам существующий узел внутрь start-main-grid. */
+  .mode-grid{
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+  }
+
+  .mode-card,
+  .question-mode-card{
+    min-height:82px !important;
+  }
+}
+
+/* На узких экранах всё снова идёт одной колонкой. */
+@media (max-width:859px){
+  .start-main-grid{
+    display:block !important;
+  }
+  .mode-section,
+  .start-mode-section{
+    margin-top:24px !important;
+  }
+}
+
+/* Общая кнопка старта остаётся на всю ширину и не участвует в колонках. */
+.start-button,
+#startGameButton,
+#startButton{
+  width:100%;
+}
+
+
+/* =========================================================
+   START — РЕЖИМЫ СПРАВА
+   Только раскладка. Цвета/карточки версии 9 не меняем.
+========================================================= */
+@media (min-width: 860px){
+
+  .start-screen .start-layout{
+    display:grid !important;
+    grid-template-columns:minmax(330px,.86fr) minmax(430px,1.14fr) !important;
+    column-gap:28px !important;
+    align-items:start !important;
+  }
+
+  .start-screen .start-settings-column{
+    grid-column:1 !important;
+    width:100% !important;
+  }
+
+  .start-screen .question-mode-wrap{
+    grid-column:2 !important;
+    grid-row:1 !important;
+    margin:0 !important;
+    padding:0 !important;
+    border-top:0 !important;
+    width:100% !important;
+  }
+
+  .start-screen .question-mode-label{
+    margin:0 0 10px !important;
+  }
+
+  .start-screen .question-mode-grid{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:10px !important;
+  }
+
+  .start-screen .question-mode-card{
+    min-height:118px !important;
+  }
+
+  .start-screen .start-main-button{
+    grid-column:1 / -1 !important;
+    width:100% !important;
+    margin-top:22px !important;
+  }
+}
+
+@media (max-width:859px){
+  .start-screen .start-layout{
+    display:block !important;
+  }
+
+  .start-screen .question-mode-wrap{
+    margin-top:24px !important;
+    padding-top:20px !important;
+  }
+}
+
+
+/* =========================================================
+   START — aesthetic layout v2
+   Внешний стиль карточек версии 9 сохраняем.
+========================================================= */
+@media (min-width: 860px){
+
+  .start-screen .start-layout{
+    display:grid !important;
+    grid-template-columns:minmax(310px,.9fr) minmax(420px,1.1fr) !important;
+    column-gap:28px !important;
+    row-gap:22px !important;
+    align-items:start !important;
+  }
+
+  /* Левая колонка: только настройки партии */
+  .start-screen .start-settings-column{
+    grid-column:1 !important;
+    grid-row:1 !important;
+    width:100% !important;
+  }
+
+  /* Игроки справа */
+  .start-screen .players-column,
+  .start-screen .player-setup-column,
+  .start-screen .players-setup{
+    grid-column:2 !important;
+    grid-row:1 !important;
+    width:100% !important;
+  }
+
+  /* Если игроки находятся внутри settings-column — JS ниже вынесет их вправо */
+  .start-screen .player-setup-card{
+    min-height:0 !important;
+    padding:14px 16px !important;
+  }
+
+  .start-screen .player-setup-card input[type="text"]{
+    max-width:250px !important;
+  }
+
+  /* Режимы — на всю ширину снизу */
+  .start-screen .question-mode-wrap{
+    grid-column:1 / -1 !important;
+    grid-row:2 !important;
+    width:100% !important;
+    margin:0 !important;
+    padding-top:18px !important;
+    border-top:1px solid rgba(255,255,255,.12) !important;
+  }
+
+  .start-screen .question-mode-grid{
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:10px !important;
+  }
+
+  .start-screen .question-mode-card{
+    min-height:92px !important;
+  }
+
+  .start-screen .start-main-button{
+    grid-column:1 / -1 !important;
+    grid-row:3 !important;
+    width:100% !important;
+    margin-top:0 !important;
+  }
+}
+
+@media (max-width:859px){
+  .start-screen .start-layout{
+    display:block !important;
+  }
+  .start-screen .question-mode-wrap{
+    margin-top:24px !important;
+    padding-top:18px !important;
+  }
+}
+
+
+/* ===== START: компактнее игроки ===== */
+@media (min-width:860px){
+  .start-screen .players-column{
+    display:flex !important;
+    flex-direction:column;
+    gap:10px !important;
+  }
+  .start-screen .player-setup-card{
+    min-height:0 !important;
+    padding:12px 16px !important;
+  }
+  .start-screen .player-setup-card label,
+  .start-screen .player-setup-card .player-title{
+    margin-bottom:7px !important;
+  }
+  .start-screen .player-setup-card input[type="text"]{
+    height:43px !important;
+    max-width:250px !important;
+  }
+}
+
+/* Подсказки режимов не занимают внимание постоянно */
+.start-screen .question-mode-card small{
+  opacity:0 !important;
+  max-height:0 !important;
+  overflow:hidden;
+  margin-top:0 !important;
+  transform:translateY(-2px);
+  transition:opacity .15s ease, max-height .15s ease, margin .15s ease, transform .15s ease;
+}
+
+.start-screen .question-mode-card:hover small,
+.start-screen .question-mode-card:focus-within small,
+.start-screen .question-mode-card.selected small{
+  opacity:1 !important;
+  max-height:32px !important;
+  margin-top:7px !important;
+  transform:none;
+}
+
+
+/* =========================================================
+   START — компактные игроки + читаемые подсказки режимов
+========================================================= */
+@media (min-width:860px){
+
+  .start-screen .players-column{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:8px !important;
+  }
+
+  /* Карточка игрока теперь почти строка, без огромного воздуха */
+  .start-screen .player-setup-card{
+    min-height:0 !important;
+    height:auto !important;
+    padding:10px 12px !important;
+    display:grid !important;
+    grid-template-columns:1fr auto !important;
+    grid-template-areas:
+      "title color"
+      "input color" !important;
+    column-gap:12px !important;
+    row-gap:5px !important;
+    align-items:center !important;
+  }
+
+  .start-screen .player-setup-card .player-title,
+  .start-screen .player-setup-card label{
+    grid-area:title !important;
+    margin:0 !important;
+    line-height:1.1 !important;
+    font-size:14px !important;
+  }
+
+  .start-screen .player-setup-card input[type="text"]{
+    grid-area:input !important;
+    width:250px !important;
+    max-width:250px !important;
+    height:38px !important;
+    min-height:38px !important;
+    margin:0 !important;
+    padding:7px 11px !important;
+    font-size:14px !important;
+  }
+
+  .start-screen .player-color,
+  .start-screen .player-color-button,
+  .start-screen .color-dot,
+  .start-screen .color-picker-button{
+    grid-area:color !important;
+    align-self:center !important;
+    margin:0 !important;
+  }
+
+  /* Убираем лишнюю высоту контейнеров вокруг игроков */
+  .start-screen .players-column > *{
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+  }
+}
+
+/* Подписи режимов: крупнее и читаемее */
+.start-screen .question-mode-card small{
+  font-size:11px !important;
+  line-height:1.25 !important;
+  font-weight:700 !important;
+  color:#b7b0aa !important;
+
+  opacity:0 !important;
+  max-height:0 !important;
+  overflow:hidden !important;
+  margin-top:0 !important;
+  transform:translateY(-2px);
+  transition:
+    opacity .16s ease,
+    max-height .16s ease,
+    margin .16s ease,
+    transform .16s ease;
+}
+
+/* Показываем описание только при наведении / фокусе / выбранном режиме */
+.start-screen .question-mode-card:hover small,
+.start-screen .question-mode-card:focus-within small,
+.start-screen .question-mode-card.selected small{
+  opacity:1 !important;
+  max-height:40px !important;
+  margin-top:8px !important;
+  transform:none !important;
+}
+
+/* Сам текст названия режима чуть крупнее */
+.start-screen .question-mode-card{
+  min-height:84px !important;
+  padding:14px 16px !important;
+}
+.start-screen .question-mode-card strong,
+.start-screen .question-mode-card .mode-title{
+  font-size:15px !important;
+  line-height:1.15 !important;
+}
+
+
+/* =========================================================
+   FIX: реальные классы стартовой страницы
+========================================================= */
+@media (min-width:860px){
+  .start-screen .start-players-column .players-setup{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:9px !important;
+  }
+
+  .start-screen .start-players-column .player-setup-card{
+    min-height:0 !important;
+    height:auto !important;
+    padding:11px 13px !important;
+    margin:0 !important;
+  }
+
+  .start-screen .start-players-column .player-setup-head{
+    margin:0 0 7px !important;
+    font-size:15px !important;
+    line-height:1.1 !important;
+  }
+
+  .start-screen .start-players-column .name-row{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:12px !important;
+    margin:0 !important;
+  }
+
+  .start-screen .start-players-column .name-row input{
+    width:250px !important;
+    max-width:250px !important;
+    height:39px !important;
+    min-height:39px !important;
+    padding:7px 11px !important;
+    margin:0 !important;
+    font-size:14px !important;
+  }
+
+  .start-screen .start-players-column .color-picker-wrap{
+    margin-left:auto !important;
+  }
+
+  .start-screen .start-players-column .color-dot{
+    margin:0 !important;
+  }
+}
+
+/* Реальная подпись режима — .question-mode-note */
+.start-screen .question-mode-note{
+  display:block !important;
+  font-size:13px !important;
+  line-height:1.3 !important;
+  font-weight:700 !important;
+  color:#bdb7b1 !important;
+  opacity:0 !important;
+  max-height:0 !important;
+  overflow:hidden !important;
+  margin-top:0 !important;
+  transform:translateY(-3px);
+  transition:opacity .16s ease,max-height .16s ease,margin .16s ease,transform .16s ease;
+}
+
+.start-screen .question-mode-card:hover .question-mode-note,
+.start-screen .question-mode-card:focus .question-mode-note,
+.start-screen .question-mode-card.selected .question-mode-note{
+  opacity:1 !important;
+  max-height:42px !important;
+  margin-top:8px !important;
+  transform:none !important;
+}
+
+.start-screen .question-mode-title{
+  font-size:16px !important;
+  line-height:1.15 !important;
+}
+
+
+/* =========================================================
+   РЕЖИМЫ: фиксированная увеличенная высота
+   Выбор 18+ больше не двигает меню.
+========================================================= */
+@media (min-width:860px){
+  .start-screen .question-mode-wrap{
+    margin-top:-10px !important;
+    padding-top:16px !important;
+  }
+
+  .start-screen .question-mode-grid{
+    align-items:stretch !important;
+  }
+
+  .start-screen .question-mode-card{
+    box-sizing:border-box !important;
+    height:118px !important;
+    min-height:118px !important;
+    padding:16px 16px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+  }
+
+  .start-screen .question-mode-note{
+    /* Место под подпись зарезервировано всегда,
+       поэтому карточка не растёт после выбора. */
+    display:block !important;
+    min-height:34px !important;
+    max-height:34px !important;
+    margin-top:8px !important;
+    overflow:hidden !important;
+    font-size:13px !important;
+    line-height:1.25 !important;
+    font-weight:700 !important;
+    opacity:0 !important;
+    transform:none !important;
+  }
+
+  .start-screen .question-mode-card:hover .question-mode-note,
+  .start-screen .question-mode-card:focus .question-mode-note,
+  .start-screen .question-mode-card.selected .question-mode-note{
+    opacity:1 !important;
+    max-height:34px !important;
+    margin-top:8px !important;
+  }
+}
+
+
+/* =========================================================
+   FIX — кружок цвета снова справа от поля имени
+========================================================= */
+@media (min-width:860px){
+  .start-screen .players-column,
+  .start-screen .start-players-column{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:10px !important;
+  }
+
+  .start-screen .player-setup-card{
+    min-height:0 !important;
+    height:auto !important;
+    padding:12px 14px !important;
+    margin:0 !important;
+    display:block !important;
+  }
+
+  .start-screen .player-setup-head{
+    margin:0 0 8px !important;
+    font-size:15px !important;
+    line-height:1.1 !important;
+  }
+
+  .start-screen .name-row{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:12px !important;
+    margin:0 !important;
+  }
+
+  .start-screen .name-row input{
+    width:250px !important;
+    max-width:250px !important;
+    height:40px !important;
+    min-height:40px !important;
+    margin:0 !important;
+  }
+
+  .start-screen .color-picker-wrap{
+    margin:0 !important;
+    flex:0 0 auto !important;
+  }
+
+  .start-screen .color-dot{
+    margin:0 !important;
+    position:static !important;
+  }
+}
+
+/* =========================================================
+   "Своё число" — то же самое место, без нового поля
+========================================================= */
+.cards-count-inline{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.cards-count-inline > select,
+.cards-count-inline > input{
+  width:100%;
+}
+#customCardsInline{
+  display:none;
+}
+#customCardsInline.show{
+  display:block;
+}
+#roundCount.hide-for-custom{
+  display:none;
+}
+.cards-count-hint{
+  margin-top:6px;
+  font-size:10px;
+  line-height:1.25;
+  font-weight:800;
+  color:var(--muted);
+}
+
 </style>
 </head>
 
@@ -2517,17 +3941,6 @@ body.developer-mode .hint-preview-eye{
         aria-label="Настройки"
       >
         ⚙
-      </button>
-
-      <button
-        id="startThemeToggle"
-        type="button"
-        class="start-icon-button"
-        onclick="toggleThemeQuick()"
-        title="Переключить тему"
-        aria-label="Переключить тему"
-      >
-        ☾
       </button>
     </div>
 
@@ -2554,100 +3967,43 @@ body.developer-mode .hint-preview-eye{
         </div>
 
         <div class="field">
-          <label for="roundCount">Количество букв</label>
-          <select id="roundCount">
-            <option value="3">3 буквы</option>
-            <option value="4">4 буквы</option>
-            <option value="5">5 букв</option>
-            <option value="6">6 букв</option>
-            <option value="7">7 букв</option>
-            <option value="8">8 букв</option>
-            <option value="9">9 букв</option>
-            <option value="10" selected>10 букв</option>
-          </select>
-        </div>
+          <label for="roundCount">Количество карточек</label>
 
-        <div class="field">
-          <label for="startTimerSelect">Время на ответ</label>
-
-          <div class="timer-admin-row">
-
-            <select
-              id="startTimerSelect"
-              onchange="changeStartTimerSetting()"
-            >
-              <option value="5">5 секунд</option>
-              <option value="10">10 секунд</option>
-              <option value="30">30 секунд</option>
-              <option value="custom">Своё число</option>
+          <div class="cards-count-inline">
+            <select id="roundCount" onchange="handleCardsCountChoice()">
+              <option value="3" selected>3 карточки · тест</option>
+              <option value="5">5 карточек</option>
+              <option value="10">10 карточек</option>
+              <option value="15">15 карточек</option>
+              <option value="custom">Своё число…</option>
             </select>
 
             <input
-              id="startCustomTimer"
-              class="custom-timer-input hidden"
+              id="customCardsInline"
               type="number"
               min="1"
-              max="120"
-              value="30"
-              placeholder="сек."
-              oninput="changeStartCustomTimer()"
+              value="10"
+              inputmode="numeric"
+              onblur="finishCustomCardsCount()"
+              onkeydown="handleCustomCardsKey(event)"
             >
-
-            <button
-              class="admin-open-button"
-              onclick="toggleAdminPanel()"
-              type="button"
-              title="Админ"
-            >
-              A
-            </button>
-
-          </div>
-        </div>
-
-        <div id="adminPanel" class="admin-panel">
-
-          <div class="admin-toggle-row">
-
-            <div>
-              <div class="admin-toggle-label">
-                Админ разрешил ругаться
-              </div>
-
-              <div class="admin-toggle-note">
-                Если включено — ограничения на имя отключаются.
-              </div>
-
-              <div id="adminMessage" class="admin-message"></div>
-            </div>
-
-            <label class="switch" title="Разрешить любое имя">
-
-              <input
-                id="adminRudeToggle"
-                type="checkbox"
-                onchange="toggleAdminRude()"
-              >
-
-              <span class="switch-slider"></span>
-
-            </label>
-
           </div>
 
+          <div id="cardsCountHint" class="cards-count-hint"></div>
         </div>
 
-
-
-      </div>
+        <div class="field">
+          <label for="gameRoundsCount">Количество раундов</label>
+          <select id="gameRoundsCount">
+            <option value="1">1 раунд</option>
+            <option value="2">2 раунда</option>
+            <option value="3" selected>3 раунда</option>
+            <option value="5">5 раундов</option>
+          </select>
+        </div>
 
       <div class="start-players-column">
-
-        <div class="start-column-title">
-          Игроки
-        </div>
-
-        <div id="playersSetup" class="players-setup"></div>
+<div id="playersSetup" class="players-setup"></div>
 
       </div>
 
@@ -2705,7 +4061,7 @@ body.developer-mode .hint-preview-eye{
                 🔞 18+
               </span>
               <span class="question-mode-count"></span>
-              <span class="question-mode-note">Для взрослой компании</span>
+              <span class="question-mode-note">Ради чего создавалась игра)))</span>
             
               
             
@@ -2768,11 +4124,11 @@ body.developer-mode .hint-preview-eye{
         ▦ Сборник
       </button>
 
-      <button class="small-btn" onclick="restartGame()">
+      <button class="small-btn" onclick="returnToStartForNewGame()">
         ↻ Новая игра
       </button>
 
-      <button class="small-btn" onclick="openSettings()" class="icon-only-settings" title="Настройки" aria-label="Настройки">⚙</button>
+      <button class="small-btn icon-only-settings" onclick="openSettings()" title="Настройки" aria-label="Настройки">⚙</button>
 
     </div>
 
@@ -2781,6 +4137,7 @@ body.developer-mode .hint-preview-eye{
   <section class="progress">
 
     <div id="roundText" class="round-text"></div>
+    <div id="roundStatsText" class="round-stats-text"></div>
 
     <div id="lettersProgress" class="letters"></div>
 
@@ -2924,12 +4281,25 @@ body.developer-mode .hint-preview-eye{
 
       <h2>⚙ Настройки</h2>
 
-      <button
-        class="close-btn"
-        onclick="closeSettings()"
-      >
-        ×
-      </button>
+      <div class="settings-head-actions">
+        <button
+          id="settingsAdminButton"
+          class="settings-admin-button"
+          type="button"
+          onclick="toggleAdminRudeFromSettings()"
+          title="Админ: разрешить любые имена"
+          aria-label="Админ: разрешить любые имена"
+        >
+          😈
+        </button>
+
+        <button
+          class="close-btn"
+          onclick="closeSettings()"
+        >
+          ×
+        </button>
+      </div>
 
     </div>
 
@@ -3129,6 +4499,20 @@ body.developer-mode .hint-preview-eye{
         </div>
 
         <div id="developerOverview" class="developer-overview hidden">
+      <div style="margin:8px 0 12px;padding:9px 11px;border:1px solid #444;border-radius:11px;color:#aaa;font-size:11px">
+        Стартовая страница всегда тёмная. Настройка темы влияет только на игру и внутренние окна.
+      </div>
+    
+          <div class="dev-final-test-row">
+            <button
+              class="secondary dev-final-test-open"
+              type="button"
+              onclick="openVictoryReactionTester()"
+            >
+              🎉 Проверить финальные реакции
+            </button>
+          </div>
+
           <div class="developer-overview-head">
             <b>Мои буквы</b>
             <span id="developerHintTotal">0 сохранено</span>
@@ -3360,17 +4744,130 @@ body.developer-mode .hint-preview-eye{
       style="margin-top:-8px"
     ></div>
 
-    <button
-      class="primary"
-      onclick="playAgain()"
-    >
-      Сыграть ещё раз
-    </button>
+    <div class="winner-actions">
+      <button
+        id="playKnivesButton"
+        class="primary hidden"
+        type="button"
+        onclick="openKnivesRules()"
+      >
+        🔪 Играть на ножах
+      </button>
+
+      <button
+        class="primary"
+        onclick="playAgain()"
+      >
+        Сыграть ещё раз
+      </button>
+    </div>
 
   </div>
 
 </section>
 
+
+
+
+<!-- =========================================================
+     ПЕРЕХОДЫ МЕЖДУ РАУНДАМИ
+========================================================= -->
+<section id="roundResultScreen" class="round-transition-screen hidden">
+  <div class="round-transition-panel">
+    <div id="roundResultEyebrow" class="round-transition-eyebrow">РАУНД ЗАВЕРШЁН</div>
+    <h2 id="roundResultTitle">Очко!</h2>
+
+    <div id="roundResultScores" class="round-transition-scores"></div>
+
+    <div id="roundResultProgressText" class="round-transition-progress">
+      Пройдено 1 / 10 букв
+    </div>
+    <div class="round-transition-track">
+      <div id="roundResultProgressBar" class="round-transition-fill"></div>
+    </div>
+
+    <button id="roundContinueButton" class="primary round-transition-main" type="button" onclick="continueAfterRoundResult()">
+      ДАЛЬШЕ →
+    </button>
+  </div>
+</section>
+
+<section id="roundIntroScreen" class="round-transition-screen hidden">
+  <div class="round-transition-panel round-intro-panel">
+    <div id="roundIntroEyebrow" class="round-transition-eyebrow">РАУНД 2 / 10</div>
+    <div id="roundIntroFinalBadge" class="round-final-badge hidden">🔥 ФИНАЛЬНЫЙ РАУНД</div>
+    <div id="roundIntroLetter" class="round-intro-letter">Ф</div>
+    <div id="roundIntroCountdown" class="round-intro-countdown">3</div>
+    <div class="round-intro-note">Новый вопрос откроется после отсчёта</div>
+  </div>
+</section>
+
+<!-- =========================================================
+     НИЧЬЯ: МИНИ-ИГРА «НОЖИЧКИ»
+========================================================= -->
+<section id="knivesRulesScreen" class="knives-screen hidden">
+  <div class="knives-panel">
+    <h2>🔪 ИГРА НА НОЖАХ</h2>
+    <div class="knives-muted">Цивилизованные методы закончились.</div>
+
+    <div class="knives-rules">
+      <div class="knives-rule-grid">
+        <div class="knives-rule-chip"><div class="ico">👀</div><b>5 секунд</b><span>Запомните карточки</span></div>
+        <div class="knives-rule-chip"><div class="ico">✌️</div><b>2 карты</b><span>Открывайте за ход</span></div>
+        <div class="knives-rule-chip"><div class="ico">🎯</div><b>Нашли пару?</b><span>Забирайте и ходите ещё</span></div>
+        <div class="knives-rule-chip"><div class="ico">🏆</div><b>Больше пар</b><span>Победа в споре</span></div>
+      </div>
+    </div>
+
+    <div class="knives-actions">
+      <button class="primary" type="button" onclick="startKnivesGame()">
+        🔪 ДОСТАТЬ НОЖИ
+      </button>
+
+      <button class="secondary" type="button" onclick="leaveKnivesForNewRound()">
+        ↻ Новый раунд
+      </button>
+    </div>
+  </div>
+</section>
+
+<section id="knivesGameScreen" class="knives-screen hidden">
+  <div class="knives-panel knives-game-panel">
+    <h2>🔪 НОЖИ ДОСТАЛИ</h2>
+    <div class="knives-muted">Запомните, где лежат пары.</div>
+
+    <div id="knivesTimer" class="knives-timer">00:05</div>
+    <div id="knivesPhase" class="knives-phase">ЗАПОМИНАЙТЕ</div>
+
+    <div id="knivesDeck" class="knives-deck"></div>
+
+    <div id="knivesScores" class="knives-scores"></div>
+
+    <div id="knivesStatus" class="knives-status">
+      <strong>Смотрите внимательно.</strong>
+      <span>На нуле карточки закроются автоматически.</span>
+    </div>
+
+    <button
+      id="knivesReplayReveal"
+      class="secondary knives-show-again"
+      type="button"
+      onclick="showKnivesForFiveSeconds()"
+    >
+      ↻ Показать ещё на 5 сек.
+    </button>
+
+    <div id="knivesEndActions" class="knives-actions hidden">
+      <button class="primary" type="button" onclick="startKnivesGame()">
+        Ещё на ножах
+      </button>
+
+      <button class="secondary" type="button" onclick="leaveKnivesForNewRound()">
+        ↻ Новый раунд
+      </button>
+    </div>
+  </div>
+</section>
 
 <script>
 
@@ -3681,15 +5178,12 @@ function normalizedName(value) {
 
 const SPECIAL_NAME_RESPONSES = {
   "хуй": "....))))))))))))))",
-
   "мой господин": "Только не заставляй меня называть тебя так)))",
-
-  "господин": "Мы тренируемся, а не присягаем тебе на верность",
-
+  "господин": "",
+  "госпожа": "Госпожа чего? Очка",
   "царь": "Царь пока только в голове. Пиши имя",
-
+  "король": "Мы тренируемся, а не присягаем тебе на верность",
   "бог": "Самооценка — 10/10. А теперь пиши мне имя)",
-
   "соси": "Не отвлекайся на мечты",
 
   "пидор": "Давайте жить дружно",
@@ -3701,16 +5195,16 @@ const SPECIAL_NAME_RESPONSES = {
   "блять": "Согласен, иногда этим словом я могу описать свое состояние.. Так че там с именем?",
 
   "уебок": "Врагов вспоминаешь? Имя пиши давай",
-
   "уебан": "Врагов вспоминаешь? Имя пиши давай",
 
   "долбоеб": "Сильное заявление. Проверять мы это, конечно же, не будем.",
-
   "никто": "Инкогнито сегодня не принимаем",
-
   "аноним": "ШПИОН!!",
+  "стажер": "Это пока должность. А имя?)))",
 
-  "стажер": "Это пока должность. А имя?)))"
+  "сиси": "Нет. Сосредоточьтесь.",
+  "лох": "Самокритично. Но придумай другое имя.",
+  "очко": "На него и играем. Название команды придумай другое)))"
 };
 
 
@@ -3723,7 +5217,11 @@ function getSpecialNameResponse(value) {
 
   const n = normalizedName(value);
 
-  return SPECIAL_NAME_RESPONSES[n] || "";
+  if (Object.prototype.hasOwnProperty.call(SPECIAL_NAME_RESPONSES, n)) {
+    return SPECIAL_NAME_RESPONSES[n];
+  }
+
+  return null;
 }
 
 
@@ -3782,12 +5280,8 @@ function adminAllowsAnyName() {
 
 
 function toggleAdminPanel() {
-
-  document
-    .getElementById("adminPanel")
-    .classList
-    .toggle("show");
-
+  openSettings();
+  refreshSettingsAdminButton();
 }
 
 
@@ -3828,12 +5322,7 @@ function toggleAdminRude() {
 
 
 function loadAdminRude() {
-
-  document.getElementById(
-    "adminRudeToggle"
-  ).checked =
-    adminAllowsAnyName();
-
+  refreshSettingsAdminButton();
 }
 
 
@@ -3856,7 +5345,7 @@ function validatePlayerName(
     const specialResponse =
       getSpecialNameResponse(name);
 
-    if (specialResponse) {
+    if (specialResponse !== null) {
 
       if (message) {
         message.textContent =
@@ -3891,7 +5380,7 @@ function validatePlayerName(
     ) {
 
       message.textContent =
-        "Админ разрешил. Имя сохранено 😈";
+        "";
 
     } else {
 
@@ -3932,7 +5421,7 @@ function handleNameInput(
   const specialResponse =
     getSpecialNameResponse(name);
 
-  if (specialResponse) {
+  if (specialResponse !== null) {
     message.textContent =
       specialResponse;
     return;
@@ -4141,6 +5630,23 @@ let selfEsteemTextIndex =
 let victoryIntervals = [];
 
 let victoryTimeouts = [];
+
+
+let shownQuestionCount = 0;
+let shownLetterSet = new Set();
+let uniqueQuestionSet = new Set();
+
+let lastTieReaction =
+  localStorage.getItem("lastTieReaction") || "";
+
+let currentTieWinners = [];
+let lastRoundWinnerId = null;
+let roundIntroTimer = null;
+let currentRoundNumber = 1;
+let gameRoundsTotal = 3;
+let cardsPerRound = 3;
+let lastMilestoneScore = {};
+
 
 
 /* =========================================================
@@ -4471,12 +5977,22 @@ function startGame() {
       ).value
     );
 
+  const roundCountControl =
+    document.getElementById("roundCount");
+
   totalRounds =
-    Number(
-      document.getElementById(
-        "roundCount"
-      ).value
-    );
+    roundCountControl?.value === "custom"
+      ? Math.max(
+          1,
+          Math.min(
+            getAvailableCardsLimit(),
+            Number(
+              document.getElementById("customCardsInline")?.value
+              || 1
+            )
+          )
+        )
+      : Number(roundCountControl?.value || 3);
 
 
   let allNamesValid = true;
@@ -4570,41 +6086,92 @@ function startGame() {
 
 function newGame() {
 
-  clearInterval(
-    timerInterval
-  );
+  clearInterval(timerInterval);
+  clearInterval(roundIntroTimer);
 
+  const roundResultScreen =
+    document.getElementById("roundResultScreen");
+  const roundIntroScreen =
+    document.getElementById("roundIntroScreen");
+
+  if (roundResultScreen) roundResultScreen.classList.add("hidden");
+  if (roundIntroScreen) roundIntroScreen.classList.add("hidden");
+
+  currentRoundNumber = 1;
+  gameRoundsTotal =
+    Number(document.getElementById("gameRoundsCount")?.value || 3);
+
+  const cardsSelect =
+    document.getElementById("roundCount");
+
+  cardsPerRound =
+    cardsSelect?.value === "custom"
+      ? Math.max(
+          1,
+          Math.min(
+            getAvailableCardsLimit(),
+            Number(
+              document.getElementById("customCardsInline")?.value
+              || 1
+            )
+          )
+        )
+      : Number(cardsSelect?.value || 3);
+
+  totalRounds = cardsPerRound;
   completedCount = 0;
-
   completedLetters = [];
-
+  shownQuestionCount = 0;
+  shownLetterSet = new Set();
+  uniqueQuestionSet = new Set();
   lastQuestionForLetter = {};
+  currentLetter = null;
+  currentQuestion = null;
+  pointGiven = false;
+  roundActive = false;
+  lastRoundWinnerId = null;
+  lastMilestoneScore = {};
 
+  players.forEach(player => {
+    player.score = 0;
+    lastMilestoneScore[player.id] = 0;
+  });
 
-  players.forEach(
-    player => {
-      player.score = 0;
-    }
-  );
-
-
-  const shuffled =
-    shuffleArray(
-      [...allLetters]
-    );
-
-
-  letterQueue =
-    shuffled.slice(
-      0,
-      totalRounds
-    );
-
+  buildRoundLetterQueue();
 
   renderPlayerCards();
-
+  renderProgress();
   startNextLetter();
+}
 
+function buildRoundLetterQueue() {
+
+  const target =
+    Math.max(
+      1,
+      Math.min(
+        cardsPerRound,
+        getAvailableCardsLimit()
+      )
+    );
+
+  letterQueue = [];
+
+  /* Сначала проходим все буквы без повторов.
+     Если карточек в раунде больше, запускаем новый перемешанный цикл букв.
+     Так можно поставить, например, 40/80/147 карточек и разбивать их раундами. */
+  while (letterQueue.length < target) {
+
+    const cycle =
+      shuffleArray([...allLetters]);
+
+    for (const letter of cycle) {
+      if (letterQueue.length >= target) break;
+      letterQueue.push(letter);
+    }
+  }
+
+  totalRounds = target;
 }
 
 
@@ -4654,6 +6221,14 @@ function startNextLetter() {
   }
 
 
+  if (letterQueue.length === 0) {
+
+    finishGame();
+
+    return;
+  }
+
+
   currentLetter =
     letterQueue.shift();
 
@@ -4662,6 +6237,10 @@ function startNextLetter() {
     getQuestionForLetter(
       currentLetter
     );
+
+  shownQuestionCount++;
+  shownLetterSet.add(currentLetter);
+  uniqueQuestionSet.add(currentQuestion);
 
 
   document.getElementById(
@@ -4773,6 +6352,8 @@ function givePoint(
 
   player.score++;
 
+  lastRoundWinnerId = player.id;
+
 
   document.getElementById(
     "score" + playerId
@@ -4822,38 +6403,51 @@ function givePoint(
     .add("hidden");
 
 
+  // Маленькая реакция только на 5, 10, 15... очках игрока.
+  if (
+    player.score > 0
+    &&
+    player.score % 5 === 0
+    &&
+    lastMilestoneScore[player.id] !== player.score
+  ) {
+    lastMilestoneScore[player.id] = player.score;
+    showMilestoneReaction(player.id, player.score);
+  }
+
   if (
     completedCount
     >=
     totalRounds
   ) {
 
-    setTimeout(
-      finishGame,
-      600
-    );
+    // Если это последний раунд всей партии —
+    // сразу показываем финальную победную/ничейную карточку.
+    if (
+      currentRoundNumber
+      >=
+      gameRoundsTotal
+    ) {
+      setTimeout(
+        finishGame,
+        500
+      );
+    } else {
+      setTimeout(
+        showRoundResult,
+        500
+      );
+    }
 
     return;
   }
 
-
-  if (autoNext) {
-
-    setTimeout(
-      startNextLetter,
-      500
-    );
-
-  } else {
-
-    document
-      .getElementById(
-        "nextButton"
-      )
-      .classList
-      .remove("hidden");
-
-  }
+  // 1–4, 6–9 и т.д.: никакого полноэкранного окна.
+  // Просто следующая карточка текущего раунда.
+  setTimeout(
+    startNextLetter,
+    450
+  );
 
 }
 
@@ -5250,8 +6844,7 @@ function nextRoundAfterPoint() {
     .classList
     .add("hidden");
 
-
-  startNextLetter();
+  showRoundResult();
 
 }
 
@@ -5259,6 +6852,135 @@ function nextRoundAfterPoint() {
 /* =========================================================
    ВОПРОСЫ И ПРОГРЕСС
 ========================================================= */
+
+
+function showRoundResult() {
+
+  clearInterval(timerInterval);
+
+  const screen = document.getElementById("roundResultScreen");
+  const maxScore = Math.max(...players.map(player => player.score));
+  const leaders = players.filter(player => player.score === maxScore);
+
+  document.getElementById("roundResultEyebrow").textContent =
+    "РАУНД " + currentRoundNumber + " / " + gameRoundsTotal + " ЗАВЕРШЁН";
+
+  document.getElementById("roundResultTitle").textContent =
+    leaders.length === 1
+      ? leaders[0].name + " забирает раунд ✦"
+      : "НИЧЬЯ В РАУНДЕ ✦";
+
+  document.getElementById("roundResultScores").innerHTML =
+    players.map(player => `
+      <div class="round-transition-score ${
+        leaders.some(item => item.id === player.id) ? "winner" : ""
+      }">
+        <span>${escapeHtml(player.name)}</span>
+        <strong>${player.score}</strong>
+      </div>
+    `).join("");
+
+  document.getElementById("roundResultProgressText").textContent =
+    cardsPerRound + " / " + cardsPerRound + " карточек сыграно";
+
+  document.getElementById("roundResultProgressBar").style.width = "100%";
+
+  const nextRound = currentRoundNumber + 1;
+  const nextSeconds =
+    nextRound === 1
+      ? 69
+      : Math.max(30, 60 - ((nextRound - 2) * 5));
+
+  const button = document.getElementById("roundContinueButton");
+
+  if (nextRound === gameRoundsTotal) {
+    button.innerHTML =
+      '<span class="round-next-small">🔥 ДАЛЬШЕ — ФИНАЛЬНЫЙ РАУНД · '
+      + nextSeconds
+      + ' СЕК.</span><strong>НАЧАТЬ ФИНАЛЬНЫЙ РАУНД</strong>';
+  } else {
+    button.innerHTML =
+      '<span class="round-next-small">ДАЛЬШЕ — РАУНД '
+      + nextRound
+      + ' / '
+      + gameRoundsTotal
+      + ' · '
+      + nextSeconds
+      + ' СЕК.</span><strong>НАЧАТЬ РАУНД '
+      + nextRound
+      + '</strong>';
+  }
+
+  screen.classList.remove("hidden");
+}
+
+function continueAfterRoundResult() {
+
+  if (currentRoundNumber >= gameRoundsTotal) {
+    document.getElementById("roundResultScreen")?.classList.add("hidden");
+    finishGame();
+    return;
+  }
+
+  const screen = document.getElementById("roundResultScreen");
+  const button = document.getElementById("roundContinueButton");
+
+  currentRoundNumber++;
+  completedCount = 0;
+  completedLetters = [];
+  shownLetterSet = new Set();
+  pointGiven = false;
+  roundActive = false;
+
+  buildRoundLetterQueue();
+  renderProgress();
+
+  const roundSeconds =
+    currentRoundNumber === 1
+      ? 69
+      : Math.max(30, 60 - ((currentRoundNumber - 2) * 5));
+
+  timerSeconds = roundSeconds;
+
+  let count = 3;
+  button.disabled = true;
+  button.innerHTML =
+    '<span class="round-next-small">РАУНД '
+    + currentRoundNumber
+    + ' / '
+    + gameRoundsTotal
+    + ' · '
+    + roundSeconds
+    + ' СЕК.</span><strong class="round-inline-countdown">3</strong>';
+
+  clearInterval(roundIntroTimer);
+
+  roundIntroTimer = setInterval(() => {
+    count--;
+
+    const countdown = button.querySelector(".round-inline-countdown");
+
+    if (count > 0) {
+      if (countdown) countdown.textContent = count;
+      return;
+    }
+
+    if (count === 0) {
+      if (countdown) countdown.textContent = "ПОЕХАЛИ!";
+      return;
+    }
+
+    clearInterval(roundIntroTimer);
+    button.disabled = false;
+    screen.classList.add("hidden");
+    startNextLetter();
+  }, 650);
+}
+
+function showRoundIntro() {
+  // Отдельная заставка начала раунда удалена.
+  startNextLetter();
+}
 
 function getQuestionForLetter(
   letterValue
@@ -5362,7 +7084,7 @@ function renderProgress() {
   document.getElementById(
     "roundText"
   ).textContent =
-    "Буква "
+    "Раунд "
     +
     Math.min(
       completedCount + 1,
@@ -5372,6 +7094,30 @@ function renderProgress() {
     " из "
     +
     totalRounds;
+
+  const roundStatsText =
+    document.getElementById(
+      "roundStatsText"
+    );
+
+  if (roundStatsText) {
+    roundStatsText.textContent =
+      "Вопросов: "
+      +
+      shownQuestionCount
+      +
+      " · уникальных: "
+      +
+      uniqueQuestionSet.size
+      +
+      " · букв: "
+      +
+      shownLetterSet.size
+      +
+      " / "
+      +
+      totalRounds;
+  }
 
 }
 
@@ -5516,6 +7262,7 @@ function updateTimer() {
 
 
 function openSettings() {
+  setTimeout(refreshSettingsAdminButton, 0);
 
   applyTheme();
 
@@ -5954,6 +7701,15 @@ function goToStartPage() {
     .classList
     .add("hidden");
 
+  const roundResultScreen =
+    document.getElementById("roundResultScreen");
+  const roundIntroScreen =
+    document.getElementById("roundIntroScreen");
+
+  if (roundResultScreen) roundResultScreen.classList.add("hidden");
+  if (roundIntroScreen) roundIntroScreen.classList.add("hidden");
+  clearInterval(roundIntroTimer);
+
   document
     .getElementById(
       "gameScreen"
@@ -5978,19 +7734,62 @@ function goToStartPage() {
 }
 
 
-function restartGame() {
+function returnToStartForNewGame() {
 
-  if (
-    !confirm(
-      "Начать новую игру? Текущий счёт сбросится."
-    )
-  ) {
+  clearInterval(timerInterval);
 
-    return;
+  resetCardsCountControlToDefault();
+  clearInterval(roundIntroTimer);
+  clearVictoryLoops();
+
+  roundActive = false;
+  pointGiven = false;
+
+  [
+    "roundResultScreen",
+    "roundIntroScreen",
+    "knivesRulesScreen",
+    "knivesGameScreen",
+    "winnerScreen"
+  ].forEach(id => {
+    const element =
+      document.getElementById(id);
+
+    if (element) {
+      element.classList.add("hidden");
+    }
+  });
+
+  document
+    .getElementById("gameScreen")
+    .classList
+    .add("hidden");
+
+  document
+    .getElementById("startScreen")
+    .classList
+    .remove("hidden");
+
+  renderPlayerSetup();
+  refreshQuestionModeCounts();
+  renderHintCollection();
+  updateStartThemeIcon();
+  applyDeveloperMode();
+
+  if (questionMode) {
+    setQuestionMode(questionMode);
   }
 
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
 
-  newGame();
+
+function restartGame() {
+
+  returnToStartForNewGame();
 
 }
 
@@ -6001,47 +7800,54 @@ function restartGame() {
 
 function finishGame() {
 
-  clearInterval(
-    timerInterval
-  );
-
+  clearInterval(timerInterval);
 
   roundActive = false;
 
-
   disablePlayerCards();
 
-
   const maxScore =
-    Math.max(
-      ...players.map(
-        p => p.score
-      )
-    );
-
+    Math.max(...players.map(p => p.score));
 
   const winners =
-    players.filter(
-      p => p.score === maxScore
-    );
-
+    players.filter(p => p.score === maxScore);
 
   const isTie =
     winners.length > 1;
 
+  currentTieWinners =
+    [...winners];
 
   const winnerText =
-    document.getElementById(
-      "winnerText"
-    );
+    document.getElementById("winnerText");
 
+  document
+    .getElementById("winnerScreen")
+    .classList
+    .remove("hidden");
+
+  const tieExtraText =
+    document.getElementById("tieExtraText");
+
+  const playKnivesButton =
+    document.getElementById("playKnivesButton");
 
   if (isTie) {
 
-    winnerText.textContent =
-      "Ничья! 🎉";
+    winnerText.textContent = "НИЧЬЯ!";
+
+    tieExtraText.classList.add("hidden");
+    tieExtraText.textContent = "";
+
+    runRandomTieReaction();
 
   } else {
+
+    if (playKnivesButton) {
+      playKnivesButton.classList.add("hidden");
+    }
+
+    tieExtraText.classList.add("hidden");
 
     winnerText.textContent =
       "Победил "
@@ -6050,101 +7856,653 @@ function finishGame() {
       +
       "! 🎉";
 
-  }
-
-
-  document
-    .getElementById(
-      "winnerScreen"
-    )
-    .classList
-    .remove("hidden");
-
-
-  const tieExtraText =
-    document.getElementById(
-      "tieExtraText"
-    );
-
-  if (isTie) {
-
-    owlTieEffect();
-
-    tieExtraText.classList.remove(
-      "hidden"
-    );
-
-  } else {
-
-    tieExtraText.classList.add(
-      "hidden"
-    );
-
     runVictoryEffect(
       victoryIndex,
       false
     );
 
-
     victoryIndex =
-      (
-        victoryIndex + 1
-      )
-      %
-      10;
-
-  }
-
-
-  if (!isTie) {
+      (victoryIndex + 1) % 10;
 
     localStorage.setItem(
       "victoryIndex",
       victoryIndex
     );
+  }
+}
 
+
+function runRandomTieReaction() {
+
+  clearVictoryLoops();
+
+  const playKnivesButton =
+    document.getElementById("playKnivesButton");
+
+  if (playKnivesButton) {
+    playKnivesButton.classList.add("hidden");
   }
 
+  const reactions = [
+    {
+      id:"owls",
+      text:"СОВпадение))))",
+      effect:() => owlTieEffect()
+    },
+    {
+      id:"knives",
+      text:"Цивилизованные методы закончились..",
+      effect:() => {
+        clearVictoryLoops();
+        document.getElementById("effectCaption").textContent =
+          "Цивилизованные методы закончились..";
+        if (playKnivesButton) {
+          playKnivesButton.classList.remove("hidden");
+        }
+        showTieKnives();
+      }
+    },
+    {
+      id:"handshake_1",
+      text:"Игра отказывается выбирать любимчика. Сыграйте в камень, ножницы, бумагу.",
+      effect:() => handshakeTieEffect()
+    },
+    {
+      id:"handshake_2",
+      text:"Сыграйте в камень, ножницы, бумагу. Судьба разберётся.",
+      effect:() => handshakeTieEffect()
+    },
+    {
+      id:"handshake_3",
+      text:"Сыграйте в камень, ножницы, бумагу. Кто-то же должен проиграть.",
+      effect:() => handshakeTieEffect()
+    }
+  ];
 
-  if (isTie) {
+  let pool =
+    reactions.filter(item => item.id !== lastTieReaction);
 
-    const tieTexts = [
-      "Сыграйте в камень, ножницы, бумагу. Цивилизованные методы закончились.",
-      "Сыграйте в камень, ножницы, бумагу. Игра отказывается выбирать любимчика.",
-      "Сыграйте в камень, ножницы, бумагу. Судьба разберётся.",
-      "Сыграйте в камень, ножницы, бумагу. Кто-то же должен проиграть."
+  if (!pool.length) {
+    pool = reactions;
+  }
+
+  const reaction =
+    pool[
+      Math.floor(
+        Math.random() * pool.length
+      )
     ];
 
+  lastTieReaction =
+    reaction.id;
 
-    document.getElementById(
-      "tieExtraText"
-    ).textContent =
-      tieTexts[
-        tieTextIndex
-        %
-        tieTexts.length
-      ];
+  localStorage.setItem(
+    "lastTieReaction",
+    lastTieReaction
+  );
+
+  if (reaction.id === "owls") {
+    // owlTieEffect сам выставляет подпись
+    reaction.effect();
+  } else {
+    document
+      .getElementById("effectCaption")
+      .textContent =
+      reaction.text;
+
+    reaction.effect();
+  }
+}
 
 
-    tieTextIndex =
-      (
-        tieTextIndex + 1
-      )
-      %
-      tieTexts.length;
 
+function showTieKnives() {
+  const card = document.querySelector("#winnerScreen .winner-card");
+  if (!card) return;
 
-    localStorage.setItem(
-      "tieTextIndex",
-      tieTextIndex
+  const old = card.querySelector(".tie-knife-bed");
+  if (old) old.remove();
+
+  const bed = document.createElement("div");
+  bed.className = "tie-knife-bed";
+
+  const items = [
+    ["🔪","5%","0s"],["🗡️","18%",".2s"],["🔪","34%",".7s"],
+    ["🗡️","53%",".4s"],["🔪","70%",".9s"],["🗡️","86%",".1s"]
+  ];
+
+  items.forEach(([emoji,left,delay]) => {
+    const knife = document.createElement("span");
+    knife.className = "tie-stab";
+    knife.textContent = emoji;
+    knife.style.left = left;
+    knife.style.animationDelay = delay;
+    bed.appendChild(knife);
+  });
+
+  card.appendChild(bed);
+}
+
+function handshakeTieEffect() {
+
+  clearVictoryLoops();
+
+  const spawnOne = () => {
+    const effects = document.getElementById("effects");
+    if (!effects) return;
+
+    const e = document.createElement("div");
+    e.className = "tie-handshake";
+    e.textContent = "🤝";
+    e.style.left = Math.random() * 96 + "%";
+    e.style.fontSize = (25 + Math.random() * 26) + "px";
+    e.style.animationDuration = (4.5 + Math.random() * 1.5) + "s";
+
+    effects.appendChild(e);
+
+    victoryTimeouts.push(
+      setTimeout(() => e.remove(), 6500)
     );
+  };
 
+  for (let i = 0; i < 10; i++) {
+    victoryTimeouts.push(
+      setTimeout(spawnOne, i * 260)
+    );
   }
 
+  victoryIntervals.push(
+    setInterval(() => {
+      spawnOne();
+      if (Math.random() > .48) {
+        victoryTimeouts.push(
+          setTimeout(spawnOne, 330)
+        );
+      }
+    }, 850)
+  );
+}
+
+
+/* =========================================================
+   НОЖИЧКИ — MEMORY ДО ПОСЛЕДНЕЙ ПАРЫ
+========================================================= */
+
+const KNIVES_PAIRS = [
+  { emoji:"🔪", name:"НОЖ" },
+  { emoji:"🗡️", name:"КИНЖАЛ" },
+  { emoji:"🧈", name:"НОЖ ДЛЯ МАСЛА" },
+  { emoji:"✂️", name:"НОЖНИЦЫ" },
+  { emoji:"🥄", name:"ЛОЖКА" },
+  { emoji:"🍌", name:"БАНАН" }
+];
+
+let knivesParticipants = [];
+let knivesCurrentIndex = 0;
+let knivesScores = [];
+let knivesOpened = [];
+let knivesLocked = true;
+let knivesRemaining = 12;
+let knivesRevealTimer = null;
+let knivesCards = [];
+let knivesFinished = false;
+
+function shuffleKnives(array) {
+  const result = [...array];
+
+  for (let i = result.length - 1; i > 0; i--) {
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
+
+    [result[i], result[j]] =
+      [result[j], result[i]];
+  }
+
+  return result;
+}
+
+function openKnivesRules() {
+
+  clearVictoryLoops();
+
+  document
+    .getElementById("winnerScreen")
+    .classList
+    .add("hidden");
+
+  document
+    .getElementById("knivesGameScreen")
+    .classList
+    .add("hidden");
+
+  document
+    .getElementById("knivesRulesScreen")
+    .classList
+    .remove("hidden");
+}
+
+function leaveKnivesForNewRound() {
+
+  clearInterval(knivesRevealTimer);
+
+  document
+    .getElementById("knivesRulesScreen")
+    .classList
+    .add("hidden");
+
+  document
+    .getElementById("knivesGameScreen")
+    .classList
+    .add("hidden");
+
+  playAgain();
+}
+
+function startKnivesGame() {
+
+  clearInterval(knivesRevealTimer);
+
+  knivesParticipants =
+    currentTieWinners.length
+      ? [...currentTieWinners]
+      : players.slice(0, 2);
+
+  knivesCurrentIndex = 0;
+  knivesScores =
+    knivesParticipants.map(() => 0);
+
+  knivesOpened = [];
+  knivesLocked = true;
+  knivesRemaining = 12;
+  knivesFinished = false;
+
+  document
+    .getElementById("knivesRulesScreen")
+    .classList
+    .add("hidden");
+
+  document
+    .getElementById("knivesGameScreen")
+    .classList
+    .remove("hidden");
+
+  const deck =
+    document.getElementById("knivesDeck");
+
+  deck.innerHTML = "";
+
+  const data =
+    shuffleKnives(
+      KNIVES_PAIRS.flatMap(
+        (pair, pairId) => [
+          { ...pair, pairId },
+          { ...pair, pairId }
+        ]
+      )
+    );
+
+  data.forEach(item => {
+
+    const card =
+      document.createElement("button");
+
+    card.type = "button";
+    card.className =
+      "knife-memory-card";
+
+    card.innerHTML = `
+      <div class="knife-memory-inner">
+        <div class="knife-memory-face">
+          <div class="knife-memory-emoji">${item.emoji}</div>
+          <div class="knife-memory-name">${item.name}</div>
+        </div>
+
+        <div class="knife-memory-face knife-memory-back">
+          🔪
+        </div>
+      </div>
+    `;
+
+    card.addEventListener(
+      "click",
+      () => pickKnifeCard(card, item)
+    );
+
+    deck.appendChild(card);
+  });
+
+  knivesCards =
+    [...deck.querySelectorAll(".knife-memory-card")];
+
+  document
+    .getElementById("knivesEndActions")
+    .classList
+    .add("hidden");
+
+  document
+    .getElementById("knivesReplayReveal")
+    .classList
+    .remove("hidden");
+
+  renderKnivesScores();
+  showKnivesForFiveSeconds();
+}
+
+function renderKnivesScores() {
+
+  const container =
+    document.getElementById("knivesScores");
+
+  container.style.gridTemplateColumns =
+    `repeat(${Math.min(knivesParticipants.length, 3)}, minmax(0, 1fr))`;
+
+  container.innerHTML =
+    knivesParticipants
+      .map(
+        (player, index) => `
+          <div class="knives-score ${
+            !knivesLocked
+            &&
+            !knivesFinished
+            &&
+            index === knivesCurrentIndex
+              ? "active"
+              : ""
+          }">
+            ${escapeHtml(player.name)}
+            ·
+            ${knivesScores[index]}
+            карточек
+          </div>
+        `
+      )
+      .join("");
+}
+
+function showKnivesForFiveSeconds() {
+
+  if (
+    knivesFinished
+    ||
+    knivesRemaining <= 0
+  ) return;
+
+  clearInterval(knivesRevealTimer);
+
+  knivesLocked = true;
+  knivesOpened = [];
+
+  knivesCards.forEach(card => {
+    if (!card.classList.contains("matched")) {
+      card.classList.remove("closed");
+    }
+  });
+
+  let left = 5;
+
+  const timer =
+    document.getElementById("knivesTimer");
+
+  const phase =
+    document.getElementById("knivesPhase");
+
+  const status =
+    document.getElementById("knivesStatus");
+
+  timer.textContent = "00:0" + left;
+  phase.textContent = "ЗАПОМИНАЙТЕ";
+
+  status.innerHTML =
+    "<strong>Смотрите внимательно.</strong><span>На нуле карточки снова закроются.</span>";
+
+  renderKnivesScores();
+
+  knivesRevealTimer =
+    setInterval(() => {
+
+      left--;
+      timer.textContent = "00:0" + left;
+
+      if (left <= 0) {
+
+        clearInterval(
+          knivesRevealTimer
+        );
+
+        knivesCards.forEach(card => {
+          if (!card.classList.contains("matched")) {
+            card.classList.add("closed");
+          }
+        });
+
+        knivesLocked = false;
+
+        const player =
+          knivesParticipants[
+            knivesCurrentIndex
+          ];
+
+        phase.textContent =
+          "ХОД: "
+          +
+          player.name;
+
+        status.innerHTML =
+          "<strong>"
+          +
+          escapeHtml(player.name)
+          +
+          "</strong><span>Открой две карточки и найди пару.</span>";
+
+        renderKnivesScores();
+      }
+
+    }, 1000);
+}
+
+function pickKnifeCard(card, item) {
+
+  if (
+    knivesLocked
+    ||
+    knivesFinished
+    ||
+    card.classList.contains("matched")
+    ||
+    !card.classList.contains("closed")
+    ||
+    knivesOpened.length >= 2
+  ) return;
+
+  card.classList.remove("closed");
+
+  knivesOpened.push({
+    card,
+    item
+  });
+
+  if (knivesOpened.length < 2) {
+    return;
+  }
+
+  knivesLocked = true;
+
+  const [first, second] =
+    knivesOpened;
+
+  if (
+    first.item.pairId
+    ===
+    second.item.pairId
+  ) {
+
+    setTimeout(() => {
+
+      first.card.classList.add("matched");
+      second.card.classList.add("matched");
+
+      knivesScores[
+        knivesCurrentIndex
+      ] += 2;
+
+      knivesRemaining -= 2;
+      knivesOpened = [];
+
+      const player =
+        knivesParticipants[
+          knivesCurrentIndex
+        ];
+
+      document
+        .getElementById("knivesStatus")
+        .innerHTML =
+        "<strong>ПАРА! "
+        +
+        first.item.emoji
+        +
+        "</strong><span>"
+        +
+        escapeHtml(player.name)
+        +
+        " забирает 2 карточки и ходит ещё раз.</span>";
+
+      if (knivesRemaining === 0) {
+        finishKnivesGame();
+        return;
+      }
+
+      knivesLocked = false;
+      renderKnivesScores();
+
+    }, 500);
+
+  } else {
+
+    document
+      .getElementById("knivesStatus")
+      .innerHTML =
+      "<strong>Мимо.</strong><span>Карточки сейчас закроются.</span>";
+
+    setTimeout(() => {
+
+      first.card.classList.add("closed");
+      second.card.classList.add("closed");
+
+      knivesOpened = [];
+
+      knivesCurrentIndex =
+        (
+          knivesCurrentIndex + 1
+        )
+        %
+        knivesParticipants.length;
+
+      knivesLocked = false;
+
+      const player =
+        knivesParticipants[
+          knivesCurrentIndex
+        ];
+
+      document
+        .getElementById("knivesPhase")
+        .textContent =
+        "ХОД: "
+        +
+        player.name;
+
+      document
+        .getElementById("knivesStatus")
+        .innerHTML =
+        "<strong>"
+        +
+        escapeHtml(player.name)
+        +
+        "</strong><span>Найди пару.</span>";
+
+      renderKnivesScores();
+
+    }, 850);
+  }
+}
+
+function finishKnivesGame() {
+
+  knivesFinished = true;
+  knivesLocked = true;
+
+  clearInterval(
+    knivesRevealTimer
+  );
+
+  document
+    .getElementById("knivesPhase")
+    .textContent =
+    "ИГРА ОКОНЧЕНА";
+
+  document
+    .getElementById("knivesReplayReveal")
+    .classList
+    .add("hidden");
+
+  document
+    .getElementById("knivesEndActions")
+    .classList
+    .remove("hidden");
+
+  const max =
+    Math.max(...knivesScores);
+
+  const winnerIndexes =
+    knivesScores
+      .map((score, index) => ({ score, index }))
+      .filter(item => item.score === max)
+      .map(item => item.index);
+
+  const status =
+    document.getElementById("knivesStatus");
+
+  if (winnerIndexes.length > 1) {
+
+    status.innerHTML =
+      "<strong>ДА ВЫ ИЗДЕВАЕТЕСЬ. СНОВА НИЧЬЯ.</strong>"
+      +
+      "<span>Даже ножи не помогли: "
+      +
+      knivesScores.join(" : ")
+      +
+      "</span>";
+
+  } else {
+
+    const winner =
+      knivesParticipants[
+        winnerIndexes[0]
+      ];
+
+    status.innerHTML =
+      "<strong>"
+      +
+      escapeHtml(winner.name)
+      +
+      " победил(а) в споре</strong>"
+      +
+      "<span>Карточки: "
+      +
+      knivesScores.join(" : ")
+      +
+      "</span>";
+  }
+
+  renderKnivesScores();
 }
 
 
 function playAgain() {
+
+  resetCardsCountControlToDefault();
 
   clearVictoryLoops();
 
@@ -6268,6 +8626,13 @@ function clearVictoryLoops() {
   document.getElementById(
     "effects"
   ).innerHTML = "";
+
+  const oldKnifeBed =
+    document.querySelector("#winnerScreen .tie-knife-bed");
+
+  if (oldKnifeBed) {
+    oldKnifeBed.remove();
+  }
 
 }
 
@@ -7294,346 +9659,90 @@ function heartsEffect(
 
 /* ---------- САЛЮТ ---------- */
 
-function fireworksEffect(
-  isTie
-) {
+function fireworksEffect(isTie) {
 
   if (!isTie) {
-
-    document.getElementById(
-      "effectCaption"
-    ).textContent =
+    document.getElementById("effectCaption").textContent =
       "Это салют или твоё эго взорвалось?";
-
   }
-
 
   const colors = [
-    "#ff4d6d",
-    "#ffd43b",
-    "#51cf66",
-    "#339af0",
-    "#845ef7",
-    "#ff922b",
-    "#f06595"
+    "#ffd84d","#ff8d3a","#ff4f7d",
+    "#8f7cff","#52d7ff","#fff3a0"
   ];
 
+  const burst = () => {
+    const container = document.getElementById("effects");
+    if (!container) return;
 
-  const burst =
-    () => {
+    const bursts = 5 + Math.floor(Math.random() * 3);
 
-      const fw =
-        document.createElement(
-          "div"
-        );
+    for (let b = 0; b < bursts; b++) {
+      const fw = document.createElement("div");
+      fw.className = "approved-fireburst";
+      fw.style.left = (8 + Math.random() * 84) + "%";
+      fw.style.top = (8 + Math.random() * 72) + "%";
 
+      const core = document.createElement("span");
+      core.className = "approved-fire-core";
+      fw.appendChild(core);
 
-      fw.className =
-        "fw";
+      const rays = 18 + Math.floor(Math.random() * 8);
+      const baseColor = randomItem(colors);
 
-
-      fw.style.left =
-        (
-          10
-          +
-          Math.random()
-          *
-          80
-        )
-        +
-        "%";
-
-
-      fw.style.top =
-        (
-          10
-          +
-          Math.random()
-          *
-          60
-        )
-        +
-        "%";
-
-
-      const color =
-        randomItem(
-          colors
-        );
-
-
-      for (
-        let i = 0;
-        i < 26;
-        i++
-      ) {
-
-        const p =
-          document.createElement(
-            "div"
-          );
-
-
-        p.className =
-          "fw-piece";
-
-
-        p.style.background =
-          color;
-
-
-        const angle =
-          Math.PI
-          *
-          2
-          *
-          i
-          /
-          26;
-
-
-        const distance =
-          80
-          +
-          Math.random()
-          *
-          110;
-
-
-        p.style.setProperty(
-          "--x",
-          Math.cos(angle)
-          *
-          distance
-          +
-          "px"
-        );
-
-
-        p.style.setProperty(
-          "--y",
-          Math.sin(angle)
-          *
-          distance
-          +
-          "px"
-        );
-
-
-        fw.appendChild(
-          p
-        );
-
+      for (let i = 0; i < rays; i++) {
+        const s = document.createElement("span");
+        s.className = "approved-spark";
+        s.style.setProperty("--a", ((360 / rays) * i + Math.random() * 5) + "deg");
+        s.style.setProperty("--d1", (26 + Math.random() * 18) + "px");
+        s.style.setProperty("--d2", (58 + Math.random() * 34) + "px");
+        s.style.setProperty("--d3", (90 + Math.random() * 58) + "px");
+        s.style.setProperty("--c", Math.random() > .25 ? baseColor : randomItem(colors));
+        s.style.animationDelay = (Math.random() * .14) + "s";
+        fw.appendChild(s);
       }
 
+      container.appendChild(fw);
+      victoryTimeouts.push(setTimeout(() => fw.remove(), 1900));
+    }
+  };
 
-      document.getElementById(
-        "effects"
-      ).appendChild(
-        fw
-      );
-
-
-      victoryTimeouts.push(setTimeout(
-        () => fw.remove(),
-        1800
-      ));
-
-    };
-
-
-  for (
-    let i = 0;
-    i < 6;
-    i++
-  ) {
-
-    setTimeout(
-      burst,
-      i * 450
-    );
-
-  }
-
-
-  victoryIntervals.push(
-    setInterval(
-      () => {
-
-        for (
-          let i = 0;
-          i < 5;
-          i++
-        ) {
-
-          setTimeout(
-            burst,
-            i * 500
-          );
-
-        }
-
-      },
-      4500
-    )
-  );
-
+  burst();
+  victoryIntervals.push(setInterval(burst, 2100));
 }
 
 
 /* ---------- МОЛНИИ ---------- */
 
-function lightningEffect(
-  isTie
-) {
+function lightningEffect(isTie) {
 
   if (!isTie) {
-
-    document.getElementById(
-      "effectCaption"
-    ).textContent =
-      "КЧАУ";
-
+    document.getElementById("effectCaption").textContent = "КЧАУ";
   }
 
+  const burst = () => {
+    const container = document.getElementById("effects");
+    if (!container) return;
 
-  const spawn =
-    () => {
+    const count = 16 + Math.floor(Math.random() * 5);
 
-      const effectsContainer =
-        document.getElementById(
-          "effects"
-        );
+    for (let i = 0; i < count; i++) {
+      const e = document.createElement("div");
+      e.className = "lightning-bolt";
+      e.textContent = "⚡";
+      e.style.left = (4 + Math.random() * 92) + "%";
+      e.style.top = (5 + Math.random() * 82) + "%";
+      e.style.fontSize = (26 + Math.random() * 42) + "px";
+      e.style.animationDelay = (Math.random() * .18) + "s";
 
+      container.appendChild(e);
+      victoryTimeouts.push(setTimeout(() => e.remove(), 1800));
+    }
+  };
 
-      /* Побольше молний, но меньше тяжёлых грозовых emoji. */
-      const bolts = [
-        "⚡","⚡","⚡","⚡","⚡","🌩️"
-      ];
-
-
-      for (
-        let i = 0;
-        i < 22;
-        i++
-      ) {
-
-        /* Ограничиваем количество элементов, чтобы не тормозило. */
-        if (
-          effectsContainer
-            .querySelectorAll(
-              ".lightning-bolt"
-            )
-            .length
-          >=
-          55
-        ) {
-
-          break;
-
-        }
-
-
-        const e =
-          document.createElement(
-            "div"
-          );
-
-
-        e.className =
-          "lightning-bolt";
-
-
-        e.textContent =
-          bolts[
-            i % bolts.length
-          ];
-
-
-        e.style.left =
-          Math.random()
-          *
-          100
-          +
-          "%";
-
-
-        e.style.fontSize =
-          (
-            30
-            +
-            Math.random()
-            *
-            42
-          )
-          +
-          "px";
-
-
-        e.style.setProperty(
-          "--drift",
-          (
-            -70
-            +
-            Math.random()
-            *
-            140
-          )
-          +
-          "px"
-        );
-
-
-        e.style.animationDuration =
-          (
-            10
-            +
-            Math.random()
-            *
-            5
-          )
-          +
-          "s";
-
-
-        e.style.animationDelay =
-          (
-            Math.random()
-            *
-            2.5
-          )
-          +
-          "s";
-
-
-        effectsContainer.appendChild(
-          e
-        );
-
-
-        victoryTimeouts.push(setTimeout(
-          () => e.remove(),
-          18000
-        ));
-
-      }
-
-    };
-
-
-  spawn();
-
-
-  victoryIntervals.push(
-    setInterval(
-      spawn,
-      7000
-    )
-  );
-
+  burst();
+  victoryIntervals.push(setInterval(burst, 2400));
 }
-
-
 
 
 /* ---------- КУРС РУБЛЯ ---------- */
@@ -9118,20 +11227,7 @@ function renderDeveloperOverview() {
   chips.innerHTML =
     letters
       .map(letter => `
-        <button
-          type="button"
-          class="developer-letter-chip ${
-            selectedDeveloperLetter === letter
-              ? "active"
-              : ""
-          }"
-          onclick="showDeveloperLetter('${escapeHtml(letter)}')"
-        >
-          ${escapeHtml(letter)}
-          <span class="developer-letter-count">
-            ${grouped[letter].length}
-          </span>
-        </button>
+        
       `)
       .join("");
 
@@ -9784,7 +11880,524 @@ function deleteHintsForQuestion(
   handleCollectionSearch();
 }
 
+
+function showMilestoneReaction(playerId, score) {
+
+  const card =
+    document.querySelector(
+      `[data-player-id="${playerId}"]`
+    )
+    ||
+    document.getElementById(
+      "playerCard" + playerId
+    );
+
+  const pop =
+    document.createElement("div");
+
+  pop.className = "milestone-pop";
+  pop.textContent =
+    score
+    +
+    " очков ✦";
+
+  document.body.appendChild(pop);
+
+  if (card) {
+    const rect = card.getBoundingClientRect();
+
+    pop.style.left =
+      Math.min(
+        window.innerWidth - 130,
+        rect.left + rect.width - 95
+      )
+      +
+      "px";
+
+    pop.style.top =
+      Math.max(
+        10,
+        rect.top + 8
+      )
+      +
+      "px";
+  } else {
+    pop.style.right = "24px";
+    pop.style.bottom = "24px";
+  }
+
+  setTimeout(
+    () => pop.remove(),
+    1500
+  );
+}
+
+document.getElementById("roundCount")?.addEventListener(
+  "change",
+  function() {
+    const custom =
+      document.getElementById("customCardsField");
+
+    if (custom) {
+      custom.classList.toggle(
+        "hidden",
+        this.value !== "custom"
+      );
+    }
+  }
+);
+
+
+let finalFxLoop = null;
+function spawnFinalFx(){
+  const stage=document.getElementById("finalPagePreview");
+  if(!stage || stage.classList.contains("hidden")) return;
+  const icons=["🔥","✨","⭐"];
+  for(let i=0;i<18;i++){
+    const e=document.createElement("div");
+    e.className="final-fx";
+    e.textContent=icons[Math.floor(Math.random()*icons.length)];
+    e.style.left=(3+Math.random()*92)+"%";
+    e.style.top=(5+Math.random()*86)+"%";
+    e.style.animationDelay=(Math.random()*.22)+"s";
+    stage.appendChild(e);
+    setTimeout(()=>e.remove(),2100);
+  }
+}
+function openFinalPagePreview(){
+  document.getElementById("finalPagePreview")?.classList.remove("hidden");
+  spawnFinalFx();
+  clearInterval(finalFxLoop);
+  finalFxLoop=setInterval(spawnFinalFx,2500);
+}
+function closeFinalPagePreview(){
+  document.getElementById("finalPagePreview")?.classList.add("hidden");
+  clearInterval(finalFxLoop);
+}
+
+
+function openVictoryReactionTester() {
+  const tester =
+    document.getElementById("victoryReactionTester");
+
+  if (tester) {
+    tester.classList.remove("hidden");
+  }
+}
+
+function closeVictoryReactionTester() {
+  const tester =
+    document.getElementById("victoryReactionTester");
+
+  if (tester) {
+    tester.classList.add("hidden");
+  }
+}
+
+function devShowVictory(index) {
+
+  closeVictoryReactionTester();
+
+  clearVictoryLoops();
+
+  // Прячем экраны, которые могут мешать тесту.
+  [
+    "startScreen",
+    "gameScreen",
+    "roundResultScreen",
+    "roundIntroScreen",
+    "knivesRulesScreen",
+    "knivesGameScreen",
+    "finalPagePreview"
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add("hidden");
+  });
+
+  const winnerScreen =
+    document.getElementById("winnerScreen");
+
+  if (!winnerScreen) return;
+
+  winnerScreen.classList.remove("hidden");
+
+  const winnerText =
+    document.getElementById("winnerText");
+
+  const tieExtraText =
+    document.getElementById("tieExtraText");
+
+  const playKnivesButton =
+    document.getElementById("playKnivesButton");
+
+  if (winnerText) {
+    winnerText.textContent =
+      "Победили девочки! 🎉";
+  }
+
+  if (tieExtraText) {
+    tieExtraText.classList.add("hidden");
+  }
+
+  if (playKnivesButton) {
+    playKnivesButton.classList.add("hidden");
+  }
+
+  // Тестовые данные для нового финального оформления.
+  const kicker =
+    winnerScreen.querySelector(".final-kicker");
+
+  const score =
+    winnerScreen.querySelector(".final-score");
+
+  const meta =
+    winnerScreen.querySelector(".final-meta");
+
+  if (kicker) {
+    kicker.textContent = "ФИНАЛ · 3 РАУНДА";
+  }
+
+  if (score) {
+    score.textContent = "18 : 12";
+  }
+
+  if (meta) {
+    meta.textContent = "3 раунда · 30 карточек";
+  }
+
+  runVictoryEffect(index, false);
+}
+
+
+
+function refreshSettingsAdminButton() {
+  const button = document.getElementById("settingsAdminButton");
+  if (!button) return;
+
+  const enabled = adminAllowsAnyName();
+
+  button.classList.toggle("active", enabled);
+  button.textContent = enabled ? "😈" : "😇";
+  button.title = enabled
+    ? "Админ включён: любые имена разрешены"
+    : "Админ выключен: правила имён работают";
+}
+
+function toggleAdminRudeFromSettings() {
+  const next = !adminAllowsAnyName();
+
+  localStorage.setItem(
+    "trainerAdminAllowsRude",
+    next ? "true" : "false"
+  );
+
+  refreshSettingsAdminButton();
+
+  if (!next) {
+    revalidateSavedNames();
+  } else {
+    document
+      .querySelectorAll('[id^="nameMessage"]')
+      .forEach(el => el.textContent = "");
+  }
+}
+
+document.addEventListener(
+  "DOMContentLoaded",
+  refreshSettingsAdminButton
+);
+
+
+
+
+
+function applyStartAestheticLayoutV2() {
+  const start =
+    document.getElementById("startScreen") ||
+    document.querySelector(".start-screen");
+
+  if (!start) return;
+
+  const layout = start.querySelector(".start-layout");
+  const settings = start.querySelector(".start-settings-column");
+  const modeWrap = start.querySelector(".question-mode-wrap");
+
+  if (!layout || !settings || !modeWrap) return;
+
+  let playersColumn =
+    layout.querySelector(".players-column");
+
+  if (!playersColumn) {
+    playersColumn = document.createElement("div");
+    playersColumn.className = "players-column";
+    layout.insertBefore(playersColumn, modeWrap);
+  }
+
+  const playerCards =
+    Array.from(
+      settings.querySelectorAll(".player-setup-card")
+    );
+
+  playerCards.forEach(card => {
+    playersColumn.appendChild(card);
+  });
+
+  // Убираем пустой вертикальный хвост в левой колонке,
+  // если карточки игроков были её единственным нижним содержимым.
+  settings.querySelectorAll(".players-column").forEach(x => x.remove());
+}
+
+document.addEventListener(
+  "DOMContentLoaded",
+  applyStartAestheticLayoutV2
+);
+
+
+function getAvailableCardsLimit() {
+  if (
+    questionMode
+    &&
+    QUESTION_MODES[questionMode]
+  ) {
+    return QUESTION_MODES[questionMode].questions.length;
+  }
+
+  return allQuestions.length;
+}
+
+function updateCardsCountHint() {
+  const hint =
+    document.getElementById("cardsCountHint");
+
+  const input =
+    document.getElementById("customCardsInline");
+
+  const limit =
+    getAvailableCardsLimit();
+
+  if (input) {
+    input.max = String(limit);
+    input.placeholder = "1–" + limit;
+  }
+
+  if (hint) {
+    hint.textContent =
+      "Доступно сейчас: до "
+      +
+      limit
+      +
+      " карточек";
+  }
+}
+
+function handleCardsCountChoice() {
+  const select =
+    document.getElementById("roundCount");
+
+  const input =
+    document.getElementById("customCardsInline");
+
+  if (!select || !input) return;
+
+  if (select.value === "custom") {
+    updateCardsCountHint();
+
+    const limit =
+      getAvailableCardsLimit();
+
+    const current =
+      Number(input.value || 10);
+
+    input.value =
+      String(
+        Math.max(
+          1,
+          Math.min(limit, current)
+        )
+      );
+
+    select.classList.add("hide-for-custom");
+    input.classList.add("show");
+
+    setTimeout(
+      () => {
+        input.focus();
+        input.select();
+      },
+      0
+    );
+  }
+}
+
+function finishCustomCardsCount() {
+  const input =
+    document.getElementById("customCardsInline");
+
+  const select =
+    document.getElementById("roundCount");
+
+  if (!input || !select) return;
+
+  const limit =
+    getAvailableCardsLimit();
+
+  let value =
+    Number(input.value || 1);
+
+  value =
+    Math.max(
+      1,
+      Math.min(limit, value)
+    );
+
+  input.value = String(value);
+
+  /* Поле остаётся на том же месте как выбранное "своё число".
+     Никакой второй строки под ним не появляется. */
+}
+
+function handleCustomCardsKey(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    event.currentTarget.blur();
+  }
+
+  if (event.key === "Escape") {
+    const select =
+      document.getElementById("roundCount");
+
+    const input =
+      document.getElementById("customCardsInline");
+
+    if (select && input) {
+      input.classList.remove("show");
+      select.classList.remove("hide-for-custom");
+      select.value = "3";
+    }
+  }
+}
+
+/* Если пользователь меняет режим, лимит "своего числа"
+   сразу пересчитывается автоматически. */
+const originalSetQuestionModeV10 =
+  setQuestionMode;
+
+setQuestionMode = function(mode) {
+  originalSetQuestionModeV10(mode);
+  updateCardsCountHint();
+
+  const input =
+    document.getElementById("customCardsInline");
+
+  if (
+    input
+    &&
+    input.classList.contains("show")
+  ) {
+    const limit =
+      getAvailableCardsLimit();
+
+    if (Number(input.value) > limit) {
+      input.value = String(limit);
+    }
+  }
+};
+
+document.addEventListener(
+  "DOMContentLoaded",
+  updateCardsCountHint
+);
+
+
+function resetCardsCountControlToDefault() {
+  const select =
+    document.getElementById("roundCount");
+
+  const input =
+    document.getElementById("customCardsInline");
+
+  if (select) {
+    select.value = "3";
+    select.classList.remove("hide-for-custom");
+  }
+
+  if (input) {
+    input.classList.remove("show");
+    input.value = "10";
+  }
+
+  updateCardsCountHint();
+}
+
+
+document.addEventListener(
+  "click",
+  function(event) {
+    const backToStart =
+      event.target.closest(
+        '[onclick*="returnToStartForNewGame"], [onclick*="restartGame"], [data-action="back-to-start"]'
+      );
+
+    if (backToStart) {
+      resetCardsCountControlToDefault();
+    }
+  },
+  true
+);
+
 </script>
+
+
+<section id="finalPagePreview" class="final-page-preview hidden">
+  <div class="final-page-card">
+    <div class="final-kicker">ФИНАЛ · 3 РАУНДА</div>
+    <h1>Игра окончена!</h1>
+    <div class="final-winner">Победили девочки! 🎉</div>
+    <div class="final-score">18 : 12</div>
+    <div class="final-meta">3 раунда · 30 карточек</div>
+    <div class="final-caption">Ты торпеда, пушка, ПРИОРА!!!</div>
+    <div class="final-actions">
+      <button class="final-primary" type="button" onclick="closeFinalPagePreview()">Сыграть ещё раз</button>
+      <button class="final-secondary" type="button" onclick="closeFinalPagePreview()">На стартовую</button>
+    </div>
+  </div>
+  <button class="final-close" type="button" onclick="closeFinalPagePreview()">×</button>
+</section>
+
+
+
+<section id="victoryReactionTester" class="victory-tester hidden">
+  <div class="victory-tester-panel">
+    <div class="victory-tester-head">
+      <div>
+        <div class="victory-tester-kicker">🛠 РЕЖИМ РАЗРАБОТЧИКА</div>
+        <h2>Проверка победных реакций</h2>
+        <p>Нажми реакцию — откроется настоящий финальный экран игры.</p>
+      </div>
+      <button class="victory-tester-close" type="button" onclick="closeVictoryReactionTester()">×</button>
+    </div>
+
+    <div class="victory-tester-grid">
+      <button type="button" onclick="devShowVictory(0)">✈️ Самолёты</button>
+      <button type="button" onclick="devShowVictory(1)">🔥 Огонь</button>
+      <button type="button" onclick="devShowVictory(2)">🎊 Конфетти</button>
+      <button type="button" onclick="devShowVictory(3)">🐈 Коты</button>
+      <button type="button" onclick="devShowVictory(4)">💘 Сердечки</button>
+      <button type="button" onclick="devShowVictory(5)">🎆 Фейерверк</button>
+      <button type="button" onclick="devShowVictory(6)">⚡ КЧАУ</button>
+      <button type="button" onclick="devShowVictory(7)">₽ Курс рубля</button>
+      <button type="button" onclick="devShowVictory(8)">👑 Самооценка</button>
+      <button type="button" onclick="devShowVictory(9)">⛽ Бензин</button>
+    </div>
+
+    <div style="margin-top:14px;padding:10px 12px;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:11px;text-align:center">
+      ⏱ Таймер раундов: <b style="color:var(--text)">69 → 60 → 55 → 50 → 45 → 40 → 35 → 30</b>
+    </div>
+    <div class="victory-tester-note">
+      Тестовый победитель: <b>девочки</b> · счёт <b>18 : 12</b>
+    </div>
+  </div>
+</section>
 
 </body>
 </html>
