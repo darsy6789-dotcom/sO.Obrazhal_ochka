@@ -1,5 +1,5 @@
 <!--
-KTO БЫСТРЕЕ — v11.5 DEV PASSWORD + TOOLS REVIEW
+KTO БЫСТРЕЕ — v12.16 FULL KNIVES GRIDS PRE-RELEASE
 Integrated:
 - approved START UI spacing lock: 18px between modes and Start button
 - 15 sequential inter-round phrases
@@ -892,6 +892,14 @@ button{cursor:pointer}
     opacity:0;
     transform:translateY(calc(100vh + 160px)) translateX(var(--drift)) scale(1.05);
   }
+}
+
+
+body > #winnerScreen,
+#gameRoot > #winnerScreen,
+#app > #winnerScreen{
+  align-items:center;
+  justify-content:center;
 }
 
 /* ---------- ПОБЕДА ---------- */
@@ -4899,6 +4907,225 @@ body.developer-mode .hint-preview-eye{
 }
 
 
+
+
+
+
+
+
+/* v12.6 — simplified reaction viewer */
+.reaction-tv-controls{display:flex;flex-direction:column;gap:10px}
+.reaction-simple-note{font-size:11px;line-height:1.4;color:#9d9d9d;padding:10px;border:1px solid #3a3a3a;border-radius:9px;background:#202020}
+.reaction-tv-controls .reaction-replay-btn{margin-top:0}
+
+/* v12.4 — ONE-PAGE TV MENU REACTION EDITOR */
+.postcard-tv-layout{
+  display:grid;grid-template-columns:300px minmax(0,1fr);gap:14px;
+  height:calc(100vh - 70px);padding:14px;background:#121212;overflow:hidden
+}
+.postcard-tv-menu{border:1px solid #383838;border-radius:15px;background:#1d1d1d;padding:12px;overflow:auto}
+.postcard-tv-menu .postcard-reaction-grid{grid-template-columns:1fr}
+.postcard-tv-screen-wrap{min-width:0;display:flex;flex-direction:column;border:1px solid #3a3a3a;border-radius:16px;overflow:hidden;background:#0f0f0f}
+.postcard-tv-screen-wrap .postcard-live-host{flex:1;min-height:0;position:relative;overflow:hidden}
+.postcard-tv-bottom{display:flex;align-items:center;justify-content:center;gap:7px;padding:9px;background:#1d1d1d;border-top:1px solid #363636}
+.postcard-tv-bottom button{min-height:35px;border:1px solid #555;border-radius:8px;background:#2c2c2c;color:#eee;padding:0 10px;font-size:10px;font-weight:900}
+#postcardVariantIndicator{font-size:10px;color:#aaa;min-width:44px;text-align:center}
+.reaction-tv-controls{position:static!important;width:auto!important;max-height:none!important;overflow:auto!important;border-radius:15px!important;box-shadow:none!important}
+.reaction-text-editor-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.reaction-text-editor-head button{width:28px;height:28px;border:1px solid #555;border-radius:7px;background:#292929;color:#eee}
+.reaction-phrase-item{margin-top:9px}.reaction-phrase-item label{display:block;font-size:8px;font-weight:1000;color:#999;margin-bottom:4px}
+.reaction-phrase-item textarea{width:100%;min-height:70px;border:1px solid #5d4b67;border-radius:8px;background:#181818;color:#eee;padding:8px;resize:vertical;font-size:10px}
+.postcard-dev-page-actions{margin-left:auto}
+@media(max-width:1100px){.postcard-tv-layout{grid-template-columns:240px minmax(0,1fr)}}
+
+/* v12.3 — REAL WINNER SCREEN HOST */
+.postcard-live-shell{position:relative;min-height:calc(100vh - 70px);background:#111}
+.postcard-live-host{min-height:calc(100vh - 70px);position:relative;overflow:hidden}
+.postcard-live-host .winner-screen,
+.postcard-live-host #winnerScreen{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:22px!important;
+  overflow:hidden!important;
+}
+.postcard-live-host .hidden{display:none!important}
+.postcard-live-host .winner-card{
+  margin:0!important;
+  width:min(650px,calc(100% - 44px))!important;
+}
+.postcard-live-host .final-actions{pointer-events:none;opacity:.35}
+.postcard-live-host .settings-btn,
+.postcard-live-host .new-game-btn{display:none!important}
+
+/* v12.1 — LIVE REACTION EDITOR */
+.reaction-live-controls{
+  position:fixed;right:22px;top:92px;z-index:10001;width:340px;max-height:calc(100vh - 180px);overflow:auto;
+  border:1px solid #4a4a4a;border-radius:16px;background:rgba(25,25,25,.94);backdrop-filter:blur(10px);
+  padding:15px;box-shadow:0 14px 36px rgba(0,0,0,.35)
+}
+.reaction-live-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.reaction-live-kicker{font-size:8px;font-weight:1000;letter-spacing:.12em;color:#929292}
+.reaction-live-title{font-size:20px;font-weight:1000;margin-top:3px}
+.reaction-pencil{width:35px;height:35px;border:1px solid #6b5678;border-radius:9px;background:#33283a;color:#d8b8e7;font-size:17px;cursor:pointer}
+.reaction-live-copy{margin-top:12px;padding:11px;border:1px solid #3d3d3d;border-radius:10px;background:#202020;font-size:11px;line-height:1.45}
+.reaction-live-text-edit{margin-top:10px}.reaction-live-text-edit textarea{width:100%;min-height:80px;border:1px solid #6b5678;border-radius:9px;background:#191919;color:#eee;padding:9px;resize:vertical}
+.reaction-live-text-edit button,.reaction-replay-btn,.reaction-reset-btn{width:100%;min-height:37px;margin-top:7px;border:1px solid #5d5d5d;border-radius:9px;background:#292929;color:#eee;font-size:10px;font-weight:900;cursor:pointer}
+.reaction-replay-btn{border-color:#8d67a3;background:#34293a;color:#eadcf1}
+.reaction-control-group{margin-top:14px}.reaction-control-label{display:flex;justify-content:space-between;gap:10px;font-size:10px;color:#aaa}.reaction-control-label b{color:#eee}
+.reaction-control-group input[type=range]{width:100%;margin-top:7px;accent-color:#9a70b3}
+.postcard-preview-game-stage{padding-right:390px}
+@media(max-width:850px){.reaction-live-controls{position:relative;right:auto;top:auto;width:auto;max-height:none;margin:12px}.postcard-preview-game-stage{padding-right:5%}}
+
+
+/* =========================================================
+   v12.1 — LIVE REACTION PARAMETERS
+========================================================= */
+const REACTION_DEFAULTS={
+  planes:{speed:1,count:6,size:34,interval:280},
+  fire:{speed:1,count:10,size:46,interval:100},
+  confetti:{speed:1,count:50,size:18,interval:35},
+  cats:{speed:1,count:12,size:34,interval:120},
+  hearts:{speed:1,count:18,size:34,interval:90},
+  fireworks:{speed:1,count:12,size:24,interval:170},
+  kchau:{speed:1,count:8,size:34,interval:110},
+  ruble:{speed:1,count:14,size:36,interval:120},
+  esteem:{speed:1,count:10,size:34,interval:120},
+  fuel:{speed:1,count:10,size:34,interval:230},
+  tie:{speed:1,count:8,size:24,interval:120}
+};
+function getReactionLiveStore(){
+  try{return JSON.parse(localStorage.getItem("wordGameReactionAnimationSettings")||"{}")||{}}
+  catch(e){return {}}
+}
+function getReactionLiveSettings(id){
+  return {...(REACTION_DEFAULTS[id]||REACTION_DEFAULTS.hearts),...(getReactionLiveStore()[id]||{})}
+}
+function saveReactionLiveSettings(id,settings){
+  const store=getReactionLiveStore();store[id]=settings;
+  localStorage.setItem("wordGameReactionAnimationSettings",JSON.stringify(store));
+}
+function syncReactionLiveControls(){
+  const r=getPostcardReaction(standalonePostcardReactionId);
+  const title=document.getElementById("reactionLiveTitle");
+  if(title) title.textContent=r.name;
+  const v=getPostcardVariants(r.id);
+  const indicator=document.getElementById("postcardVariantIndicator");
+  if(indicator) indicator.textContent=`${standalonePostcardPreviewIndex+1} / ${Math.max(1,v.length)}`;
+}
+function updateReactionLiveSetting(){}
+function resetReactionLiveSettings(){}
+function toggleReactionTextEditor(){}
+function renderReactionPhraseEditor(){
+  const variants=getPostcardVariants(standalonePostcardReactionId);
+  const list=document.getElementById("reactionPhraseEditorList");
+  if(!list)return;
+  list.innerHTML=variants.map((v,i)=>`<div class="reaction-phrase-item"><label>ВАРИАНТ ${i+1}</label><textarea id="reactionPhrase_${i}">${escapeHtml(v.text||"")}</textarea></div>`).join("");
+}
+function saveAllReactionPhrases(){}
+function saveReactionLiveText(){}
+
+/* =========================================================
+   v12 PRE-RELEASE — FULLSCREEN DEV POSTCARD PAGE
+========================================================= */
+.postcard-dev-page{position:fixed;inset:0;z-index:9999;background:#151515;color:var(--text);overflow:auto}
+.postcard-dev-page-head{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid var(--surface2);background:rgba(28,28,28,.96);backdrop-filter:blur(10px)}
+.postcard-dev-page-left{display:flex;align-items:center;gap:14px;min-width:0}
+.postcard-dev-back,.postcard-dev-mode,.postcard-dev-close{min-height:40px;border:1px solid #4b4b4b;border-radius:10px;background:#2d2d2d;color:#eee;padding:0 12px;font-weight:900;cursor:pointer}
+.postcard-dev-close{width:40px;padding:0;border-radius:50%;font-size:20px}
+.postcard-dev-page-actions{display:flex;gap:7px;align-items:center}
+.postcard-dev-mode.active{border-color:#9b72b7;background:#33283a;color:#eadcf1}
+.postcard-dev-kicker{font-size:9px;color:#9d8ba8;font-weight:1000;letter-spacing:.12em}
+.postcard-dev-page-title{font-size:25px;font-weight:1000}
+.postcard-dev-edit-view{display:grid;grid-template-columns:minmax(330px,440px) minmax(0,1fr);gap:18px;padding:18px 22px 28px;max-width:1500px;margin:0 auto}
+.postcard-dev-picker,.postcard-dev-editor-panel{border:1px solid #343434;border-radius:16px;background:rgba(31,31,31,.96);padding:15px}
+.postcard-dev-picker{align-self:start;position:sticky;top:84px}
+.postcard-dev-section-title{font-size:10px;font-weight:1000;color:#919191;letter-spacing:.12em;margin:5px 0 9px}
+.postcard-dev-editor-panel{min-height:620px}
+.postcard-dev-editor-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.postcard-dev-editor-tools{display:flex;gap:7px;flex-wrap:wrap}
+.postcard-dev-preview-view{min-height:calc(100vh - 69px);position:relative;background:#111}
+.postcard-preview-game-stage{position:relative;min-height:calc(100vh - 69px);overflow:hidden;padding:38px 5% 120px;background:linear-gradient(150deg,#34436f 0%,#2f3b63 42%,#684c77 77%,#253450 100%)}
+.postcard-preview-game-top{text-align:center;color:#ddd}
+.postcard-preview-round{font-size:11px;font-weight:1000;letter-spacing:.12em;color:#b9b9b9}
+.postcard-preview-reaction-name{font-size:21px;font-weight:1000;margin-top:5px}
+.postcard-preview-winner-card{width:min(880px,90%);min-height:360px;margin:8vh auto 0;border-radius:26px;border:2px solid rgba(255,255,255,.78);background:rgba(23,23,23,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 18px 50px rgba(0,0,0,.25);position:relative;z-index:5;text-align:center;padding:36px}
+.postcard-preview-crown{font-size:42px;color:#e5c86e}.postcard-preview-winner{font-size:42px;font-weight:1000;margin-top:7px}.postcard-preview-score{font-size:24px;font-weight:900;color:#d4d4d4;margin-top:6px}.postcard-preview-caption{font-size:20px;font-weight:900;max-width:720px;line-height:1.35;margin-top:24px}
+.postcard-preview-effect-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.postcard-preview-floating-controls{position:fixed;left:50%;bottom:18px;z-index:10002;transform:translateX(-50%);display:flex;gap:7px;flex-wrap:wrap;justify-content:center;padding:8px;border:1px solid #444;border-radius:14px;background:rgba(25,25,25,.92);backdrop-filter:blur(8px);box-shadow:0 8px 26px rgba(0,0,0,.35)}
+.postcard-preview-floating-controls button{min-height:38px;border:1px solid #4b4b4b;border-radius:9px;background:#2c2c2c;color:#eee;padding:0 11px;font-size:10px;font-weight:900}.postcard-preview-floating-controls .primaryish{border-color:#8d67a3;background:#34293a;color:#eadcf1}
+.devfx{position:absolute;z-index:2;will-change:transform,opacity}.devfx-heart{font-size:34px;color:#e18bb5;animation:devHeart 2.1s ease-in-out forwards}.devfx-confetti{width:10px;height:18px;border-radius:2px;background:var(--fx,#d58be6);animation:devConfetti 2.2s linear forwards}.devfx-plane{font-size:34px;animation:devPlane 2.2s ease-in-out forwards}.devfx-fire{font-size:46px;animation:devFire 1.5s ease-in-out infinite alternate}.devfx-cat{font-size:34px;animation:devCat 2s ease-in forwards}.devfx-firework{width:9px;height:9px;border-radius:50%;background:var(--fx,#b18de6);animation:devFirework 1.7s ease-out forwards}
+@keyframes devHeart{0%{transform:translateY(30px) scale(.7);opacity:0}20%{opacity:1}100%{transform:translateY(-260px) scale(1.25);opacity:0}}
+@keyframes devConfetti{0%{transform:translateY(-60px) rotate(0);opacity:1}100%{transform:translateY(105vh) rotate(520deg);opacity:.5}}
+@keyframes devPlane{0%{transform:translate(-18vw,20vh) rotate(-8deg);opacity:0}15%{opacity:1}100%{transform:translate(120vw,-35vh) rotate(13deg);opacity:0}}
+@keyframes devFire{0%{transform:scale(.85) translateY(0)}100%{transform:scale(1.15) translateY(-18px)}}@keyframes devCat{0%{transform:translateY(-90px) rotate(-12deg);opacity:0}20%{opacity:1}100%{transform:translateY(105vh) rotate(25deg);opacity:.8}}
+@keyframes devFirework{0%{transform:scale(.2);opacity:1}70%{opacity:1;box-shadow:60px 0 0 -2px var(--fx),-60px 0 0 -2px var(--fx),0 60px 0 -2px var(--fx),0 -60px 0 -2px var(--fx),42px 42px 0 -2px var(--fx),-42px -42px 0 -2px var(--fx),42px -42px 0 -2px var(--fx),-42px 42px 0 -2px var(--fx)}100%{transform:scale(1.4);opacity:0}}
+@media(max-width:900px){.postcard-dev-edit-view{grid-template-columns:1fr}.postcard-dev-picker{position:static}.postcard-preview-winner-card{margin-top:5vh}.postcard-preview-winner{font-size:32px}.postcard-preview-caption{font-size:16px}}
+
+/* =========================================================
+   v12 — РЕДАКТОР ОТКРЫТОК
+========================================================= */
+.postcard-editor-intro{color:var(--muted);font-size:12px;line-height:1.45;margin:2px 0 18px}
+.postcard-editor-section-title{font-size:10px;font-weight:1000;letter-spacing:.12em;color:var(--muted);margin:17px 0 9px}
+.postcard-reaction-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.postcard-reaction-card{
+  --pc:#8b72a4;--pcbg:#2d2730;
+  width:100%;min-height:64px;border:1px solid var(--pc);border-radius:12px;
+  background:linear-gradient(90deg,var(--pcbg),var(--surface) 78%);
+  color:var(--text);display:flex;align-items:center;gap:11px;padding:11px 13px;text-align:left;cursor:pointer
+}
+.postcard-reaction-card:hover,.postcard-reaction-card.active{filter:brightness(1.09);box-shadow:inset 4px 0 0 var(--pc)}
+.postcard-reaction-icon{
+  width:34px;height:34px;flex:0 0 34px;border:1px solid var(--pc);border-radius:9px;
+  display:grid;place-items:center;color:var(--pc);font-weight:1000;font-size:17px;background:rgba(255,255,255,.025)
+}
+.postcard-reaction-copy{min-width:0;flex:1}
+.postcard-reaction-copy b{display:block;font-size:14px}
+.postcard-reaction-copy small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.postcard-tie-card{--pc:#7d8fa7;--pcbg:#282d35}
+.postcard-editor-workspace{margin-top:18px;border-top:1px solid var(--surface2);padding-top:17px}
+.postcard-workspace-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.postcard-workspace-title{font-size:23px;font-weight:1000}
+.postcard-workspace-count{font-size:10px;color:var(--muted);margin-top:3px}
+.postcard-mode-tabs{display:flex;gap:6px}
+.postcard-mode-btn{min-height:36px;border:1px solid var(--surface2);border-radius:9px;background:var(--surface2);color:var(--muted);padding:0 11px;font-size:10px;font-weight:900;cursor:pointer}
+.postcard-mode-btn.active{border-color:var(--postcard-accent,#8b72a4);color:#eadcf1;background:#2e2832}
+.postcard-variant-list{display:grid;gap:10px;margin-top:13px}
+.postcard-variant-card{border:1px solid var(--surface2);border-radius:13px;padding:13px}
+.postcard-variant-head{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--muted);font-size:9px;font-weight:1000}
+.postcard-variant-actions{display:flex;gap:5px}
+.postcard-mini-action{width:31px;height:29px;border:1px solid var(--surface2);border-radius:7px;background:var(--surface);color:var(--muted);cursor:pointer}
+.postcard-editor-field{margin-top:10px}
+.postcard-editor-field label{display:block;margin-bottom:5px;color:var(--muted);font-size:9px;font-weight:900}
+.postcard-editor-field input,.postcard-editor-field textarea{
+  width:100%;border:1px solid var(--surface2);border-radius:9px;background:var(--surface);color:var(--text);padding:9px 10px;font-size:12px
+}
+.postcard-editor-field textarea{min-height:72px;resize:vertical}
+.postcard-variant-save-row{display:flex;justify-content:flex-end;margin-top:8px}
+.postcard-save-btn{min-height:34px;border:1px solid var(--postcard-accent,#8b72a4);border-radius:8px;background:#2e2832;color:#eadcf1;padding:0 11px;font-size:9px;font-weight:900;cursor:pointer}
+.postcard-add-variant{width:100%;margin-top:10px;min-height:40px;border:1px dashed var(--postcard-accent,#8b72a4);border-radius:10px;background:transparent;color:var(--postcard-accent,#c9a9d8);font-size:10px;font-weight:1000;cursor:pointer}
+.postcard-preview-stage{
+  margin-top:14px;min-height:225px;border:1px solid var(--postcard-accent,#8b72a4);border-radius:16px;
+  background:radial-gradient(circle at 50% 12%,color-mix(in srgb,var(--postcard-accent,#8b72a4) 24%,transparent),transparent 54%),#171717;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:25px
+}
+.postcard-preview-accent{font-size:25px;color:var(--postcard-accent,#8b72a4);letter-spacing:5px;font-weight:900}
+.postcard-preview-heading{font-size:22px;font-weight:1000;margin-top:14px}
+.postcard-preview-text{max-width:620px;color:#d0d0d0;font-size:13px;line-height:1.45;margin-top:6px}
+.postcard-preview-meta{color:var(--muted);font-size:9px;margin-top:14px}
+.postcard-preview-controls{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:9px}
+.postcard-tie-tools{margin-top:13px;border:1px solid #4d5968;border-radius:13px;background:#252a31;padding:14px}
+.postcard-tie-note{color:#b3bfcb;font-size:11px;line-height:1.4}
+.postcard-knives-launch{width:100%;min-height:43px;margin-top:11px;border:1px solid #73869b;border-radius:9px;background:#2d3540;color:#e3edf5;font-weight:1000;font-size:11px;cursor:pointer}
+.postcard-knives-sub{text-align:center;color:#8f9aa6;font-size:9px;margin-top:6px}
+.postcard-export-row{display:flex;justify-content:flex-end;gap:7px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:650px){.postcard-reaction-grid{grid-template-columns:1fr}.postcard-workspace-head{align-items:flex-start}.postcard-preview-stage{min-height:190px}}
+
 /* =========================================================
    v11.5 — protected DEV + clean developer tools
 ========================================================= */
@@ -5358,6 +5585,49 @@ body.developer-mode .hint-preview-eye{
      НАСТРОЙКИ
 ========================================================= -->
 
+
+<div id="postcardEditorPage" class="postcard-dev-page hidden" aria-hidden="true">
+  <header class="postcard-dev-page-head">
+    <div class="postcard-dev-page-left">
+      <button type="button" class="postcard-dev-back" onclick="closeStandalonePostcardEditor()">← Назад</button>
+      <div>
+        <div class="postcard-dev-kicker">DEV · ФИНАЛ ИГРЫ</div>
+        <div class="postcard-dev-page-title">Редактор открыток</div>
+      </div>
+    </div>
+    <div class="postcard-dev-page-actions">
+      
+      <button type="button" class="postcard-dev-close" onclick="closeStandalonePostcardEditor()">×</button>
+    </div>
+  </header>
+
+  <main id="standalonePostcardUnifiedView" class="postcard-tv-layout">
+    <aside class="postcard-tv-menu">
+      <div class="postcard-dev-section-title">ПОБЕДА</div>
+      <div id="standaloneReactionGrid" class="postcard-reaction-grid"></div>
+      <div class="postcard-dev-section-title">НИЧЬЯ</div>
+      <button type="button" class="postcard-reaction-card postcard-tie-card" onclick="selectStandalonePostcardReaction('tie')">
+        <span class="postcard-reaction-icon">=</span>
+        <span class="postcard-reaction-copy"><b>Ничья</b><small>Все варианты ничьи + «Ножечки»</small></span>
+        <span class="developer-menu-arrow">›</span>
+      </button>
+      <div id="standaloneTieVariantList" class="postcard-inline-variants"></div>
+      <button id="standaloneKnivesPlaygroundButton" type="button"
+        class="postcard-knives-playground hidden"
+        onclick="openKnivesPlaygroundFromEditor()">
+        ✂ Открыть тест «Ножечек»
+        <small>Полноценный экран мини-игры — можно нажимать все кнопки</small>
+      </button>
+    </aside>
+
+    <section class="postcard-tv-screen-wrap">
+      <div id="postcardLiveHost" class="postcard-live-host"></div>
+      </section>
+
+    
+  </main>
+</div>
+
 <div
   id="settingsBackdrop"
   class="backdrop hidden"
@@ -5619,7 +5889,7 @@ body.developer-mode .hint-preview-eye{
           </div>
           <div>
             <div class="developer-auth-title">Доступ закрыт</div>
-            <div class="developer-auth-sub">Введи DEV-пароль. Сам пароль в коде игры не хранится.</div>
+            
           </div>
 
           <label class="developer-password-label" for="developerPasswordInput">Пароль</label>
@@ -5737,7 +6007,7 @@ body.developer-mode .hint-preview-eye{
               <tr><td>бля</td><td>Согласен, иногда этим словом я могу описать свое состояние.. Так че там с именем?</td></tr>
               <tr><td>блять</td><td>Согласен, иногда этим словом я могу описать свое состояние.. Так че там с именем?</td></tr>
               <tr><td>бог</td><td>Самооценка — 10/10. А теперь пиши мне имя)</td></tr>
-              <tr><td>гандон</td><td>Давайте жить дружно</td></tr>
+              <tr><td>гандон</td><td>Не мне спорить с такой уверенной самоидентификацией.</td></tr>
               <tr><td>господин</td><td>Господин? Серьезно? Это всё, на что ты способен?</td></tr>
               <tr><td>госпожа</td><td>Госпожа чего? Очка</td></tr>
               <tr><td>долбоеб</td><td>Сильное заявление. Проверять мы это, конечно же, не будем.</td></tr>
@@ -5750,7 +6020,7 @@ body.developer-mode .hint-preview-eye{
               <tr><td>мразь</td><td>Не мне спорить с такой уверенной самоидентификацией.</td></tr>
               <tr><td>никто</td><td>Инкогнито сегодня не принимаем</td></tr>
               <tr><td>отсоси</td><td>Запрос передан специалисту. Специалист отказался.</td></tr>
-              <tr><td>очко</td><td>На него и играем. Название команды придумай другое)))</td></tr>
+              <tr><td>очко</td><td>На него и играем)))</td></tr>
               <tr><td>пидор</td><td>Давайте жить дружно</td></tr>
               <tr><td>пидорас</td><td>Давайте жить дружно</td></tr>
               <tr><td>пидр</td><td>Давайте жить дружно</td></tr>
@@ -5765,6 +6035,19 @@ body.developer-mode .hint-preview-eye{
               <tr><td>уебок</td><td>Врагов вспоминаешь? Имя пиши давай</td></tr>
               <tr><td>хуй</td><td>....))))))))))))))</td></tr>
               <tr><td>царь</td><td>Царь пока только в голове. Пиши имя</td></tr>
+            
+              <tr><td>дебил</td><td>Не буду спорить. Ты явно подготовился.</td></tr>
+              <tr><td>идиот</td><td>Это можно было оставить интригой.</td></tr>
+              <tr><td>кретин</td><td>Не спеши. Мы бы и сами со временем разобрались.</td></tr>
+              <tr><td>мудак / мудачок</td><td>Не спеши. Мы бы и сами со временем разобрались.</td></tr>
+              <tr><td>соска</td><td>нереалка</td></tr>
+              <tr><td>ты</td><td>ну не я же</td></tr>
+              <tr><td>тупая</td><td>Самокритично. Но придумай другое имя.</td></tr>
+              <tr><td>хер / херня</td><td>Коротко. Ёмко. Бесполезно.</td></tr>
+              <tr><td>хуйня</td><td>Я уже боюсь спрашивать, как зовут другого игрока.</td></tr>
+              <tr><td>хуесос</td><td>Я так свой пылесос называю)))</td></tr>
+              <tr><td>хули</td><td>надо? Имя мне надо</td></tr>
+              <tr><td>я</td><td>ты</td></tr>
             </tbody>
           </table>
         </div>
@@ -5774,15 +6057,71 @@ body.developer-mode .hint-preview-eye{
       <div id="developerPostcardsView" class="developer-subview">
         <div class="settings-subpage-head developer-nav-head">
           <button type="button" class="settings-back-btn settings-back-btn-large" onclick="showDeveloperSubview('home')">← Для разработчика</button>
-          <div class="developer-page-title">Проверка открыток</div>
+          <div class="developer-page-title">Редактор открыток</div>
         </div>
-        <section class="developer-placeholder-card">
-          <div class="developer-placeholder-icon" aria-hidden="true">
-            <svg viewBox="0 0 64 64"><rect x="10" y="16" width="44" height="34" rx="4"/><path d="M10 21l22 15 22-15M43 12v8M39 16h8"/></svg>
+
+        <div class="postcard-editor-intro">
+          Все финальные реакции и сценарии после окончания игры. Цвет каждой реакции постоянный — так их проще находить.
+        </div>
+
+        <div class="postcard-editor-section-title">ПОБЕДА</div>
+        <div id="postcardReactionGrid" class="postcard-reaction-grid"></div>
+
+        <div class="postcard-editor-section-title">НИЧЬЯ</div>
+        <button type="button" class="postcard-reaction-card postcard-tie-card" onclick="selectPostcardReaction('tie')">
+          <span class="postcard-reaction-icon">=</span>
+          <span class="postcard-reaction-copy">
+            <b>Ничья</b>
+            <small>Все варианты ничьи + ручной запуск «Ножечек»</small>
+          </span>
+          <span class="developer-menu-arrow">›</span>
+        </button>
+
+        <section id="postcardEditorWorkspace" class="postcard-editor-workspace hidden">
+          <div class="postcard-workspace-head">
+            <div>
+              <div id="postcardEditorTitle" class="postcard-workspace-title">Сердечки</div>
+              <div id="postcardEditorCount" class="postcard-workspace-count">0 вариантов</div>
+            </div>
+            <div class="postcard-mode-tabs">
+              <button id="postcardEditModeBtn" type="button" class="postcard-mode-btn active" onclick="setPostcardEditorMode('edit')">Редактор</button>
+              <button id="postcardPreviewModeBtn" type="button" class="postcard-mode-btn" onclick="setPostcardEditorMode('preview')">Предпросмотр</button>
+            </div>
           </div>
-          <b>Раздел готов</b>
-          <span>Сюда позже добавим настройку поздравлений и финальных реакций.</span>
-          <button type="button" class="secondary" onclick="openVictoryReactionTester()">Открыть текущую проверку реакций</button>
+
+          <div id="postcardEditMode">
+            <div id="postcardVariantList" class="postcard-variant-list"></div>
+            <button id="postcardAddVariantBtn" type="button" class="postcard-add-variant" onclick="addPostcardVariant()">＋ Добавить вариант</button>
+          </div>
+
+          <div id="postcardPreviewMode" class="hidden">
+            <div id="postcardPreviewStage" class="postcard-preview-stage">
+              <div id="postcardPreviewAccent" class="postcard-preview-accent">♡ ♡ ♡ ♡ ♡</div>
+              <div id="postcardPreviewHeading" class="postcard-preview-heading"></div>
+              <div id="postcardPreviewText" class="postcard-preview-text"></div>
+              <div id="postcardPreviewMeta" class="postcard-preview-meta">Предпросмотр финальной открытки</div>
+            </div>
+            <div class="postcard-preview-controls">
+              <button type="button" class="secondary" onclick="stepPostcardPreview(-1)">← вариант</button>
+              <button type="button" class="secondary" onclick="randomPostcardPreview()">Случайный</button>
+              <button type="button" class="secondary" onclick="stepPostcardPreview(1)">вариант →</button>
+            </div>
+          </div>
+
+          <div id="postcardTieTools" class="postcard-tie-tools hidden">
+            <div class="postcard-tie-note">
+              Здесь показаны все варианты ничьи. «Ножечки» не отдельная открытка — это один из сценариев ничьи.
+            </div>
+            <button type="button" class="postcard-knives-launch" onclick="devLaunchKnivesFromEditor()">
+              Открыть мини-игру «Ножечки» вручную
+            </button>
+            <div class="postcard-knives-sub">Не нужно ждать случайную ничью — мини-игра запускается сразу для проверки.</div>
+          </div>
+
+          <div class="postcard-export-row">
+            <button type="button" class="secondary" onclick="resetSelectedPostcardReaction()">Сбросить выбранную реакцию</button>
+            <button type="button" class="secondary" onclick="exportPostcardOverrides()">Экспорт изменений</button>
+          </div>
         </section>
       </div>
 
@@ -6035,22 +6374,38 @@ body.developer-mode .hint-preview-eye{
      НИЧЬЯ: МИНИ-ИГРА «НОЖИЧКИ»
 ========================================================= -->
 <section id="knivesRulesScreen" class="knives-screen hidden">
-  <div class="knives-panel">
-    <h2>🔪 ИГРА НА НОЖАХ</h2>
-    <div class="knives-muted">Цивилизованные методы закончились.</div>
+  <div class="knives-panel knives-rules-panel" data-difficulty="medium">
+    <button class="knives-exit-btn" type="button" onclick="exitKnivesGame()" aria-label="Выйти из игры">×</button>
+
+    <div class="knives-rules-heading">
+      <div class="knives-rules-kicker">МИНИ-ИГРА ПРИ НИЧЬЕЙ</div>
+      <h2>🔪 ИГРА НА НОЖАХ</h2>
+      <div class="knives-muted">Цивилизованные методы закончились.</div>
+    </div>
+
+    <div class="knives-difficulty-block">
+      <div class="knives-difficulty-label">СЛОЖНОСТЬ</div>
+      <div class="knives-difficulty-switch" role="group" aria-label="Сложность игры">
+        <button type="button" class="knives-difficulty-dot" data-level="easy" onclick="setKnivesDifficulty('easy')" aria-label="Легко"></button>
+        <button type="button" class="knives-difficulty-dot active" data-level="medium" onclick="setKnivesDifficulty('medium')" aria-label="Средне"></button>
+        <button type="button" class="knives-difficulty-dot" data-level="hard" onclick="setKnivesDifficulty('hard')" aria-label="Сложно"></button>
+      </div>
+      <div id="knivesDifficultyText" class="knives-difficulty-text">СРЕДНЕ · 12 ПАР / 24 КАРТОЧКИ</div>
+    </div>
 
     <div class="knives-rules">
       <div class="knives-rule-grid">
-        <div class="knives-rule-chip"><div class="ico">👀</div><b>5 секунд</b><span>Запомните карточки</span></div>
-        <div class="knives-rule-chip"><div class="ico">✌️</div><b>2 карты</b><span>Открывайте за ход</span></div>
-        <div class="knives-rule-chip"><div class="ico">🎯</div><b>Нашли пару?</b><span>Забирайте и ходите ещё</span></div>
-        <div class="knives-rule-chip"><div class="ico">🏆</div><b>Больше пар</b><span>Победа в споре</span></div>
+        <div class="knives-rule-chip"><div class="ico">👀</div><b>5 секунд</b><span>Сначала все карточки открыты. Запомните, где лежат пары.</span></div>
+        <div class="knives-rule-chip"><div class="ico">✌️</div><b>2 карты за ход</b><span>После таймера каждый игрок открывает по две карточки.</span></div>
+        <div class="knives-rule-chip"><div class="ico">🎯</div><b>Нашли пару?</b><span>Пара остаётся у вас, и вы сразу получаете ещё один ход.</span></div>
+        <div class="knives-rule-chip"><div class="ico">🏆</div><b>Больше пар — победа</b><span>Когда поле закончится, выигрывает тот, кто собрал больше пар.</span></div>
       </div>
     </div>
 
-    <div class="knives-actions">
-      <button class="primary" type="button" onclick="startKnivesGame()">
-        🔪 ДОСТАТЬ НОЖИ
+    <div class="knives-actions knives-rules-actions">
+      <button class="primary knives-main-start" type="button" onclick="startKnivesGame()">
+        <span class="knives-start-icon" aria-hidden="true">🔪</span>
+        <span>ИГРАТЬ</span>
       </button>
 
       <button class="secondary" type="button" onclick="leaveKnivesForNewRound()">
@@ -6062,11 +6417,13 @@ body.developer-mode .hint-preview-eye{
 
 <section id="knivesGameScreen" class="knives-screen hidden">
   <div class="knives-panel knives-game-panel">
+    <button class="knives-exit-btn" type="button" onclick="exitKnivesGame()" aria-label="Выйти из игры">×</button>
     <h2>🔪 НОЖИ ДОСТАЛИ</h2>
     <div class="knives-muted">Запомните, где лежат пары.</div>
 
     <div id="knivesTimer" class="knives-timer">00:05</div>
     <div id="knivesPhase" class="knives-phase">ЗАПОМИНАЙТЕ</div>
+    <div id="knivesCurrentPlayer" class="knives-current-player hidden"></div>
 
     <div id="knivesDeck" class="knives-deck"></div>
 
@@ -6372,7 +6729,7 @@ const allLetters = [
 const playerColors = [
   {id:"red",name:"Красный",bg:"#e85b5b",text:"#ffffff"},
   {id:"orange",name:"Оранжевый",bg:"#ef9950",text:"#1d1d1d"},
-  {id:"yellow",name:"Жёлтый",bg:"#f3d75c",text:"#1d1d1d"},
+  {id:"yellow",name:"Жёлтый",bg:"#9f6d24",text:"#ffffff"},
   {id:"green",name:"Зелёный",bg:"#6cc488",text:"#162319"},
   {id:"cyan",name:"Голубой",bg:"#79c9dd",text:"#142428"},
   {id:"blue",name:"Синий",bg:"#587bd8",text:"#ffffff"},
@@ -6441,7 +6798,23 @@ const SPECIAL_NAME_RESPONSES = {
 
   "сиси": "Нет. Сосредоточьтесь.",
   "лох": "Самокритично. Но придумай другое имя.",
-  "очко": "На него и играем. Название команды придумай другое)))"
+  "очко": "На него и играем)))",
+  "хер": "Коротко. Ёмко. Бесполезно.",
+  "херня": "Коротко. Ёмко. Бесполезно.",
+  "тупая": "Самокритично. Но придумай другое имя.",
+  "дебил": "Не буду спорить. Ты явно подготовился.",
+  "идиот": "Это можно было оставить интригой.",
+  "кретин": "Не спеши. Мы бы и сами со временем разобрались.",
+  "хуйня": "Я уже боюсь спрашивать, как зовут другого игрока.",
+  "хуесос": "Я так свой пылесос называю)))",
+  "гандон": "Не мне спорить с такой уверенной самоидентификацией.",
+  "мудак": "Не спеши. Мы бы и сами со временем разобрались.",
+  "мудачок": "Не спеши. Мы бы и сами со временем разобрались.",
+  "мудила": "Не спеши. Мы бы и сами со временем разобрались.",
+  "я": "ты",
+  "ты": "ну не я же",
+  "хули": "надо? Имя мне надо",
+  "соска": "нереалка"
 };
 
 
@@ -6926,6 +7299,100 @@ function getNextRoundWinnerPhrase() {
 
 
 
+
+/* =========================================================
+   v12 — АВТОЦВЕТА НОВОЙ ИГРЫ
+   Если игрок сам не выбирал цвет, при новой игре система
+   подбирает ему новую пару. Ручной выбор сохраняется.
+========================================================= */
+const AUTO_COLOR_TOO_SIMILAR = new Set([
+  "blue|cyan",
+  "blue|violet",
+  "burgundy|pink",
+  "orange|yellow",
+  "red|pink",
+  "black|violet"
+]);
+
+function colorPairKey(a,b){
+  return [a,b].sort().join("|");
+}
+function isManualPlayerColor(index){
+  return localStorage.getItem("wordGamePlayerColorManual"+index)==="true";
+}
+function pickAutoColor(exclude=[]){
+  const pool=playerColors
+    .map(item=>item.id)
+    .filter(id=>!exclude.includes(id));
+  return pool[Math.floor(Math.random()*pool.length)] || "blue";
+}
+function prepareAutoColorsForNewGame(){
+  const count=Number(document.getElementById("playerCount")?.value || 2);
+  const previous=localStorage.getItem("wordGameLastAutoPair") || "";
+  const selected=[];
+
+  for(let i=1;i<=count;i++){
+    const current=localStorage.getItem("wordGamePlayerColor"+i);
+    if(isManualPlayerColor(i) && current){
+      selected[i-1]=(current==="white"?"burgundy":current);
+    }else{
+      selected[i-1]=null;
+    }
+  }
+
+  // Для двух основных игроков стараемся получить красивую отличающуюся пару.
+  if(count>=2 && (!selected[0] || !selected[1])){
+    let best=null;
+    for(let attempt=0;attempt<80;attempt++){
+      const a=selected[0] || pickAutoColor();
+      let b=selected[1] || pickAutoColor();
+
+      // Одинаковые допускаем редко.
+      if(!selected[0] && !selected[1] && a===b && Math.random()<0.88) continue;
+
+      const key=colorPairKey(a,b);
+      if(key===previous) continue;
+
+      // Эти сочетания больше не выдаём автоматически вообще.
+      if(key==="orange|yellow" || key==="black|violet") continue;
+
+      // Остальные близкие пары просто делаем редкими.
+      if(AUTO_COLOR_TOO_SIMILAR.has(key) && Math.random()<0.85) continue;
+
+      best=[a,b];
+      break;
+    }
+    if(!best){
+      best=[
+        selected[0] || pickAutoColor(),
+        selected[1] || pickAutoColor([selected[0]].filter(Boolean))
+      ];
+    }
+    selected[0]=best[0];
+    selected[1]=best[1];
+    localStorage.setItem("wordGameLastAutoPair",colorPairKey(best[0],best[1]));
+  }
+
+  for(let i=3;i<=count;i++){
+    if(!selected[i-1]){
+      selected[i-1]=pickAutoColor(selected.filter(Boolean).slice(-2));
+    }
+  }
+
+  selected.forEach((color,index)=>{
+    if(!isManualPlayerColor(index+1) && color){
+      localStorage.setItem("wordGamePlayerColor"+(index+1),color);
+    }
+  });
+}
+
+function resetPlayerColorToAuto(playerIndex){
+  localStorage.removeItem("wordGamePlayerColorManual"+playerIndex);
+  prepareAutoColorsForNewGame();
+  renderPlayerSetup();
+}
+
+
 /* =========================================================
    СТАРТОВЫЕ ПОЛЯ ИГРОКОВ
 ========================================================= */
@@ -7095,6 +7562,11 @@ function renderSetupColors(
             "wordGamePlayerColor"
             + playerIndex,
             color.id
+          );
+          localStorage.setItem(
+            "wordGamePlayerColorManual"
+            + playerIndex,
+            "true"
           );
 
           renderSetupColors(
@@ -9455,6 +9927,7 @@ function returnToStartForNewGame() {
     .classList
     .remove("hidden");
 
+  prepareAutoColorsForNewGame();
   renderPlayerSetup();
   refreshQuestionModeCounts();
   renderHintCollection();
@@ -9703,12 +10176,12 @@ function runRandomTieReaction() {
   const reactions = [
     {
       id:"owls",
-      text:"СОВпадение))))",
+      text:getPostcardTextByKey("tie","owls","СОВпадение))))"),
       effect:() => owlTieEffect()
     },
     {
       id:"knives",
-      text:"Цивилизованные методы закончились..",
+      text:getPostcardTextByKey("tie","knives","Цивилизованные методы закончились.."),
       effect:() => {
         clearVictoryLoops();
         document.getElementById("effectCaption").textContent =
@@ -9721,17 +10194,17 @@ function runRandomTieReaction() {
     },
     {
       id:"handshake_1",
-      text:"Игра отказывается выбирать любимчика. Сыграйте в камень, ножницы, бумагу.",
+      text:getPostcardTextByKey("tie","handshake_1","Игра отказывается выбирать любимчика. Сыграйте в камень, ножницы, бумагу."),
       effect:() => handshakeTieEffect()
     },
     {
       id:"handshake_2",
-      text:"Сыграйте в камень, ножницы, бумагу. Судьба разберётся.",
+      text:getPostcardTextByKey("tie","handshake_2","Сыграйте в камень, ножницы, бумагу. Судьба разберётся."),
       effect:() => handshakeTieEffect()
     },
     {
       id:"handshake_3",
-      text:"Сыграйте в камень, ножницы, бумагу. Кто-то же должен проиграть.",
+      text:getPostcardTextByKey("tie","handshake_3","Сыграйте в камень, ножницы, бумагу. Кто-то же должен проиграть."),
       effect:() => handshakeTieEffect()
     }
   ];
@@ -9851,8 +10324,75 @@ const KNIVES_PAIRS = [
   { emoji:"🧈", name:"НОЖ ДЛЯ МАСЛА" },
   { emoji:"✂️", name:"НОЖНИЦЫ" },
   { emoji:"🥄", name:"ЛОЖКА" },
-  { emoji:"🍌", name:"БАНАН" }
+  { emoji:"🍌", name:"БАНАН" },
+  { emoji:"🍴", name:"ВИЛКА" },
+  { emoji:"🥢", name:"ПАЛОЧКИ" },
+  { emoji:"🪛", name:"ОТВЁРТКА" },
+  { emoji:"🔧", name:"КЛЮЧ" },
+  { emoji:"🪥", name:"ЩЁТКА" },
+  { emoji:"🖊️", name:"РУЧКА" },
+  { emoji:"🧷", name:"БУЛАВКА" },
+  { emoji:"🪮", name:"РАСЧЁСКА" },
+  { emoji:"🧹", name:"ЩЁТКА ДЛЯ ПОЛА" }
 ];
+
+const KNIVES_DIFFICULTIES = {
+  easy:   { label:"ЛЕГКО",  pairs:9,  reveal:6 },
+  medium: { label:"СРЕДНЕ", pairs:12, reveal:5 },
+  hard:   { label:"СЛОЖНО", pairs:15, reveal:4 }
+};
+
+
+const KNIVES_PASTEL_PALETTES = {
+  easy: [
+    "#F2C6C2","#F5D2B8","#F4DCA8","#E9C6CE","#EFC9B4","#F1D5C8",
+    "#EEC7BE","#F5D9BE","#F1C7C9","#E9D0C0","#F4CCB6","#EDD4C7",
+    "#F3CBC3","#F0D7B7","#EAC8C2","#F6D4C5","#EED0BA","#F1C4BD"
+  ],
+  medium: [
+    "#BFD8E8","#C7D6EE","#CFC5E8","#BFDCD2","#C6E0DD","#C9D8E2",
+    "#C7CFE7","#BED7D5","#D1C8E3","#C3D9E8","#C8DFD2","#C5D0E0",
+    "#BAD2E4","#C7C4E4","#BFD9D0","#CCDCE7","#C4D4EA","#C8D6DD",
+    "#BFD4E2","#CAD1E8","#C4DDD8","#C9C5E1","#BDD9E5","#C8D7D1"
+  ],
+  hard: [
+    "#D7B8CB","#BBAFD8","#AFC9D9","#AFCFC6","#D3BEA7","#C9B4C8",
+    "#B2BDD6","#A9C8C4","#D6B5B0","#C6B5D5","#B1C5D0","#B6CCB5",
+    "#D1B6C1","#B8AED0","#AAC4D6","#A9C8BD","#CEB9A7","#C4AFC5",
+    "#AEBBD2","#A6C4C3","#D0B0AE","#C0B2CF","#AFC2CB","#B3C7B1",
+    "#CCB3BD","#B5ACCB","#A9BFD1","#A7C2B8","#C9B6A8","#BEADC0"
+  ]
+};
+
+let knivesDifficulty = "medium";
+
+function setKnivesDifficulty(level){
+  if(!KNIVES_DIFFICULTIES[level]) return;
+  knivesDifficulty = level;
+
+  document
+    .querySelectorAll(".knives-difficulty-dot")
+    .forEach(button => {
+      button.classList.toggle(
+        "active",
+        button.dataset.level === level
+      );
+    });
+
+  const config = KNIVES_DIFFICULTIES[level];
+  const label = document.getElementById("knivesDifficultyText");
+  if(label){
+    label.textContent =
+      `${config.label} · ${config.pairs} ПАР / ${config.pairs * 2} КАРТОЧЕК`;
+  }
+
+  const rulesPanel =
+    document.querySelector(".knives-rules-panel");
+
+  if(rulesPanel){
+    rulesPanel.dataset.difficulty = level;
+  }
+}
 
 let knivesParticipants = [];
 let knivesCurrentIndex = 0;
@@ -9878,6 +10418,41 @@ function shuffleKnives(array) {
   }
 
   return result;
+}
+
+
+function exitKnivesGame(){
+  clearInterval(knivesRevealTimer);
+
+  document
+    .getElementById("knivesRulesScreen")
+    ?.classList
+    .add("hidden");
+
+  document
+    .getElementById("knivesGameScreen")
+    ?.classList
+    .add("hidden");
+
+  if(knivesOpenedFromDeveloper){
+    knivesOpenedFromDeveloper = false;
+
+    const editor =
+      document.getElementById("postcardEditorPage");
+
+    editor?.classList.remove("hidden");
+    editor?.setAttribute("aria-hidden","false");
+
+    document.body.style.overflow="hidden";
+
+    selectStandalonePostcardReaction("tie");
+    return;
+  }
+
+  document
+    .getElementById("winnerScreen")
+    ?.classList
+    .remove("hidden");
 }
 
 function openKnivesRules() {
@@ -9932,7 +10507,14 @@ function startKnivesGame() {
 
   knivesOpened = [];
   knivesLocked = true;
-  knivesRemaining = 12;
+  const difficulty =
+    KNIVES_DIFFICULTIES[knivesDifficulty];
+
+  const activePairs =
+    shuffleKnives(KNIVES_PAIRS)
+      .slice(0, difficulty.pairs);
+
+  knivesRemaining = activePairs.length * 2;
   knivesFinished = false;
 
   document
@@ -9952,7 +10534,7 @@ function startKnivesGame() {
 
   const data =
     shuffleKnives(
-      KNIVES_PAIRS.flatMap(
+      activePairs.flatMap(
         (pair, pairId) => [
           { ...pair, pairId },
           { ...pair, pairId }
@@ -9969,6 +10551,21 @@ function startKnivesGame() {
     card.className =
       "knife-memory-card";
 
+    const pastelPalette =
+      KNIVES_PASTEL_PALETTES[knivesDifficulty]
+      ||
+      KNIVES_PASTEL_PALETTES.medium;
+
+    const pastelColor =
+      pastelPalette[
+        deck.children.length % pastelPalette.length
+      ];
+
+    card.style.setProperty(
+      "--knife-card-pastel",
+      pastelColor
+    );
+
     card.innerHTML = `
       <div class="knife-memory-inner">
         <div class="knife-memory-face">
@@ -9976,9 +10573,7 @@ function startKnivesGame() {
           <div class="knife-memory-name">${item.name}</div>
         </div>
 
-        <div class="knife-memory-face knife-memory-back">
-          🔪
-        </div>
+        <div class="knife-memory-face knife-memory-back"></div>
       </div>
     `;
 
@@ -10007,7 +10602,27 @@ function startKnivesGame() {
   showKnivesForFiveSeconds();
 }
 
+function renderKnivesCurrentPlayer(){
+  const badge =
+    document.getElementById("knivesCurrentPlayer");
+
+  if(!badge) return;
+
+  if(knivesLocked || knivesFinished || !knivesParticipants.length){
+    badge.classList.add("hidden");
+    return;
+  }
+
+  const player =
+    knivesParticipants[knivesCurrentIndex];
+
+  badge.textContent = player ? player.name : "";
+  badge.classList.toggle("hidden", !player);
+}
+
 function renderKnivesScores() {
+
+  renderKnivesCurrentPlayer();
 
   const container =
     document.getElementById("knivesScores");
@@ -10057,7 +10672,8 @@ function showKnivesForFiveSeconds() {
     }
   });
 
-  let left = 5;
+  let left =
+    KNIVES_DIFFICULTIES[knivesDifficulty].reveal;
 
   const timer =
     document.getElementById("knivesTimer");
@@ -10068,8 +10684,16 @@ function showKnivesForFiveSeconds() {
   const status =
     document.getElementById("knivesStatus");
 
-  timer.textContent = "00:0" + left;
+  timer.textContent = "00:" + String(left).padStart(2,"0");
   phase.textContent = "ЗАПОМИНАЙТЕ";
+
+  const currentPlayer =
+    document.getElementById("knivesCurrentPlayer");
+
+  if(currentPlayer){
+    currentPlayer.classList.add("hidden");
+    currentPlayer.textContent = "";
+  }
 
   status.innerHTML =
     "<strong>Смотрите внимательно.</strong><span>На нуле карточки снова закроются.</span>";
@@ -10080,7 +10704,7 @@ function showKnivesForFiveSeconds() {
     setInterval(() => {
 
       left--;
-      timer.textContent = "00:0" + left;
+      timer.textContent = "00:" + String(left).padStart(2,"0");
 
       if (left <= 0) {
 
@@ -10101,10 +10725,13 @@ function showKnivesForFiveSeconds() {
             knivesCurrentIndex
           ];
 
-        phase.textContent =
-          "ХОД: "
-          +
-          player.name;
+        phase.textContent = "ХОДИТ";
+
+        if(currentPlayer){
+          currentPlayer.textContent =
+            player.name;
+          currentPlayer.classList.remove("hidden");
+        }
 
         status.innerHTML =
           "<strong>"
@@ -10509,11 +11136,7 @@ function planesEffect(
     document.getElementById(
       "effectCaption"
     ).textContent =
-      planeTexts[
-        planeTextIndex
-        %
-        planeTexts.length
-      ];
+      getPostcardText("planes",planeTexts[planeTextIndex % planeTexts.length],planeTextIndex);
 
     planeTextIndex =
       (
@@ -10632,7 +11255,7 @@ function fireEffect(
     document.getElementById(
       "effectCaption"
     ).textContent =
-      "Ты торпеда, пушка, ПРИОРА!!!";
+      getPostcardText("fire","Ты торпеда, пушка, ПРИОРА!!!",0);
 
   }
 
@@ -10753,11 +11376,7 @@ function confettiEffect(
     document.getElementById(
       "effectCaption"
     ).textContent =
-      texts[
-        confettiTextIndex
-        %
-        texts.length
-      ];
+      getPostcardText("confetti",texts[confettiTextIndex % texts.length],confettiTextIndex);
 
 
     confettiTextIndex =
@@ -11145,7 +11764,7 @@ function catsEffect(
     document.getElementById(
       "effectCaption"
     ).textContent =
-      "Лови падающих котиков";
+      getPostcardText("cats","Лови падающих котиков",0);
 
   }
 
@@ -11344,11 +11963,7 @@ function heartsEffect(
     document.getElementById(
       "effectCaption"
     ).textContent =
-      texts[
-        heartTextIndex
-        %
-        texts.length
-      ];
+      getPostcardText("hearts",texts[heartTextIndex % texts.length],heartTextIndex);
 
 
     heartTextIndex =
@@ -11480,7 +12095,7 @@ function fireworksEffect(isTie) {
 
   if (!isTie) {
     document.getElementById("effectCaption").textContent =
-      "Это салют или твоё эго взорвалось?";
+      getPostcardText("fireworks","Это салют или твоё эго взорвалось?",0);
   }
 
   const colors = [
@@ -11534,7 +12149,7 @@ function fireworksEffect(isTie) {
 function lightningEffect(isTie) {
 
   if (!isTie) {
-    document.getElementById("effectCaption").textContent = "КЧАУ";
+    document.getElementById("effectCaption").textContent = getPostcardText("kchau","КЧАУ",0);
   }
 
   const burst = () => {
@@ -11573,7 +12188,7 @@ function rubleEffect(
     document.getElementById(
       "effectCaption"
     ).textContent =
-      "О, смотри, курс рубля наконец-то падает.";
+      getPostcardText("ruble","О, опять рубль упал.",0);
 
   }
 
@@ -11690,7 +12305,7 @@ function selfEsteemEffect(
     document.getElementById(
       "effectCaption"
     ).textContent =
-      "Величие обнаружено. Скромность — нет.";
+      getPostcardText("esteem","Величие обнаружено. Скромность — нет.",0);
 
   }
 
@@ -11810,7 +12425,7 @@ function gasEffect(
     document.getElementById(
       "effectCaption"
     ).textContent =
-      "Че стоишь? Это не очередь на бензин. Идём играть!";
+      getPostcardText("fuel","Че стоишь? Это не очередь на бензин. Идём играть!",0);
   }
 
   const container =
@@ -12225,7 +12840,7 @@ function owlTieEffect() {
   document.getElementById(
     "effectCaption"
   ).textContent =
-    "СОВпадение))))";
+    getPostcardTextByKey("tie","owls","СОВпадение))))");
 
 
   const spawn =
@@ -12478,6 +13093,597 @@ function updateStartThemeIcon() {
   if (button) button.classList.add("hidden");
 }
 
+
+
+
+/* =========================================================
+   v12 PRE-RELEASE — FULLSCREEN DEV POSTCARD PAGE
+========================================================= */
+let standalonePostcardReactionId="hearts";
+let standalonePostcardPreviewIndex=0;
+let standaloneFxTimers=[];
+
+function openStandalonePostcardEditor(){
+  closeSettings();
+  const page=document.getElementById("postcardEditorPage");
+  page?.classList.remove("hidden");
+  page?.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+  standalonePostcardReactionId=standalonePostcardReactionId || "hearts";
+  renderStandaloneReactionGrid();
+  selectStandalonePostcardReaction(standalonePostcardReactionId);
+}
+
+let knivesOpenedFromDeveloper = false;
+
+function openKnivesPlaygroundFromEditor(){
+  knivesOpenedFromDeveloper = true;
+
+  // Restore winner screen first so the real game DOM is back where the mini-game expects it.
+  restoreWinnerScreenFromPreview();
+
+  const editor=document.getElementById("postcardEditorPage");
+  editor?.classList.add("hidden");
+  editor?.setAttribute("aria-hidden","true");
+
+  // Use the game's own knives launcher when available.
+  if(typeof window.showTieKnives==="function"){
+    try{
+      const winnerScreen=document.getElementById("winnerScreen");
+      winnerScreen?.classList.remove("hidden");
+      showTieKnives();
+
+      const playButton=document.getElementById("playKnivesButton");
+      if(playButton){
+        playButton.classList.remove("hidden");
+        playButton.click();
+      }
+      return;
+    }catch(e){}
+  }
+
+  if(typeof window.startKnivesGame==="function"){
+    try{ startKnivesGame(); return; }catch(e){}
+  }
+  if(typeof window.openKnivesGame==="function"){
+    try{ openKnivesGame(); return; }catch(e){}
+  }
+  if(typeof window.startKnifeGame==="function"){
+    try{ startKnifeGame(); return; }catch(e){}
+  }
+
+  // If this build exposes only the normal tie flow, use that screen and leave its launch button clickable.
+  const winnerScreen=document.getElementById("winnerScreen");
+  winnerScreen?.classList.remove("hidden");
+  const winnerText=document.getElementById("winnerText");
+  const effectCaption=document.getElementById("effectCaption");
+  const playButton=document.getElementById("playKnivesButton");
+  if(winnerText)winnerText.textContent="НИЧЬЯ!";
+  if(effectCaption)effectCaption.textContent="Тест «Ножечек»";
+  if(playButton)playButton.classList.remove("hidden");
+}
+
+function closeStandalonePostcardEditor(){
+  stopStandaloneFx();
+  restoreWinnerScreenFromPreview();
+  const page=document.getElementById("postcardEditorPage");
+  page?.classList.add("hidden");
+  page?.setAttribute("aria-hidden","true");
+  document.body.style.overflow="";
+  openSettings();
+  showSettingsTab("developer");
+  if(developerSessionAuthorized) showDeveloperSubview("home");
+}
+function setStandalonePostcardMode(mode){
+  runRealPostcardReactionPreview();
+}
+function renderStandaloneReactionGrid(){
+  const grid=document.getElementById("standaloneReactionGrid");
+  if(!grid)return;
+
+  grid.innerHTML=POSTCARD_REACTIONS
+    .filter(item=>item.id!=="tie")
+    .map(item=>{
+      const active=standalonePostcardReactionId===item.id;
+      const variants=getPostcardVariants(item.id);
+      const variantHtml=active
+        ? `<div class="postcard-inline-variants">${variants.map((variant,index)=>`
+            <button type="button"
+              class="postcard-inline-variant ${standalonePostcardPreviewIndex===index?"active":""}"
+              onclick="event.stopPropagation();selectStandalonePostcardVariant(${index})">
+              <span>Вариант ${index+1}</span>
+              <small>${escapeHtml(variant.text||"")}</small>
+            </button>`).join("")}</div>`
+        : "";
+
+      return `
+        <div class="postcard-menu-item-wrap">
+          <button type="button"
+            class="postcard-reaction-card ${active?"active":""}"
+            style="--pc:${item.color};--pcbg:${item.bg}"
+            onclick="selectStandalonePostcardReaction('${item.id}')">
+            <span class="postcard-reaction-icon">${item.icon}</span>
+            <span class="postcard-reaction-copy">
+              <b>${escapeHtml(item.name)}</b>
+              <small>${variants.length} ${variants.length===1?"вариант":"вариантов"}</small>
+            </span>
+            <span class="developer-menu-arrow">${active?"⌄":"›"}</span>
+          </button>
+          ${variantHtml}
+        </div>`;
+    }).join("");
+
+  renderStandaloneTieVariants();
+}
+
+function selectStandalonePostcardVariant(index){
+  standalonePostcardPreviewIndex=index;
+  renderStandaloneReactionGrid();
+  runRealPostcardReactionPreview();
+}
+
+function renderStandaloneTieVariants(){
+  const host=document.getElementById("standaloneTieVariantList");
+  if(!host)return;
+
+  const knivesButton=document.getElementById("standaloneKnivesPlaygroundButton");
+  if(standalonePostcardReactionId!=="tie"){
+    host.innerHTML="";
+    knivesButton?.classList.add("hidden");
+    return;
+  }
+  knivesButton?.classList.remove("hidden");
+
+  const variants=getPostcardVariants("tie");
+  host.innerHTML=variants.map((variant,index)=>`
+    <button type="button"
+      class="postcard-inline-variant ${standalonePostcardPreviewIndex===index?"active":""}"
+      onclick="selectStandalonePostcardVariant(${index})">
+      <span>Вариант ${index+1}</span>
+      <small>${escapeHtml(variant.text||"")}</small>
+    </button>`).join("");
+}
+
+function selectStandalonePostcardReaction(id){
+  standalonePostcardReactionId=id;
+  standalonePostcardPreviewIndex=0;
+  renderStandaloneReactionGrid();
+  document.getElementById("standaloneTieTools")?.classList.toggle("hidden",id!=="tie");
+  syncReactionLiveControls();
+  runRealPostcardReactionPreview();
+}
+function renderStandaloneEditor(){
+  const reaction=getPostcardReaction(standalonePostcardReactionId),variants=getPostcardVariants(reaction.id);
+  document.getElementById("standaloneEditorTitle").textContent=reaction.name;
+  document.getElementById("standaloneEditorCount").textContent=`${variants.length} вариантов`;
+  document.getElementById("standaloneTieTools")?.classList.toggle("hidden",reaction.id!=="tie");
+  document.getElementById("standaloneAddVariantBtn")?.classList.toggle("hidden",reaction.id==="tie");
+  const list=document.getElementById("standaloneVariantList");
+  if(list)list.innerHTML=variants.map((item,index)=>`
+    <div class="postcard-variant-card">
+      <div class="postcard-variant-head"><span>ВАРИАНТ ${index+1}${item.key?` · ${escapeHtml(item.key)}`:""}</span><div class="postcard-variant-actions">
+        <button type="button" class="postcard-mini-action" onclick="moveStandaloneVariant(${index},-1)">↑</button>
+        <button type="button" class="postcard-mini-action" onclick="moveStandaloneVariant(${index},1)">↓</button>
+        ${reaction.id==="tie"?"":`<button type="button" class="postcard-mini-action" onclick="deleteStandaloneVariant(${index})">×</button>`}
+      </div></div>
+      <div class="postcard-editor-field"><label>ЗАГОЛОВОК / ПОДПИСЬ</label><input id="standaloneTitle_${index}" value="${escapeHtml(item.title||"")}"></div>
+      <div class="postcard-editor-field"><label>ТЕКСТ ФИНАЛЬНОЙ РЕАКЦИИ</label><textarea id="standaloneText_${index}">${escapeHtml(item.text||"")}</textarea></div>
+      <div class="postcard-variant-save-row"><button type="button" class="postcard-save-btn" onclick="saveStandaloneVariant(${index})">Сохранить</button></div>
+    </div>`).join("");
+}
+function saveStandaloneVariant(index){
+  const reaction=getPostcardReaction(standalonePostcardReactionId),variants=getPostcardVariants(reaction.id);
+  if(!variants[index])return;
+  variants[index].title=document.getElementById(`standaloneTitle_${index}`)?.value||"";
+  variants[index].text=document.getElementById(`standaloneText_${index}`)?.value||"";
+  const store=getPostcardOverrides();store[reaction.id]=variants;setPostcardOverrides(store);renderStandaloneEditor();renderStandaloneReactionGrid()
+}
+function addStandaloneVariant(){const r=getPostcardReaction(standalonePostcardReactionId);if(r.id==="tie")return;const v=getPostcardVariants(r.id);v.push({title:"",text:"Новый вариант"});const s=getPostcardOverrides();s[r.id]=v;setPostcardOverrides(s);renderStandaloneEditor();renderStandaloneReactionGrid()}
+function deleteStandaloneVariant(index){const r=getPostcardReaction(standalonePostcardReactionId),v=getPostcardVariants(r.id);if(v.length<=1){alert("Нужен хотя бы один вариант.");return}v.splice(index,1);const s=getPostcardOverrides();s[r.id]=v;setPostcardOverrides(s);renderStandaloneEditor();renderStandaloneReactionGrid()}
+function moveStandaloneVariant(index,delta){const r=getPostcardReaction(standalonePostcardReactionId),v=getPostcardVariants(r.id),n=index+delta;if(n<0||n>=v.length)return;[v[index],v[n]]=[v[n],v[index]];const s=getPostcardOverrides();s[r.id]=v;setPostcardOverrides(s);renderStandaloneEditor()}
+function resetStandaloneReaction(){const r=getPostcardReaction(standalonePostcardReactionId);if(!confirm(`Сбросить изменения для «${r.name}»?`))return;const s=getPostcardOverrides();delete s[r.id];setPostcardOverrides(s);renderStandaloneEditor();renderStandaloneReactionGrid()}
+function stepStandalonePreview(delta){const v=getPostcardVariants(standalonePostcardReactionId);standalonePostcardPreviewIndex=((standalonePostcardPreviewIndex+delta)%v.length+v.length)%v.length;replayStandalonePreview()}
+function stopStandaloneFx(){standaloneFxTimers.forEach(clearTimeout);standaloneFxTimers=[];const l=document.getElementById("standalonePreviewEffectLayer");if(l)l.innerHTML=""}
+function replayStandalonePreview(){
+  runRealPostcardReactionPreview();
+}
+
+function ensureRealWinnerPreviewMounted(){
+  const host=document.getElementById("postcardLiveHost");
+  const winner=document.getElementById("winnerScreen");
+  if(!host || !winner) return null;
+
+  if(winner.parentElement!==host){
+    if(!winner.dataset.originalParentId){
+      const parent=winner.parentElement;
+      if(parent){
+        if(!parent.id) parent.id="winnerScreenOriginalParent";
+        winner.dataset.originalParentId=parent.id;
+      }
+    }
+    host.appendChild(winner);
+  }
+  winner.classList.remove("hidden");
+  winner.style.removeProperty("display");
+  return winner;
+}
+
+function restoreWinnerScreenFromPreview(){
+  const winner=document.getElementById("winnerScreen");
+  if(!winner) return;
+  const parentId=winner.dataset.originalParentId;
+  const originalParent=parentId?document.getElementById(parentId):null;
+
+  winner.style.removeProperty("display");
+  winner.style.removeProperty("position");
+  winner.style.removeProperty("inset");
+  winner.style.removeProperty("width");
+  winner.style.removeProperty("height");
+
+  if(originalParent && winner.parentElement!==originalParent){
+    originalParent.appendChild(winner);
+  }
+}
+
+function applyLiveSettingsToRealEffect(reactionId){
+  const s=getReactionLiveSettings(reactionId);
+  document.documentElement.style.setProperty("--dev-reaction-speed",String(s.speed));
+  document.documentElement.style.setProperty("--dev-reaction-size",s.size+"px");
+  document.documentElement.style.setProperty("--dev-reaction-count",String(s.count));
+  document.documentElement.style.setProperty("--dev-reaction-interval",s.interval+"ms");
+}
+
+function clearRealWinnerEffects(){
+  try{stopAllVictoryEffects?.()}catch(e){}
+  document.querySelectorAll(".effect-layer,.victory-effect-layer,.falling-layer,.fx-layer").forEach(el=>{ el.innerHTML=""; });
+}
+
+function runRealPostcardReactionPreview(){
+  const reaction=getPostcardReaction(standalonePostcardReactionId);
+  const variants=getPostcardVariants(reaction.id);
+  if(!variants.length)return;
+
+  standalonePostcardPreviewIndex=
+    ((standalonePostcardPreviewIndex%variants.length)+variants.length)%variants.length;
+
+  const selected=variants[standalonePostcardPreviewIndex];
+
+  const winnerScreen=ensureRealWinnerPreviewMounted();
+  if(!winnerScreen)return;
+
+  // Настоящий финал игры.
+  winnerScreen.classList.remove("hidden");
+
+  const winnerText=document.getElementById("winnerText");
+  const effectCaption=document.getElementById("effectCaption");
+  const tieExtraText=document.getElementById("tieExtraText");
+  const playKnivesButton=document.getElementById("playKnivesButton");
+  const finalRoundHistory=document.getElementById("finalRoundHistory");
+
+  if(finalRoundHistory){
+    finalRoundHistory.innerHTML="";
+  }
+
+  if(tieExtraText){
+    tieExtraText.classList.add("hidden");
+    tieExtraText.textContent="";
+  }
+
+  if(playKnivesButton){
+    playKnivesButton.classList.add("hidden");
+  }
+
+  clearVictoryLoops();
+
+  if(reaction.id!=="tie"){
+    if(winnerText) winnerText.textContent="Победил КРЫСА! 🎉";
+
+    // Это та же функция, которая используется при настоящем финале игры.
+    runVictoryEffect(reaction.effectIndex,false);
+
+    // Выбранный в меню текст принудительно ставим поверх последовательной фразы.
+    if(effectCaption) effectCaption.textContent=selected.text||"";
+  }else{
+    if(winnerText) winnerText.textContent="НИЧЬЯ!";
+    if(effectCaption) effectCaption.textContent=selected.text||"";
+
+    if(selected.key==="owls"){
+      owlTieEffect();
+      if(effectCaption) effectCaption.textContent=selected.text||"СОВпадение))))";
+    }
+    else if(selected.key==="knives"){
+      clearVictoryLoops();
+      showTieKnives();
+      if(playKnivesButton) playKnivesButton.classList.remove("hidden");
+    }
+    else{
+      handshakeTieEffect();
+      if(effectCaption) effectCaption.textContent=selected.text||"";
+    }
+  }
+
+  renderStandaloneReactionGrid();
+}
+
+function fxNode(cls,text,left,top,vars={}){const el=document.createElement("div");el.className=`devfx ${cls}`;el.textContent=text||"";el.style.left=left;el.style.top=top;Object.entries(vars).forEach(([k,v])=>el.style.setProperty(k,v));document.getElementById("standalonePreviewEffectLayer")?.appendChild(el);standaloneFxTimers.push(setTimeout(()=>el.remove(),2600))}
+function spawnStandaloneReactionFx(r){
+  const id=r.id,s=getReactionLiveSettings(id);
+  const count=Math.max(1,Number(s.count)||1),interval=Math.max(10,Number(s.interval)||100),speed=Math.max(.1,Number(s.speed)||1),size=Math.max(10,Number(s.size)||30);
+  const dur=(base)=>`${base/speed}s`;
+  const timed=(fn,i)=>standaloneFxTimers.push(setTimeout(fn,i*interval));
+
+  if(id==="hearts"){
+    for(let i=0;i<count;i++)timed(()=>{fxNode("devfx-heart","♡",`${8+Math.random()*84}%`,`${70+Math.random()*20}%`);const e=document.querySelector("#standalonePreviewEffectLayer .devfx:last-child");if(e){e.style.fontSize=size+"px";e.style.animationDuration=dur(2.1)}},i);
+  }else if(id==="confetti"){
+    const c=["#c38bdb","#e391b3","#73bfd3","#d9b55d","#6dae85"];
+    for(let i=0;i<count;i++)timed(()=>{fxNode("devfx-confetti","",`${Math.random()*100}%`,`-5%`,{"--fx":c[i%c.length]});const e=document.querySelector("#standalonePreviewEffectLayer .devfx:last-child");if(e){e.style.width=Math.max(5,size*.55)+"px";e.style.height=size+"px";e.style.animationDuration=dur(2.2)}},i);
+  }else if(id==="planes"){
+    for(let i=0;i<count;i++)timed(()=>{fxNode("devfx-plane","✈","-10%",`${25+Math.random()*50}%`);const e=document.querySelector("#standalonePreviewEffectLayer .devfx:last-child");if(e){e.style.fontSize=size+"px";e.style.animationDuration=dur(2.2)}},i);
+  }else if(id==="fire"){
+    for(let i=0;i<count;i++)timed(()=>{fxNode("devfx-fire","♨",`${5+Math.random()*90}%`,`${58+Math.random()*25}%`);const e=document.querySelector("#standalonePreviewEffectLayer .devfx:last-child");if(e){e.style.fontSize=size+"px";e.style.animationDuration=dur(1.5)}},i);
+  }else if(id==="cats"){
+    for(let i=0;i<count;i++)timed(()=>{fxNode("devfx-cat","⌁",`${5+Math.random()*90}%`,`-8%`);const e=document.querySelector("#standalonePreviewEffectLayer .devfx:last-child");if(e){e.style.fontSize=size+"px";e.style.animationDuration=dur(2)}},i);
+  }else if(id==="fireworks"){
+    const c=["#9679d8","#d879a4","#73bfd3","#d9b55d"];
+    for(let i=0;i<count;i++)timed(()=>{fxNode("devfx-firework","",`${12+Math.random()*76}%`,`${15+Math.random()*55}%`,{"--fx":c[i%c.length]});const e=document.querySelector("#standalonePreviewEffectLayer .devfx:last-child");if(e){e.style.width=Math.max(5,size*.35)+"px";e.style.height=Math.max(5,size*.35)+"px";e.style.animationDuration=dur(1.7)}},i);
+  }else if(id==="kchau"){
+    for(let i=0;i<count;i++)timed(()=>{fxNode("devfx-heart","ϟ",`${10+Math.random()*80}%`,`${65+Math.random()*20}%`);const e=document.querySelector("#standalonePreviewEffectLayer .devfx:last-child");if(e){e.style.fontSize=size+"px";e.style.color="#d9b55d";e.style.animationDuration=dur(2.1)}},i);
+  }else if(id==="ruble"){
+    /* Курс рубля: только символы ₽ — никаких дополнительных значков. */
+    for(let i=0;i<count;i++)timed(()=>{fxNode("devfx-cat","₽",`${6+Math.random()*88}%`,`-8%`);const e=document.querySelector("#standalonePreviewEffectLayer .devfx:last-child");if(e){e.style.fontSize=size+"px";e.style.animationDuration=dur(2)}},i);
+  }else if(id==="esteem"){
+    for(let i=0;i<count;i++)timed(()=>{fxNode("devfx-heart","♕",`${8+Math.random()*84}%`,`${70+Math.random()*18}%`);const e=document.querySelector("#standalonePreviewEffectLayer .devfx:last-child");if(e){e.style.fontSize=size+"px";e.style.animationDuration=dur(2.1)}},i);
+  }else if(id==="fuel"){
+    for(let i=0;i<count;i++)timed(()=>{fxNode("devfx-plane","▣","-10%",`${25+Math.random()*50}%`);const e=document.querySelector("#standalonePreviewEffectLayer .devfx:last-child");if(e){e.style.fontSize=size+"px";e.style.animationDuration=dur(2.2)}},i);
+  }else if(id==="tie"){
+    for(let i=0;i<count;i++)timed(()=>{fxNode("devfx-firework","=",`${12+Math.random()*76}%`,`${20+Math.random()*50}%`,{"--fx":"#7d8fa7"});const e=document.querySelector("#standalonePreviewEffectLayer .devfx:last-child");if(e)e.style.animationDuration=dur(1.7)},i);
+  }
+}
+function devLaunchKnivesFromStandaloneEditor(){closeStandalonePostcardEditor();currentTieWinners=players.length>=2?players.slice(0,2):[{id:1,name:"Игрок 1",score:0,color:"red"},{id:2,name:"Игрок 2",score:0,color:"blue"}];document.getElementById("startScreen")?.classList.add("hidden");document.getElementById("gameScreen")?.classList.add("hidden");document.getElementById("winnerScreen")?.classList.add("hidden");openKnivesRules()}
+
+/* =========================================================
+   v12 — ОТКРЫТКИ / ФИНАЛЬНЫЕ РЕАКЦИИ
+========================================================= */
+const POSTCARD_REACTIONS = [
+  {id:"planes",name:"Самолёты",icon:"✈️",color:"#6f8fd7",bg:"#252a36",effectIndex:0,
+    variants:[
+      {title:"",text:"Билеты на Авиасейлс нихера не дешевые."},
+      {title:"",text:"Тут могла бы быть реклама Авиасейлс."}
+    ]},
+  {id:"fire",name:"Огонь",icon:"♨",color:"#d78858",bg:"#332922",effectIndex:1,
+    variants:[{title:"",text:"Ты торпеда, пушка, ПРИОРА!!!"}]},
+  {id:"confetti",name:"Конфетти",icon:"✣",color:"#c38bdb",bg:"#30283a",effectIndex:2,
+    variants:[
+      {title:"",text:"Вот тебе конфетти. Денег на приз не было."},
+      {title:"",text:"Победа есть. Конфетти есть. Чего тебе ещё надо?"},
+      {title:"",text:"Поздравляю! Убирать конфетти будешь сам."}
+    ]},
+  {id:"cats",name:"Коты",icon:"🐈",color:"#73bfd3",bg:"#243138",effectIndex:3,
+    variants:[{title:"",text:"Лови падающих котиков"}]},
+  {id:"hearts",name:"Сердечки",icon:"♡",color:"#d879a4",bg:"#342630",effectIndex:4,
+    variants:[
+      {title:"",text:"Ну ты, конечно, краш."},
+      {title:"",text:"Победитель определён. Краш тоже."},
+      {title:"",text:"Ладно. За такое можно и сердечко отдать."},
+      {title:"",text:"Кажется, ты мой краш..тест"}
+    ]},
+  {id:"fireworks",name:"Фейерверк",icon:"✦",color:"#9679d8",bg:"#2b2637",effectIndex:5,
+    variants:[{title:"",text:"Это салют или твоё эго взорвалось?"}]},
+  {id:"kchau",name:"КЧАУ",icon:"ϟ",color:"#d9b55d",bg:"#342f21",effectIndex:6,
+    variants:[{title:"",text:"КЧАУ"}]},
+  {id:"ruble",name:"Курс рубля",icon:"₽",color:"#6dae85",bg:"#253129",effectIndex:7,
+    variants:[{title:"",text:"О, опять рубль упал."}]},
+  {id:"esteem",name:"Самооценка",icon:"♕",color:"#c58a67",bg:"#352a24",effectIndex:8,
+    variants:[{title:"",text:"Величие обнаружено. Скромность — нет."}]},
+  {id:"fuel",name:"Бензин",icon:"▣",color:"#9b6177",bg:"#31262b",effectIndex:9,
+    variants:[{title:"",text:"Че стоишь? Это не очередь на бензин. Идём играть!"}]},
+  {id:"tie",name:"Ничья",icon:"=",color:"#7d8fa7",bg:"#282d35",effectIndex:null,
+    variants:[
+      {key:"owls",title:"Совы",text:"СОВпадение))))"},
+      {key:"knives",title:"Ножечки",text:"Цивилизованные методы закончились.."},
+      {key:"handshake_1",title:"Камень, ножницы, бумага",text:"Игра отказывается выбирать любимчика. Сыграйте в камень, ножницы, бумагу."},
+      {key:"handshake_2",title:"Камень, ножницы, бумага",text:"Сыграйте в камень, ножницы, бумагу. Судьба разберётся."},
+      {key:"handshake_3",title:"Камень, ножницы, бумага",text:"Сыграйте в камень, ножницы, бумагу. Кто-то же должен проиграть."}
+    ]}
+];
+
+let selectedPostcardReactionId="hearts";
+let postcardPreviewIndex=0;
+
+function getPostcardOverrides(){
+  try{return JSON.parse(localStorage.getItem("wordGamePostcardOverrides")||"{}")||{}}
+  catch(e){return {}}
+}
+function setPostcardOverrides(value){
+  localStorage.setItem("wordGamePostcardOverrides",JSON.stringify(value||{}));
+}
+function getPostcardReaction(id){
+  return POSTCARD_REACTIONS.find(item=>item.id===id) || POSTCARD_REACTIONS[0];
+}
+function getPostcardVariants(id){
+  const base=getPostcardReaction(id);
+  const saved=getPostcardOverrides()[id];
+  if(Array.isArray(saved) && saved.length){
+    return saved.map((item,index)=>({
+      key:item.key || base.variants[index]?.key || null,
+      title:String(item.title||""),
+      text:String(item.text||"")
+    }));
+  }
+  return base.variants.map(item=>({...item}));
+}
+function getPostcardText(id,fallback,index=0){
+  const variants=getPostcardVariants(id).filter(item=>item.text.trim());
+  if(!variants.length) return fallback;
+  return variants[index % variants.length]?.text || fallback;
+}
+function getPostcardTextByKey(id,key,fallback){
+  const variants=getPostcardVariants(id);
+  return variants.find(item=>item.key===key)?.text || fallback;
+}
+function renderPostcardReactionGrid(){
+  const grid=document.getElementById("postcardReactionGrid");
+  if(!grid) return;
+  grid.innerHTML=POSTCARD_REACTIONS.filter(item=>item.id!=="tie").map(item=>`
+    <button type="button"
+      class="postcard-reaction-card ${selectedPostcardReactionId===item.id?"active":""}"
+      style="--pc:${item.color};--pcbg:${item.bg}"
+      onclick="selectPostcardReaction('${item.id}')">
+      <span class="postcard-reaction-icon">${item.icon}</span>
+      <span class="postcard-reaction-copy">
+        <b>${escapeHtml(item.name)}</b>
+        <small>${getPostcardVariants(item.id).length} ${getPostcardVariants(item.id).length===1?"вариант":"вариантов"}</small>
+      </span>
+      <span class="developer-menu-arrow">›</span>
+    </button>
+  `).join("");
+}
+function selectPostcardReaction(id){
+  selectedPostcardReactionId=id;
+  postcardPreviewIndex=0;
+  renderPostcardReactionGrid();
+  renderPostcardWorkspace();
+  document.getElementById("postcardEditorWorkspace")?.classList.remove("hidden");
+  setPostcardEditorMode("edit");
+}
+function renderPostcardWorkspace(){
+  const reaction=getPostcardReaction(selectedPostcardReactionId);
+  const variants=getPostcardVariants(reaction.id);
+  const workspace=document.getElementById("postcardEditorWorkspace");
+  if(workspace) workspace.style.setProperty("--postcard-accent",reaction.color);
+  const title=document.getElementById("postcardEditorTitle");
+  const count=document.getElementById("postcardEditorCount");
+  if(title) title.textContent=reaction.name;
+  if(count) count.textContent=`${variants.length} ${variants.length===1?"вариант":"вариантов"}`;
+  document.getElementById("postcardTieTools")?.classList.toggle("hidden",reaction.id!=="tie");
+  document.getElementById("postcardAddVariantBtn")?.classList.toggle("hidden",reaction.id==="tie");
+  renderPostcardVariantList();
+  renderPostcardPreview();
+}
+function renderPostcardVariantList(){
+  const reaction=getPostcardReaction(selectedPostcardReactionId);
+  const variants=getPostcardVariants(reaction.id);
+  const list=document.getElementById("postcardVariantList");
+  if(!list) return;
+  list.innerHTML=variants.map((item,index)=>`
+    <div class="postcard-variant-card" data-postcard-index="${index}">
+      <div class="postcard-variant-head">
+        <span>ВАРИАНТ ${index+1}${item.key?` · ${escapeHtml(item.key)}`:""}</span>
+        <div class="postcard-variant-actions">
+          <button type="button" class="postcard-mini-action" title="Выше" onclick="movePostcardVariant(${index},-1)">↑</button>
+          <button type="button" class="postcard-mini-action" title="Ниже" onclick="movePostcardVariant(${index},1)">↓</button>
+          ${reaction.id==="tie" ? "" : `<button type="button" class="postcard-mini-action" title="Удалить" onclick="deletePostcardVariant(${index})">×</button>`}
+        </div>
+      </div>
+      <div class="postcard-editor-field">
+        <label>ЗАГОЛОВОК / ПОДПИСЬ В РЕДАКТОРЕ</label>
+        <input id="postcardTitle_${index}" value="${escapeHtml(item.title||"")}">
+      </div>
+      <div class="postcard-editor-field">
+        <label>ТЕКСТ ФИНАЛЬНОЙ РЕАКЦИИ</label>
+        <textarea id="postcardText_${index}">${escapeHtml(item.text||"")}</textarea>
+      </div>
+      <div class="postcard-variant-save-row">
+        <button type="button" class="postcard-save-btn" onclick="savePostcardVariant(${index})">Сохранить</button>
+      </div>
+    </div>
+  `).join("");
+}
+function savePostcardVariant(index){
+  const reaction=getPostcardReaction(selectedPostcardReactionId);
+  const variants=getPostcardVariants(reaction.id);
+  if(!variants[index]) return;
+  variants[index].title=document.getElementById(`postcardTitle_${index}`)?.value||"";
+  variants[index].text=document.getElementById(`postcardText_${index}`)?.value||"";
+  const store=getPostcardOverrides();
+  store[reaction.id]=variants;
+  setPostcardOverrides(store);
+  renderPostcardWorkspace();
+  showSettingsSaveState("saved");
+}
+function addPostcardVariant(){
+  const reaction=getPostcardReaction(selectedPostcardReactionId);
+  if(reaction.id==="tie") return;
+  const variants=getPostcardVariants(reaction.id);
+  variants.push({title:"",text:"Новый вариант"});
+  const store=getPostcardOverrides();store[reaction.id]=variants;setPostcardOverrides(store);
+  renderPostcardWorkspace();
+}
+function deletePostcardVariant(index){
+  const reaction=getPostcardReaction(selectedPostcardReactionId);
+  const variants=getPostcardVariants(reaction.id);
+  if(variants.length<=1){alert("Нужен хотя бы один вариант.");return}
+  variants.splice(index,1);
+  const store=getPostcardOverrides();store[reaction.id]=variants;setPostcardOverrides(store);
+  postcardPreviewIndex=0;renderPostcardWorkspace();
+}
+function movePostcardVariant(index,delta){
+  const reaction=getPostcardReaction(selectedPostcardReactionId);
+  const variants=getPostcardVariants(reaction.id);
+  const next=index+delta;
+  if(next<0||next>=variants.length)return;
+  [variants[index],variants[next]]=[variants[next],variants[index]];
+  const store=getPostcardOverrides();store[reaction.id]=variants;setPostcardOverrides(store);
+  renderPostcardWorkspace();
+}
+function setPostcardEditorMode(mode){
+  const edit=mode!=="preview";
+  document.getElementById("postcardEditMode")?.classList.toggle("hidden",!edit);
+  document.getElementById("postcardPreviewMode")?.classList.toggle("hidden",edit);
+  document.getElementById("postcardEditModeBtn")?.classList.toggle("active",edit);
+  document.getElementById("postcardPreviewModeBtn")?.classList.toggle("active",!edit);
+  if(!edit)renderPostcardPreview();
+}
+function renderPostcardPreview(){
+  const reaction=getPostcardReaction(selectedPostcardReactionId);
+  const variants=getPostcardVariants(reaction.id);
+  if(!variants.length)return;
+  postcardPreviewIndex=((postcardPreviewIndex%variants.length)+variants.length)%variants.length;
+  const item=variants[postcardPreviewIndex];
+  const accent=document.getElementById("postcardPreviewAccent");
+  const heading=document.getElementById("postcardPreviewHeading");
+  const body=document.getElementById("postcardPreviewText");
+  if(accent) accent.textContent=reaction.id==="tie"?"= = =":`${reaction.icon} ${reaction.icon} ${reaction.icon} ${reaction.icon}`;
+  if(heading) heading.textContent=item.title || reaction.name;
+  if(body) body.textContent=item.text;
+}
+function stepPostcardPreview(delta){postcardPreviewIndex+=delta;renderPostcardPreview()}
+function randomPostcardPreview(){
+  const variants=getPostcardVariants(selectedPostcardReactionId);
+  postcardPreviewIndex=Math.floor(Math.random()*Math.max(1,variants.length));renderPostcardPreview();
+}
+function resetSelectedPostcardReaction(){
+  const reaction=getPostcardReaction(selectedPostcardReactionId);
+  if(!confirm(`Сбросить все изменения для «${reaction.name}»?`))return;
+  const store=getPostcardOverrides();delete store[reaction.id];setPostcardOverrides(store);
+  postcardPreviewIndex=0;renderPostcardWorkspace();renderPostcardReactionGrid();
+}
+function exportPostcardOverrides(){
+  const payload={
+    type:"KTO_POSTCARD_OVERRIDES",
+    version:12,
+    exportedAt:new Date().toISOString(),
+    overrides:getPostcardOverrides()
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download="KTO_BYSTREE_v12_postcard_changes.json";a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function devLaunchKnivesFromEditor(){
+  currentTieWinners = players.length>=2
+    ? players.slice(0,2)
+    : [
+        {id:1,name:"Игрок 1",score:0,color:"red"},
+        {id:2,name:"Игрок 2",score:0,color:"blue"}
+      ];
+  closeSettings();
+  document.getElementById("startScreen")?.classList.add("hidden");
+  document.getElementById("gameScreen")?.classList.add("hidden");
+  document.getElementById("winnerScreen")?.classList.add("hidden");
+  openKnivesRules();
+}
 
 /* =========================================================
    v11.5 — DEV PASSWORD / COLLECTION REQUESTS / QUESTION EDITOR
@@ -14585,6 +15791,13 @@ document.addEventListener(
 );
 
 
+document.addEventListener("DOMContentLoaded",()=>{
+  prepareAutoColorsForNewGame();
+  renderPlayerSetup();
+});
+
+
+
 function resetCardsCountControlToDefault() {
   const select =
     document.getElementById("roundCount");
@@ -14648,6 +15861,10 @@ function showDeveloperSubview(view){
   }
   if(view==="home"){
     syncDeveloperRudeToggle();
+  }
+  if(view==="postcards"){
+    openStandalonePostcardEditor();
+    return;
   }
   if(view==="questionEditor"){
     renderDeveloperQuestionLetters();
@@ -14727,3 +15944,538 @@ function filterDeveloperRules(){
 
 </body>
 </html>
+<style>
+
+
+/* v12.10 — крупнее меню реакций */
+.postcard-tv-menu .postcard-reaction-card{
+  min-height:72px;
+  padding:13px 14px;
+}
+.postcard-tv-menu .postcard-reaction-icon{
+  width:39px;
+  height:39px;
+  flex-basis:39px;
+  font-size:20px;
+}
+.postcard-tv-menu .postcard-reaction-copy b{
+  font-size:16px;
+}
+.postcard-tv-menu .postcard-reaction-copy small{
+  font-size:11px;
+  margin-top:5px;
+}
+.postcard-tv-menu .developer-menu-arrow{
+  font-size:21px;
+}
+
+.postcard-inline-variants{
+  gap:7px;
+  margin:2px 3px 10px 18px;
+  padding-left:10px;
+}
+.postcard-inline-variant{
+  padding:10px 11px;
+  border-radius:10px;
+}
+.postcard-inline-variant span{
+  font-size:11px;
+}
+.postcard-inline-variant small{
+  margin-top:5px;
+  font-size:10px;
+  line-height:1.4;
+}
+
+.postcard-dev-section-title{
+  font-size:11px;
+  margin-top:7px;
+  margin-bottom:10px;
+}
+
+/* v12.9 — раскрывающиеся варианты реакций */
+.postcard-menu-item-wrap{display:grid;gap:5px}
+.postcard-inline-variants{
+  display:grid;gap:5px;margin:0 4px 7px 16px;padding-left:8px;
+  border-left:1px solid #454545
+}
+.postcard-inline-variant{
+  width:100%;border:1px solid #3b3b3b;border-radius:8px;background:#191919;color:#ddd;
+  text-align:left;padding:7px 8px;cursor:pointer
+}
+.postcard-inline-variant:hover,.postcard-inline-variant.active{
+  border-color:#8f6aa3;background:#2b2430
+}
+.postcard-inline-variant span{display:block;font-size:9px;font-weight:1000;color:#d8b8e7}
+.postcard-inline-variant small{
+  display:block;margin-top:3px;font-size:8px;line-height:1.25;color:#a5a5a5;
+  white-space:normal
+}
+
+/* v12.8 — reactions viewer cleanup */
+.postcard-tv-screen-wrap{height:100%}
+.postcard-tv-screen-wrap .postcard-live-host{
+  width:100%;
+  height:100%;
+  min-height:0;
+}
+.postcard-tv-screen-wrap #winnerScreen{
+  width:100%!important;
+  height:100%!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.postcard-tv-screen-wrap #winnerScreen .winner-card{
+  width:min(760px,92%)!important;
+  max-height:92%!important;
+  margin:auto!important;
+}
+</style>
+
+<style>
+/* v12.10 — эффекты живут внутри центрального финального экрана */
+.postcard-tv-screen-wrap{
+  position:relative;
+  isolation:isolate;
+}
+.postcard-tv-screen-wrap #winnerScreen{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  z-index:1!important;
+}
+.postcard-tv-screen-wrap #effects{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+  z-index:1!important;
+}
+.postcard-tv-screen-wrap .winner-card{
+  position:relative!important;
+  z-index:5!important;
+}
+</style>
+
+<style>
+/* v12.11 — крупные тексты вариантов */
+.postcard-inline-variant{
+  padding:13px 14px!important;
+  min-height:62px!important;
+}
+.postcard-inline-variant span{
+  font-size:14px!important;
+  line-height:1.2!important;
+}
+.postcard-inline-variant small{
+  margin-top:7px!important;
+  font-size:13px!important;
+  line-height:1.45!important;
+  color:#d0d0d0!important;
+}
+</style>
+
+<style>
+.postcard-knives-playground{
+  width:calc(100% - 20px);
+  margin:4px 10px 14px;
+  padding:14px 15px;
+  border:1px solid #7892aa;
+  border-radius:11px;
+  background:#202a33;
+  color:#fff;
+  text-align:left;
+  font-size:14px;
+  font-weight:1000;
+  cursor:pointer;
+}
+.postcard-knives-playground:hover{background:#283744}
+.postcard-knives-playground small{
+  display:block;
+  margin-top:6px;
+  font-size:11px;
+  line-height:1.35;
+  font-weight:600;
+  color:#b8c5cf;
+}
+</style>
+
+<style>
+/* =========================================================
+   v12.12 — НОЖЕЧКИ: крупные правила + выход + пастельное поле
+========================================================= */
+.knives-panel{
+  position:relative;
+}
+
+.knives-rules-panel{
+  width:min(980px,calc(100% - 34px))!important;
+  padding:34px 34px 30px!important;
+}
+
+.knives-rules-heading{
+  text-align:center;
+  margin-bottom:24px;
+}
+
+.knives-rules-kicker{
+  margin-bottom:7px;
+  font-size:11px;
+  line-height:1;
+  letter-spacing:.13em;
+  font-weight:1000;
+  color:#a9a1ad;
+}
+
+.knives-rules-panel h2{
+  margin:0;
+  font-size:38px!important;
+  line-height:1.05;
+}
+
+.knives-rules-panel .knives-muted{
+  margin-top:9px;
+  font-size:15px!important;
+  line-height:1.35;
+}
+
+.knives-rule-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:13px!important;
+}
+
+.knives-rule-chip{
+  min-height:145px;
+  padding:20px 20px!important;
+  border-radius:18px!important;
+  display:grid!important;
+  grid-template-columns:54px minmax(0,1fr)!important;
+  grid-template-rows:auto auto!important;
+  column-gap:15px!important;
+  align-items:center!important;
+  text-align:left!important;
+}
+
+.knives-rule-chip .ico{
+  grid-row:1 / 3;
+  font-size:34px!important;
+  align-self:center;
+}
+
+.knives-rule-chip b{
+  font-size:20px!important;
+  line-height:1.15;
+}
+
+.knives-rule-chip span{
+  margin-top:6px!important;
+  font-size:14px!important;
+  line-height:1.45!important;
+  color:#bdb8c1!important;
+}
+
+.knives-rules-actions{
+  margin-top:18px!important;
+}
+
+.knives-main-start{
+  min-height:58px!important;
+  font-size:18px!important;
+}
+
+.knives-exit-btn{
+  position:absolute;
+  top:16px;
+  right:16px;
+  z-index:10;
+  width:43px;
+  height:43px;
+  border:1px solid #5b5b5b;
+  border-radius:50%;
+  background:#242424;
+  color:#eee;
+  font-size:22px;
+  line-height:1;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.knives-exit-btn:hover{
+  background:#303030;
+}
+
+/* Закрытая карточка = только пастельная плашка, без 12 одинаковых ножей */
+.knife-memory-back{
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb,var(--knife-card-pastel) 88%,#fff 12%),
+      var(--knife-card-pastel)
+    )!important;
+  border-color:
+    color-mix(in srgb,var(--knife-card-pastel) 72%,#fff 28%)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.34),
+    0 5px 14px rgba(0,0,0,.12);
+}
+
+.knife-memory-card.closed:hover .knife-memory-back{
+  filter:brightness(1.04);
+  transform:none;
+}
+
+@media(max-width:720px){
+  .knives-rules-panel{
+    padding:27px 17px 22px!important;
+  }
+
+  .knives-rule-grid{
+    grid-template-columns:1fr!important;
+  }
+
+  .knives-rule-chip{
+    min-height:112px;
+  }
+
+  .knives-rules-panel h2{
+    font-size:31px!important;
+  }
+}
+</style>
+
+<style>
+/* v12.13 — сложность ножечек + заметный текущий игрок */
+.knives-difficulty-block{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:9px;
+  margin:22px auto 18px;
+}
+.knives-difficulty-label{
+  font-size:11px;
+  font-weight:1000;
+  letter-spacing:.14em;
+  color:#a9a1ad;
+}
+.knives-difficulty-switch{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:9px 14px;
+  border:1px solid #4d4d4d;
+  border-radius:999px;
+  background:#1c1c1c;
+}
+.knives-difficulty-dot{
+  width:18px;
+  height:18px;
+  padding:0;
+  border:2px solid #8b8b8b;
+  border-radius:50%;
+  background:transparent;
+  cursor:pointer;
+  transition:.18s ease;
+}
+.knives-difficulty-dot:hover{
+  transform:scale(1.13);
+  border-color:#d4b8e7;
+}
+.knives-difficulty-dot.active{
+  width:22px;
+  height:22px;
+  border-color:#d5b4e8;
+  background:#a56bc4;
+  box-shadow:0 0 0 4px rgba(165,107,196,.17);
+}
+.knives-difficulty-text{
+  min-height:17px;
+  font-size:13px;
+  font-weight:950;
+  letter-spacing:.04em;
+}
+
+.knives-current-player{
+  width:max-content;
+  max-width:min(620px,90%);
+  margin:8px auto 17px;
+  padding:11px 22px;
+  border:1px solid #c7a5dc;
+  border-radius:999px;
+  background:#2a2030;
+  box-shadow:0 8px 22px rgba(0,0,0,.22);
+  font-size:24px;
+  line-height:1.1;
+  font-weight:1000;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+.knives-current-player::before{
+  content:"ХОДИТ: ";
+  color:#bcaec3;
+  font-size:12px;
+  letter-spacing:.09em;
+  vertical-align:middle;
+}
+.knives-phase{
+  font-size:14px!important;
+}
+.knives-score.active{
+  outline:3px solid #c7a5dc!important;
+  background:#302536!important;
+}
+
+/* 24 карты на сложном уровне должны помещаться без микроскопического текста */
+.knives-deck{
+  max-width:760px!important;
+}
+.knife-memory-card{
+  min-height:92px;
+}
+@media(min-width:760px){
+  .knives-deck{
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:759px){
+  .knives-deck{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:520px){
+  .knives-deck{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+  .knives-current-player{
+    font-size:20px;
+  }
+}
+</style>
+
+<style>
+/* =========================================================
+   v12.14 — счёт ножечек + старт + запрет плохих автопар
+========================================================= */
+.knives-scores{
+  width:min(780px,96%)!important;
+  max-width:780px!important;
+  gap:12px!important;
+  margin:18px auto 0!important;
+}
+
+.knives-score{
+  min-height:58px!important;
+  padding:14px 18px!important;
+  border-radius:14px!important;
+  font-size:16px!important;
+  line-height:1.25!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  letter-spacing:.01em;
+}
+
+.knives-score.active{
+  outline:3px solid #c7a5dc!important;
+  outline-offset:2px;
+  background:#35283d!important;
+  box-shadow:0 8px 20px rgba(0,0,0,.22);
+}
+
+.knives-main-start{
+  min-height:62px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  border:1px solid #c6a2da!important;
+  background:linear-gradient(180deg,#5c3c6d,#442d50)!important;
+  color:#fff!important;
+  font-size:20px!important;
+  font-weight:1000!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.22)!important;
+  transition:transform .12s ease,filter .12s ease,box-shadow .12s ease!important;
+}
+
+.knives-main-start:hover{
+  filter:brightness(1.12);
+  transform:translateY(-1px);
+  box-shadow:0 11px 22px rgba(0,0,0,.28)!important;
+}
+
+.knives-main-start:active{
+  transform:translateY(2px) scale(.99);
+  filter:brightness(.94);
+  box-shadow:0 3px 8px rgba(0,0,0,.22)!important;
+}
+
+.knives-start-icon{
+  font-size:25px;
+  line-height:1;
+}
+
+@media(max-width:620px){
+  .knives-score{
+    min-height:52px!important;
+    padding:11px 12px!important;
+    font-size:14px!important;
+  }
+}
+</style>
+
+<style>
+/* =========================================================
+   v12.16 — полные ряды карточек + палитра на каждый уровень
+========================================================= */
+.knives-difficulty-dot[data-level="easy"]{
+  border-color:#E3AFA8!important;
+}
+.knives-difficulty-dot[data-level="easy"].active{
+  background:#E9B9B2!important;
+  border-color:#F2CEC8!important;
+  box-shadow:0 0 0 4px rgba(233,185,178,.18)!important;
+}
+
+.knives-difficulty-dot[data-level="medium"]{
+  border-color:#9FC6D6!important;
+}
+.knives-difficulty-dot[data-level="medium"].active{
+  background:#AFCFDC!important;
+  border-color:#CAE0E9!important;
+  box-shadow:0 0 0 4px rgba(175,207,220,.18)!important;
+}
+
+.knives-difficulty-dot[data-level="hard"]{
+  border-color:#B699C4!important;
+}
+.knives-difficulty-dot[data-level="hard"].active{
+  background:#BDA5C9!important;
+  border-color:#D4C1DD!important;
+  box-shadow:0 0 0 4px rgba(189,165,201,.18)!important;
+}
+
+.knives-rules-panel[data-difficulty="easy"] .knives-difficulty-text{
+  color:#EBC1BA;
+}
+.knives-rules-panel[data-difficulty="medium"] .knives-difficulty-text{
+  color:#BBD7E3;
+}
+.knives-rules-panel[data-difficulty="hard"] .knives-difficulty-text{
+  color:#CFB8D9;
+}
+
+/* На широком экране:
+   18 = 3×6, 24 = 4×6, 30 = 5×6 — без пустых ячеек. */
+@media(min-width:760px){
+  .knives-deck{
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  }
+}
+</style>
