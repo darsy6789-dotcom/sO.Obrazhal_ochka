@@ -1,5 +1,5 @@
 <!--
-KTO БЫСТРЕЕ — v10.5 RELEASE
+KTO БЫСТРЕЕ — v10.10 FINAL PRE-RELEASE
 Integrated:
 - approved START UI spacing lock: 18px between modes and Start button
 - 15 sequential inter-round phrases
@@ -87,14 +87,15 @@ body.dark .back-start-btn{
 }
 
 body.dark .defer-letter-btn{
-  background:#4b3d10 !important;
-  color:#ffe8a0 !important;
-  border-color:#b78717 !important;
+  background:var(--defer-bg)!important;
+  color:#fffaf5!important;
+  border-color:var(--defer-border)!important;
 }
 
 body.dark .defer-letter-btn:hover{
-  background:#5a4810 !important;
-  border-color:#d8a728 !important;
+  background:var(--defer-bg)!important;
+  border-color:var(--defer-border)!important;
+  filter:brightness(1.08);
 }
 
 *{box-sizing:border-box}
@@ -717,16 +718,18 @@ button{cursor:pointer}
 }
 
 .defer-letter-btn{
-  background:#fff1b8!important;
-  color:#332500!important;
-  border:2px solid #e2a51b!important;
+  --defer-bg:#684d7d;
+  --defer-border:#ad94bf;
+  background:var(--defer-bg)!important;
+  color:#fffaf5!important;
+  border:2px solid var(--defer-border)!important;
   font-weight:900!important;
-  box-shadow:0 4px 0 rgba(176,120,0,.16);
+  box-shadow:0 4px 0 rgba(0,0,0,.24),0 8px 18px rgba(0,0,0,.14);
+  transition:background .2s ease,border-color .2s ease,transform .15s ease;
 }
 
 .defer-letter-btn:hover{
-  background:#ffe48a!important;
-  border-color:#c98a00!important;
+  filter:brightness(1.08);
   transform:translateY(-1px);
 }
 
@@ -5018,7 +5021,7 @@ body.developer-mode .hint-preview-eye{
       class="secondary defer-letter-btn"
       onclick="skipLetter()"
     >
-      🕒 Не знаем — отложить букву
+      ПРОПУСТИТЬ БУКВУ
     </button>
 
     <button
@@ -5933,7 +5936,7 @@ const playerColors = [
   {id:"blue",name:"Синий",bg:"#587bd8",text:"#ffffff"},
   {id:"violet",name:"Фиолетовый",bg:"#9170d7",text:"#ffffff"},
   {id:"pink",name:"Розовый",bg:"#ef8fbb",text:"#24151c"},
-  {id:"white",name:"Белый",bg:"#ffffff",text:"#1d1d1d"},
+  {id:"burgundy",name:"Бордовый",bg:"#8f3f5f",text:"#ffffff"},
   {id:"black",name:"Чёрный",bg:"#191919",text:"#ffffff"}
 ];
 
@@ -6923,11 +6926,15 @@ function startGame() {
     players.push({
       id:i,
       name:name,
-      color:color,
+      color:(color === "white" ? "burgundy" : color),
       score:0
     });
 
   }
+
+
+  deferLetterLabelIndex = 0;
+  updateDeferLetterButton();
 
 
   runStartToGameTransition();
@@ -7513,15 +7520,6 @@ function renderPlayerCards() {
         color.text;
 
 
-      if (
-        player.color === "white"
-      ) {
-
-        button.style.border =
-          "2px solid #d8d8d8";
-
-      }
-
 
       button.onclick =
         () => givePoint(
@@ -7640,6 +7638,99 @@ function showPlusAnimation(
 
 
 /* =========================================================
+   КНОПКА «ОТЛОЖИТЬ БУКВУ»: ФРАЗЫ + ЦВЕТ ПО ПАРЕ ИГРОКОВ
+========================================================= */
+
+const deferLetterLabels = [
+  "ПРОПУСТИТЬ БУКВУ",
+  "ОТЛОЖИТЬ БУКВУ",
+  "ЭТУ ПОТОМ",
+  "ДАЛЬШЕ!",
+  "ПАС!",
+  "ЧЕ ЗА БУКВА ТАКАЯ",
+  "КАК С ЭТИМ РАБОТАТЬ",
+  "НЕ, ДАВАЙ ДРУГУЮ",
+  "А МОЖНО ДРУГУЮ?",
+  "МЫ ПОДУМАЕМ",
+  "И ЧЕ С НЕЙ ДЕЛАТЬ",
+  "СЛОЖНА",
+  "СЛЕДУЮЩАЯ!",
+  "ЭТА НА ПОТОМ",
+  "НУ НЕТ",
+  "НЕ ПОШЛО",
+  "ДАВАЙ БЕЗ ЭТОЙ"
+];
+
+let deferLetterLabelIndex = 0;
+
+const deferButtonPalette = {
+  // Сбалансированная палитра: фиолетовый теперь только одно из семи основных семейств.
+  navy:{bg:"#354d73",border:"#7089ae"},
+  steel:{bg:"#52677e",border:"#899db1"},
+  wine:{bg:"#843f59",border:"#c87d96"},
+  dustyPink:{bg:"#9b6177",border:"#d39aaa"},
+  graphite:{bg:"#454852",border:"#7d818d"},
+  teal:{bg:"#3f6b70",border:"#78a0a3"},
+  plum:{bg:"#684d7d",border:"#ad94bf"},
+  terra:{bg:"#a65f4f",border:"#dc917d"}
+};
+
+// Терракотовый оставлен только для двух сочетаний — как редкий тёплый акцент.
+const deferButtonOverrides = {
+  "orange|pink":"terra",
+  "burgundy|orange":"terra"
+};
+
+function deferPairKey(a,b){
+  return [a,b].sort().join("|");
+}
+
+function getDeferPaletteName(a,b){
+  const override = deferButtonOverrides[deferPairKey(a,b)];
+  if (override) return override;
+
+  const ids = playerColors.map(color => color.id);
+  let ai = Math.max(0,ids.indexOf(a));
+  let bi = Math.max(0,ids.indexOf(b));
+  if (ai > bi) [ai,bi] = [bi,ai];
+
+  // Каждая из 55 уникальных пар получает стабильный цвет.
+  // Пары раскладываются почти поровну по 7 семействам, поэтому
+  // сливовый больше не доминирует, а одинаковые цвета тоже поддерживаются.
+  const names = [
+    "navy",
+    "steel",
+    "wine",
+    "dustyPink",
+    "graphite",
+    "teal",
+    "plum"
+  ];
+  const n = ids.length;
+  const pairOrdinal = ai * n - (ai * (ai - 1)) / 2 + (bi - ai);
+  return names[pairOrdinal % names.length];
+}
+
+function updateDeferLetterButton(){
+  const button = document.getElementById("skipButton");
+  if (!button) return;
+
+  button.textContent = deferLetterLabels[deferLetterLabelIndex];
+
+  const first = players[0]?.color || "black";
+  const second = players[1]?.color || first;
+  const palette = deferButtonPalette[getDeferPaletteName(first,second)];
+  button.style.setProperty("--defer-bg",palette.bg);
+  button.style.setProperty("--defer-border",palette.border);
+}
+
+function advanceDeferLetterLabel(){
+  deferLetterLabelIndex =
+    (deferLetterLabelIndex + 1) % deferLetterLabels.length;
+  updateDeferLetterButton();
+}
+
+/* =========================================================
    НЕ ЗНАЕМ
 ========================================================= */
 
@@ -7670,6 +7761,9 @@ function skipLetter() {
   letterQueue.push(
     currentLetter
   );
+
+
+  advanceDeferLetterLabel();
 
 
   document.getElementById(
