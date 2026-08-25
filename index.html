@@ -1446,6 +1446,74 @@ body.dark .start-icon-button{
 .mode-required-shake{animation:modeRequiredShake .28s ease}
 
 /* SETTINGS TABS */
+/* v11.1 — статус автосохранения настроек сверху */
+.settings-savebar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:0 18px 12px;
+  flex-wrap:wrap;
+}
+
+.settings-save-pill,
+.settings-reset-pill{
+  min-height:36px;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.settings-save-pill{
+  padding:0 12px;
+  color:#b9d7bf;
+  background:#252b27;
+  border:1px solid #344039;
+  transition:.18s ease;
+}
+
+.settings-save-pill.saving{
+  color:#d6c5e4;
+  background:#2b2630;
+  border-color:#4c4255;
+}
+
+.settings-save-pill.reset-done{
+  color:#d8c5e6;
+  background:#2b2630;
+  border-color:#55465f;
+}
+
+.settings-reset-pill{
+  padding:0 13px;
+  color:var(--muted);
+  background:var(--surface2);
+  border:1px solid color-mix(in srgb,var(--border) 28%,transparent);
+  cursor:pointer;
+}
+
+.settings-reset-pill:hover{
+  transform:translateY(-1px);
+}
+
+.settings-tabs-single{
+  justify-content:flex-end;
+}
+
+@media(max-width:560px){
+  .settings-savebar{
+    align-items:stretch;
+  }
+  .settings-save-pill,
+  .settings-reset-pill{
+    width:100%;
+    justify-content:center;
+  }
+}
+
 .settings-tabs{
   display:flex;
   gap:8px;
@@ -1475,8 +1543,139 @@ body.dark .start-icon-button{
   background:var(--surface2);
   font-size:10px;
 }
+
+
+/* v11.1 review — компактные настройки в один ряд */
+.settings-compact-section{
+  padding-top:8px;
+}
+.settings-compact-row{
+  display:flex;
+  align-items:center;
+  gap:0;
+  padding:8px 0 2px;
+}
+.settings-compact-card{
+  min-width:0;
+  flex:1 1 0;
+  padding:4px 16px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+}
+.settings-compact-card + .settings-compact-card{
+  border-left:1px solid var(--surface2);
+}
+.settings-compact-label{
+  display:block;
+  font-weight:800;
+  margin-bottom:10px;
+}
+.settings-compact-help{
+  min-width:0;
+  font-size:12px;
+  line-height:1.25;
+  color:var(--muted);
+}
+.settings-auto-inline{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.theme-toggle-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  min-height:42px;
+}
+.theme-toggle-name{
+  font-size:12px;
+  font-weight:800;
+  color:var(--muted);
+}
+.theme-toggle-switch{
+  flex:0 0 auto;
+}
+.theme-sync-hidden{
+  display:none!important;
+}
+.settings-compact-card .settings-timer-same-slot,
+.settings-compact-card select,
+.settings-compact-card input.custom-timer-same-slot{
+  width:100%;
+}
+@media(max-width:760px){
+  .settings-compact-row{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .settings-compact-card{padding:12px 4px;}
+  .settings-compact-card + .settings-compact-card{
+    border-left:0;
+    border-top:1px solid var(--surface2);
+  }
+}
 .settings-tab-panel{display:none}
 .settings-tab-panel.active{display:block}
+
+
+/* =========================================================
+   v11.1 — компактные настройки
+========================================================= */
+#settingsBackdrop .modal{
+  width:min(720px,calc(100% - 32px));
+  padding:0;
+  border-radius:20px;
+  overflow:auto;
+  background:var(--surface);
+}
+#settingsBackdrop .modal.settings-wide{width:min(780px,calc(100% - 28px))}
+#settingsBackdrop .modal.settings-dev-width{width:min(650px,calc(100% - 28px))}
+#settingsBackdrop .modal-head{margin:0;padding:26px 28px 16px}
+#settingsBackdrop .modal-head h2{font-size:31px;line-height:1.1}
+#settingsBackdrop .close-btn{width:48px;height:48px;font-size:25px}
+#settingsBackdrop .settings-savebar{justify-content:flex-start;gap:10px;padding:0 28px 18px}
+#settingsBackdrop .settings-save-pill,
+#settingsBackdrop .settings-reset-pill{min-height:39px;padding:0 15px;font-size:13px}
+.settings-main-compact{border-top:1px solid var(--surface2);padding:14px 28px 22px}
+.settings-main-section{display:grid;grid-template-columns:170px minmax(0,1fr);gap:20px;align-items:start;padding:18px 0}
+.settings-main-section + .settings-main-section{border-top:1px solid var(--surface2)}
+.settings-main-section-label{margin-top:4px;color:var(--muted);font-size:13px;line-height:1.25;font-weight:900;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:9px}
+.settings-section-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:10px;background:#28242d;color:#c58be6}
+.settings-section-icon.collection{background:#2d252b;color:#ef8fbb}
+.settings-section-icon.developer{background:#29242e;color:#c58be6}
+.settings-section-icon svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.settings-main-section-body{min-width:0}
+.settings-main-line{min-height:46px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.settings-main-line + .settings-main-line{margin-top:6px}
+.settings-main-name{font-size:18px;font-weight:900}
+.settings-main-line .settings-timer-same-slot{width:auto;min-width:175px}
+.settings-main-line .settings-timer-same-slot select,
+.settings-main-line .settings-timer-same-slot input{min-height:45px;font-size:16px}
+.settings-main-line select{width:auto;min-height:45px;padding:0 13px;border-radius:10px;font-size:16px}
+.settings-main-go{min-height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--surface2);background:var(--surface2);color:var(--text);font-size:15px;font-weight:900;cursor:pointer}
+.settings-main-go.dev{color:#d4bfe1;border-color:#594a63;background:#2b2630}
+.settings-main-count{display:inline-grid;place-items:center;min-width:21px;height:21px;padding:0 5px;margin-left:4px;border-radius:999px;background:#3a3a3a;font-size:10px}
+.settings-subpage-head{display:flex;align-items:center;justify-content:flex-start;gap:10px;margin-bottom:12px}
+.settings-back-btn{min-height:32px;padding:0 10px;border-radius:9px;border:1px solid var(--surface2);background:var(--surface2);color:var(--text);font-size:10px;font-weight:900;cursor:pointer}
+#settingsCollectionPanel{padding:0 17px 16px}
+#settingsDeveloperPanel{padding:0 17px 16px}
+#settingsDeveloperPanel .dev-tools-card{margin-top:0}
+.dev-admin-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 0;padding:10px;border:1px solid var(--surface2);border-radius:11px}
+.dev-admin-row-text b{display:block;font-size:12px}
+.dev-admin-row-text small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+#settingsBackdrop .settings-admin-button{width:34px;height:34px;flex:0 0 auto}
+@media(max-width:520px){
+  #settingsBackdrop .modal{width:calc(100% - 18px);border-radius:16px}
+  .settings-main-section{grid-template-columns:112px minmax(0,1fr);gap:10px}
+  #settingsBackdrop .modal-head,#settingsBackdrop .settings-savebar,.settings-main-compact{padding-left:15px;padding-right:15px}
+  #settingsBackdrop .settings-savebar{align-items:stretch}
+  #settingsBackdrop .settings-save-pill,#settingsBackdrop .settings-reset-pill{width:100%;justify-content:center}
+  .settings-main-name{font-size:13px}
+  .settings-main-section-label{font-size:9.5px}
+}
 
 /* COLLECTION */
 .collection-settings-head{
@@ -4657,6 +4856,48 @@ body.developer-mode .hint-preview-eye{
   border:0 !important;
 }
 
+
+/* =========================================================
+   v11.2 — DEV-раздел и справочник ответок
+========================================================= */
+#settingsDeveloperPanel{padding:0 28px 24px}
+.developer-subview{display:none}
+.developer-subview.active{display:block}
+.developer-nav-head{margin:0 0 16px;display:flex;align-items:center;gap:14px}
+.settings-back-btn-large{min-height:42px;padding:0 15px;font-size:14px;border-radius:11px}
+.developer-page-title{font-size:22px;font-weight:950}
+.developer-section-card{border:1px solid var(--surface2);border-radius:15px;padding:16px 17px;margin-bottom:12px;background:linear-gradient(135deg,rgba(111,97,168,.055),rgba(255,255,255,0))}
+.developer-section-heading{font-size:11px;letter-spacing:.08em;font-weight:950;color:var(--muted);margin-bottom:10px}
+.developer-setting-row{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.developer-setting-row .dev-tools-title{font-size:17px}
+.developer-subtext{margin-top:4px;font-size:12px;line-height:1.35}
+.developer-menu-button{width:100%;min-height:66px;padding:11px 14px;border-radius:12px;border:1px solid #594a63;background:#2b2630;color:var(--text);display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;cursor:pointer}
+.developer-menu-button b{display:block;font-size:15px;color:#dfc8eb}
+.developer-menu-button small{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+.developer-menu-arrow{font-size:27px;color:#c9a7da}
+.developer-admin-contained{margin:0}
+.developer-test-contained{margin-top:10px}
+.developer-overview-card{margin-top:0;padding-top:16px;border-top:1px solid var(--surface2)}
+.developer-rules-intro{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:12px}
+.developer-rules-search-wrap{margin-bottom:12px}
+.developer-rules-search{width:100%;min-height:43px;border-radius:11px;border:1px solid var(--surface2);background:var(--surface);color:var(--text);padding:0 13px;font-size:14px}
+.developer-rules-table-wrap{border:1px solid var(--surface2);border-radius:14px;overflow:hidden;max-height:470px;overflow-y:auto}
+.developer-rules-table{width:100%;border-collapse:collapse;font-size:13px}
+.developer-rules-table thead th{position:sticky;top:0;z-index:1;background:#292929;color:#ddd;text-align:left;padding:11px 12px;border-bottom:1px solid #3a3a3a}
+.developer-rules-table th:first-child{width:30%}
+.developer-rules-table td{padding:11px 12px;vertical-align:top;border-bottom:1px solid var(--surface2);line-height:1.35}
+.developer-rules-table tbody tr:last-child td{border-bottom:0}
+.developer-rules-table td:first-child{font-weight:900;color:#e3c7ef}
+.developer-rules-table tbody tr:hover{background:rgba(145,112,215,.06)}
+.developer-rules-empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:620px){
+  #settingsDeveloperPanel{padding:0 15px 18px}
+  .developer-nav-head{align-items:flex-start;flex-direction:column;gap:8px}
+  .developer-setting-row{align-items:flex-start}
+  .developer-rules-table{font-size:12px}
+  .developer-rules-table th:first-child{width:35%}
+}
+
 </style>
 
 <style id="sevenFxPrereleaseStyles">
@@ -5047,158 +5288,78 @@ body.developer-mode .hint-preview-eye{
   onclick="if(event.target===this)closeSettings()"
 >
 
-  <div class="modal">
+  <div id="settingsModal" class="modal">
 
     <div class="modal-head">
-
       <h2>⚙ Настройки</h2>
-
-      <div class="settings-head-actions">
-        <button
-          id="settingsAdminButton"
-          class="settings-admin-button"
-          type="button"
-          onclick="toggleAdminRudeFromSettings()"
-          title="Админ: разрешить любые имена"
-          aria-label="Админ: разрешить любые имена"
-        >
-          😈
-        </button>
-
-        <button
-          class="close-btn"
-          onclick="closeSettings()"
-        >
-          ×
-        </button>
-      </div>
-
+      <button class="close-btn" onclick="closeSettings()">×</button>
     </div>
 
-    <div class="settings-tabs">
-      <button
-        id="settingsMainTab"
-        type="button"
-        class="settings-tab-button active"
-        onclick="showSettingsTab('main')"
-      >
-        Основные
-      </button>
-
-      <button
-        id="settingsCollectionTab"
-        type="button"
-        class="settings-tab-button"
-        onclick="showSettingsTab('collection')"
-      >
-        Моя коллекция
-        <span id="settingsCollectionCount">0</span>
-      </button>
+    <div class="settings-savebar" aria-live="polite">
+      <div id="settingsSaveStatus" class="settings-save-pill saved">
+        <span class="settings-save-icon">✓</span>
+        <span id="settingsSaveText">Все изменения сохранены</span>
+      </div>
+      <button type="button" class="settings-reset-pill" onclick="resetGameSettings()">↺ Сбросить изменения</button>
     </div>
 
     <div id="settingsMainPanel" class="settings-tab-panel active">
+      <div class="settings-main-compact">
 
-    <div class="section">
-
-      <div class="section-title">
-        Тема
-      </div>
-
-      <div class="theme-options">
-
-        <button
-          id="lightThemeButton"
-          class="theme-button"
-          onclick="setTheme('light')"
-        >
-          ☀ Светлая
-        </button>
-
-        <button
-          id="darkThemeButton"
-          class="theme-button"
-          onclick="setTheme('dark')"
-        >
-          ☾ Тёмная
-        </button>
-
-      </div>
-
-    </div>
-
-    <div class="section">
-
-      <div class="settings-row">
-
-        <div class="field">
-
-          <label for="timerSelect">
-            Время на ответ
-          </label>
-
-          <div class="settings-timer-same-slot">
-            <select
-              id="timerSelect"
-              onchange="changeTimerSetting()"
-            >
-              <option value="69">69 секунд</option>
-              <option value="60">60 секунд</option>
-              <option value="55">55 секунд</option>
-              <option value="50">50 секунд</option>
-              <option value="custom">Своё число</option>
-            </select>
-
-            <input
-              id="customTimer"
-              class="custom-timer-same-slot"
-              type="number"
-              min="1"
-              max="300"
-              value="69"
-              placeholder="сек."
-              oninput="changeCustomTimer()"
-              onblur="finishSettingsCustomTime()"
-              onkeydown="settingsCustomTimeKey(event)"
-            >
-          </div>
-
-        </div>
-
-        <div>
-
-          <div class="section-title">
-            Автопереход
-          </div>
-
-          <div class="switch-row">
-
-            <div style="font-size:13px;color:var(--muted)">
-              После очка сразу открывать следующий раунд
+        <section class="settings-main-section">
+          <div class="settings-main-section-label"><span class="settings-section-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M25 16c-7-3-13 2-12 9-6 3-6 12 0 15-2 7 5 12 11 9 3 6 12 5 14 0 7 3 13-3 11-9 6-4 4-13-2-15 1-7-6-12-12-9-3-6-11-6-14-1Z"/><path d="M23 25l-5 4 5 3M41 25l5 4-5 3M25 41c4-4 10-4 14 0"/></svg></span><span>Игра</span></div>
+          <div class="settings-main-section-body">
+            <div class="settings-main-line">
+              <span class="settings-main-name">Время на ответ</span>
+              <div class="settings-timer-same-slot">
+                <select id="timerSelect" onchange="changeTimerSetting()">
+                  <option value="69">69 секунд</option>
+                  <option value="60">60 секунд</option>
+                  <option value="55">55 секунд</option>
+                  <option value="50">50 секунд</option>
+                  <option value="custom">Своё число</option>
+                </select>
+                <input id="customTimer" class="custom-timer-same-slot" type="number" min="1" max="300" value="69" placeholder="сек." oninput="changeCustomTimer()" onblur="finishSettingsCustomTime()" onkeydown="settingsCustomTimeKey(event)">
+              </div>
             </div>
-
-            <label class="switch">
-
-              <input
-                id="autoToggle"
-                type="checkbox"
-                onchange="changeAuto()"
-              >
-
-              <span class="switch-slider"></span>
-
-            </label>
-
+            <div class="settings-main-line">
+              <span class="settings-main-name">Автопереход</span>
+              <label class="switch">
+                <input id="autoToggle" type="checkbox" onchange="changeAuto()">
+                <span class="switch-slider"></span>
+              </label>
+            </div>
           </div>
+        </section>
 
-        </div>
+        <section class="settings-main-section">
+          <div class="settings-main-section-label"><span class="settings-section-icon collection" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M13 26h38v25H13zM18 26v-8h28v8M25 18v-5h14v5"/><path d="M25 37h14M32 31v12"/><path d="M9 20l4 2M55 20l-4 2M12 12l4 4M52 12l-4 4"/></svg></span><span>Моя коллекция</span></div>
+          <div class="settings-main-section-body">
+            <div class="settings-main-line">
+              <button id="settingsCollectionTab" type="button" class="settings-main-go" onclick="showSettingsTab('collection')">
+                Открыть коллекцию <span id="settingsCollectionCount" class="settings-main-count">0</span> ›
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="settings-main-section">
+          <div class="settings-main-section-label"><span class="settings-section-icon developer" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M16 26c0-11 7-18 16-18s16 7 16 18c0 8-4 14-9 17v9h-5v-7h-4v7h-5v-9c-5-3-9-9-9-17z"/><circle cx="25" cy="27" r="3"/><circle cx="39" cy="27" r="3"/><path d="M27 37h10M10 55l9-7M54 55l-9-7"/></svg></span><span>Для разработчика</span></div>
+          <div class="settings-main-section-body">
+            <div class="settings-main-line">
+              <button id="settingsDeveloperTab" type="button" class="settings-main-go dev" onclick="showSettingsTab('developer')">Режим разработчика ›</button>
+            </div>
+          </div>
+        </section>
 
       </div>
-
-    </div>
-
     </div>
 
     <div id="settingsCollectionPanel" class="settings-tab-panel">
+
+      <div class="settings-subpage-head">
+        <button type="button" class="settings-back-btn" onclick="showSettingsTab('main')">← Назад к настройкам</button>
+      </div>
 
       <div class="collection-settings-head">
         <div>
@@ -5254,53 +5415,6 @@ body.developer-mode .hint-preview-eye{
           id="collectionSearchResults"
           class="collection-search-results hidden"
         ></div>
-      </div>
-
-      <div class="dev-tools-card">
-        <div class="dev-tools-main">
-          <div>
-            <div class="dev-tools-title">🛠 Режим разработчика</div>
-            <div class="collection-settings-sub">
-              Показывает, на каких буквах у тебя уже есть сохранённые ответы.
-            </div>
-          </div>
-
-          <label class="dev-switch">
-            <input
-              id="developerModeToggle"
-              type="checkbox"
-              onchange="toggleDeveloperMode()"
-            >
-            <span class="dev-slider"></span>
-          </label>
-        </div>
-
-        <div id="developerOverview" class="developer-overview hidden">
-      <div style="margin:8px 0 12px;padding:9px 11px;border:1px solid #444;border-radius:11px;color:#aaa;font-size:11px">
-        Стартовая страница всегда тёмная. Настройка темы влияет только на игру и внутренние окна.
-      </div>
-    
-          <div class="dev-final-test-row">
-            <button
-              class="secondary dev-final-test-open"
-              type="button"
-              onclick="openVictoryReactionTester()"
-            >
-              🎉 Проверить финальные реакции
-            </button>
-          </div>
-
-          <div class="developer-overview-head">
-            <b>Мои буквы</b>
-            <span id="developerHintTotal">0 сохранено</span>
-          </div>
-
-          <div id="developerLetterChips" class="developer-letter-chips"></div>
-
-          <div id="developerLetterDetails" class="developer-letter-details">
-            Нажми на букву, чтобы посмотреть сохранённые ответы.
-          </div>
-        </div>
       </div>
 
       <div class="hint-editor-grid">
@@ -5387,10 +5501,118 @@ body.developer-mode .hint-preview-eye{
 
     </div>
 
+    <div id="settingsDeveloperPanel" class="settings-tab-panel">
+      <div id="developerHomeView" class="developer-subview active">
+        <div class="settings-subpage-head developer-nav-head">
+          <button type="button" class="settings-back-btn settings-back-btn-large" onclick="showSettingsTab('main')">← Назад</button>
+          <div class="developer-page-title">☠ Для разработчика</div>
+        </div>
+
+        <section class="developer-section-card">
+          <div class="developer-section-heading">РЕЖИМ РАЗРАБОТЧИКА</div>
+          <div class="developer-setting-row">
+            <div>
+              <div class="dev-tools-title">Режим разработчика</div>
+              <div class="collection-settings-sub developer-subtext">Показывает дополнительные инструменты и сохранённые ответы по буквам.</div>
+            </div>
+            <label class="dev-switch">
+              <input id="developerModeToggle" type="checkbox" onchange="toggleDeveloperMode()">
+              <span class="dev-slider"></span>
+            </label>
+          </div>
+        </section>
+
+        <section class="developer-section-card">
+          <div class="developer-section-heading">ОТВЕТКИ НА ВВОД</div>
+          <button type="button" class="developer-menu-button" onclick="showDeveloperSubview('rules')">
+            <span>
+              <b>Неприличные слова и специальные имена</b>
+              <small>Посмотреть все слова и точные ответки игры</small>
+            </span>
+            <span class="developer-menu-arrow">›</span>
+          </button>
+        </section>
+
+        <section class="developer-section-card">
+          <div class="developer-section-heading">ПРОЧЕЕ</div>
+          <div class="dev-admin-row developer-admin-contained">
+            <div class="dev-admin-row-text">
+              <b>Админские правила имён</b>
+              <small>Внутренняя настройка разрешения ругательств.</small>
+            </div>
+            <button id="settingsAdminButton" class="settings-admin-button" type="button" onclick="toggleAdminRudeFromSettings()" title="Админ: разрешить любые имена" aria-label="Админ: разрешить любые имена">😈</button>
+          </div>
+
+          <div class="dev-final-test-row developer-test-contained">
+            <button class="secondary dev-final-test-open" type="button" onclick="openVictoryReactionTester()">🎉 Проверить финальные реакции</button>
+          </div>
+        </section>
+
+        <div id="developerOverview" class="developer-overview hidden developer-section-card developer-overview-card">
+          <div class="developer-overview-head">
+            <b>Мои буквы</b>
+            <span id="developerHintTotal">0 сохранено</span>
+          </div>
+          <div id="developerLetterChips" class="developer-letter-chips"></div>
+          <div id="developerLetterDetails" class="developer-letter-details">Нажми на букву, чтобы посмотреть сохранённые ответы.</div>
+        </div>
+      </div>
+
+      <div id="developerRulesView" class="developer-subview">
+        <div class="settings-subpage-head developer-nav-head">
+          <button type="button" class="settings-back-btn settings-back-btn-large" onclick="showDeveloperSubview('home')">← Для разработчика</button>
+          <div class="developer-page-title">Ответки на ввод</div>
+        </div>
+
+        <div class="developer-rules-intro">Список отсортирован по слову. Здесь только просмотр: что ввели → что именно ответит игра.</div>
+        <div class="developer-rules-search-wrap">
+          <input id="developerRulesSearch" type="search" class="developer-rules-search" placeholder="Найти слово или ответку…" oninput="filterDeveloperRules()">
+        </div>
+        <div class="developer-rules-table-wrap">
+          <table class="developer-rules-table">
+            <thead><tr><th>Слово / ввод</th><th>Ответка игры</th></tr></thead>
+            <tbody id="developerRulesBody">
+              <tr><td>аноним</td><td>ШПИОН!!</td></tr>
+              <tr><td>бля</td><td>Согласен, иногда этим словом я могу описать свое состояние.. Так че там с именем?</td></tr>
+              <tr><td>блять</td><td>Согласен, иногда этим словом я могу описать свое состояние.. Так че там с именем?</td></tr>
+              <tr><td>бог</td><td>Самооценка — 10/10. А теперь пиши мне имя)</td></tr>
+              <tr><td>гандон</td><td>Давайте жить дружно</td></tr>
+              <tr><td>господин</td><td>Господин? Серьезно? Это всё, на что ты способен?</td></tr>
+              <tr><td>госпожа</td><td>Госпожа чего? Очка</td></tr>
+              <tr><td>долбоеб</td><td>Сильное заявление. Проверять мы это, конечно же, не будем.</td></tr>
+              <tr><td>ебать</td><td>копать</td></tr>
+              <tr><td>ебаться</td><td>планы на вечер мы не спрашивали, только твое имя</td></tr>
+              <tr><td>Залупкин / производные с корнем «залупкин»</td><td>Династия древняя. Наследник, судя по всему, последний.</td></tr>
+              <tr><td>король</td><td>Мы тренируемся, а не присягаем тебе на верность</td></tr>
+              <tr><td>лох</td><td>Самокритично. Но придумай другое имя.</td></tr>
+              <tr><td>мой господин</td><td>Только не заставляй меня называть тебя так)))</td></tr>
+              <tr><td>мразь</td><td>Не мне спорить с такой уверенной самоидентификацией.</td></tr>
+              <tr><td>никто</td><td>Инкогнито сегодня не принимаем</td></tr>
+              <tr><td>отсоси</td><td>Запрос передан специалисту. Специалист отказался.</td></tr>
+              <tr><td>очко</td><td>На него и играем. Название команды придумай другое)))</td></tr>
+              <tr><td>пидор</td><td>Давайте жить дружно</td></tr>
+              <tr><td>пидорас</td><td>Давайте жить дружно</td></tr>
+              <tr><td>пидр</td><td>Давайте жить дружно</td></tr>
+              <tr><td>пися</td><td>Пися? Ебать ты опасный. Ещё «кака» напиши.</td></tr>
+              <tr><td>сиси</td><td>Нет. Сосредоточьтесь.</td></tr>
+              <tr><td>сосать</td><td>Свои желания запишешь в другом месте.</td></tr>
+              <tr><td>соси</td><td>Не отвлекайся на мечты</td></tr>
+              <tr><td>сосок</td><td>Как мало букв понадобилось, чтобы я разочаровался.</td></tr>
+              <tr><td>сосочек</td><td>Как мало букв понадобилось, чтобы я разочаровался.</td></tr>
+              <tr><td>стажер</td><td>Это пока должность. А имя?)))</td></tr>
+              <tr><td>уебан</td><td>Врагов вспоминаешь? Имя пиши давай</td></tr>
+              <tr><td>уебок</td><td>Врагов вспоминаешь? Имя пиши давай</td></tr>
+              <tr><td>хуй</td><td>....))))))))))))))</td></tr>
+              <tr><td>царь</td><td>Царь пока только в голове. Пиши имя</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="developerRulesEmpty" class="developer-rules-empty hidden">Ничего не найдено.</div>
+      </div>
+    </div>
   </div>
 
 </div>
-
 
 <!-- =========================================================
      СБОРНИК
@@ -5966,12 +6188,20 @@ function normalizedName(value) {
 const SPECIAL_NAME_RESPONSES = {
   "хуй": "....))))))))))))))",
   "мой господин": "Только не заставляй меня называть тебя так)))",
-  "господин": "",
+  "господин": "Господин? Серьезно? Это всё, на что ты способен?",
   "госпожа": "Госпожа чего? Очка",
   "царь": "Царь пока только в голове. Пиши имя",
   "король": "Мы тренируемся, а не присягаем тебе на верность",
   "бог": "Самооценка — 10/10. А теперь пиши мне имя)",
   "соси": "Не отвлекайся на мечты",
+  "сосать": "Свои желания запишешь в другом месте.",
+  "пися": "Пися? Ебать ты опасный. Ещё «кака» напиши.",
+  "мразь": "Не мне спорить с такой уверенной самоидентификацией.",
+  "сосок": "Как мало букв понадобилось, чтобы я разочаровался.",
+  "сосочек": "Как мало букв понадобилось, чтобы я разочаровался.",
+  "отсоси": "Запрос передан специалисту. Специалист отказался.",
+  "ебать": "копать",
+  "ебаться": "планы на вечер мы не спрашивали, только твое имя",
 
   "пидор": "Давайте жить дружно",
   "пидр": "Давайте жить дружно",
@@ -6003,6 +6233,11 @@ function getSpecialNameResponse(value) {
   }
 
   const n = normalizedName(value);
+
+  const compactName = n.replace(/[\s_\-]+/g, "");
+  if (compactName.includes("залупкин")) {
+    return "Династия древняя. Наследник, судя по всему, последний.";
+  }
 
   if (Object.prototype.hasOwnProperty.call(SPECIAL_NAME_RESPONSES, n)) {
     return SPECIAL_NAME_RESPONSES[n];
@@ -6347,10 +6582,8 @@ let autoNext =
     "autoNext"
   ) !== "false";
 
-let theme =
-  localStorage.getItem(
-    "gameTheme"
-  ) || "light";
+let theme = "dark";
+localStorage.setItem("gameTheme", "dark");
 
 let letterQueue = [];
 
@@ -7664,7 +7897,6 @@ const deferLetterLabels = [
 let deferLetterLabelIndex = 0;
 
 const deferButtonPalette = {
-  // Сбалансированная палитра: фиолетовый теперь только одно из семи основных семейств.
   navy:{bg:"#354d73",border:"#7089ae"},
   steel:{bg:"#52677e",border:"#899db1"},
   wine:{bg:"#843f59",border:"#c87d96"},
@@ -7675,10 +7907,73 @@ const deferButtonPalette = {
   terra:{bg:"#a65f4f",border:"#dc917d"}
 };
 
-// Терракотовый оставлен только для двух сочетаний — как редкий тёплый акцент.
-const deferButtonOverrides = {
+// v11.1 — ручная таблица всех 55 уникальных сочетаний.
+// Никакой формулы: каждая пара подобрана отдельно.
+const deferButtonPairMap = {
+  "black|black":"plum",
+  "black|blue":"wine",
+  "black|burgundy":"steel",
+  "black|cyan":"navy",
+  "black|green":"plum",
+  "black|orange":"steel",
+  "black|pink":"navy",
+  "black|red":"steel",
+  "black|violet":"teal",
+  "black|yellow":"wine",
+
+  "blue|blue":"plum",
+  "blue|burgundy":"steel",
+  "blue|cyan":"wine",
+  "blue|green":"plum",
+  "blue|orange":"graphite",
+  "blue|pink":"navy",
+  "blue|red":"steel",
+  "blue|violet":"teal",
+  "blue|yellow":"wine",
+
+  "burgundy|burgundy":"navy",
+  "burgundy|cyan":"graphite",
+  "burgundy|green":"steel",
+  "burgundy|orange":"terra",
+  "burgundy|pink":"navy",
+  "burgundy|red":"steel",
+  "burgundy|violet":"teal",
+  "burgundy|yellow":"graphite",
+
+  "cyan|cyan":"wine",
+  "cyan|green":"graphite",
+  "cyan|orange":"plum",
+  "cyan|pink":"navy",
+  "cyan|red":"steel",
+  "cyan|violet":"wine",
+  "cyan|yellow":"graphite",
+
+  "green|green":"navy",
+  "green|orange":"wine",
+  "green|pink":"graphite",
+  "green|red":"plum",
+  "green|violet":"steel",
+  "green|yellow":"wine",
+
+  "orange|orange":"steel",
   "orange|pink":"terra",
-  "burgundy|orange":"terra"
+  "orange|red":"navy",
+  "orange|violet":"graphite",
+  "orange|yellow":"plum",
+
+  "pink|pink":"plum",
+  "pink|red":"navy",
+  "pink|violet":"steel",
+  "pink|yellow":"graphite",
+
+  "red|red":"navy",
+  "red|violet":"steel",
+  "red|yellow":"plum",
+
+  "violet|violet":"steel",
+  "violet|yellow":"navy",
+
+  "yellow|yellow":"graphite"
 };
 
 function deferPairKey(a,b){
@@ -7686,29 +7981,7 @@ function deferPairKey(a,b){
 }
 
 function getDeferPaletteName(a,b){
-  const override = deferButtonOverrides[deferPairKey(a,b)];
-  if (override) return override;
-
-  const ids = playerColors.map(color => color.id);
-  let ai = Math.max(0,ids.indexOf(a));
-  let bi = Math.max(0,ids.indexOf(b));
-  if (ai > bi) [ai,bi] = [bi,ai];
-
-  // Каждая из 55 уникальных пар получает стабильный цвет.
-  // Пары раскладываются почти поровну по 7 семействам, поэтому
-  // сливовый больше не доминирует, а одинаковые цвета тоже поддерживаются.
-  const names = [
-    "navy",
-    "steel",
-    "wine",
-    "dustyPink",
-    "graphite",
-    "teal",
-    "plum"
-  ];
-  const n = ids.length;
-  const pairOrdinal = ai * n - (ai * (ai - 1)) / 2 + (bi - ai);
-  return names[pairOrdinal % names.length];
+  return deferButtonPairMap[deferPairKey(a,b)] || "graphite";
 }
 
 function updateDeferLetterButton(){
@@ -7768,12 +8041,7 @@ function skipLetter() {
 
   document.getElementById(
     "status"
-  ).textContent =
-    "Буква "
-    +
-    currentLetter
-    +
-    " вернётся позже";
+  ).textContent = "";
 
 
   renderProgress();
@@ -7781,7 +8049,7 @@ function skipLetter() {
 
   setTimeout(
     startNextLetter,
-    500
+    220
   );
 
 }
@@ -8168,29 +8436,73 @@ function makeChip(
 
 
 
-function setTheme(
-  newTheme
-) {
+let settingsSaveStatusTimer = null;
 
-  theme =
-    newTheme;
+function showSettingsSaveState(state = "saved", customText = "") {
+  const pill = document.getElementById("settingsSaveStatus");
+  const text = document.getElementById("settingsSaveText");
+  if (!pill || !text) return;
 
-  localStorage.setItem(
-    "gameTheme",
-    theme
-  );
+  clearTimeout(settingsSaveStatusTimer);
+  pill.classList.remove("saving", "saved", "reset-done");
 
-  applyTheme();
+  if (state === "saving") {
+    pill.classList.add("saving");
+    text.textContent = customText || "Сохраняем…";
+    settingsSaveStatusTimer = setTimeout(
+      () => showSettingsSaveState("saved"),
+      420
+    );
+    return;
+  }
 
+  if (state === "reset") {
+    pill.classList.add("reset-done");
+    text.textContent = customText || "Настройки сброшены";
+    settingsSaveStatusTimer = setTimeout(
+      () => showSettingsSaveState("saved"),
+      900
+    );
+    return;
+  }
+
+  pill.classList.add("saved");
+  text.textContent = customText || "Все изменения сохранены";
 }
 
+function markSettingsSaved() {
+  showSettingsSaveState("saving");
+}
+
+function resetGameSettings() {
+  theme = "dark";
+  answerTime = 30;
+  timerSeconds = answerTime;
+  autoNext = true;
+
+  localStorage.setItem("gameTheme", "dark");
+  localStorage.setItem("answerTime", String(answerTime));
+  localStorage.setItem("autoNext", "true");
+
+  applyTheme();
+  syncTimerControls();
+
+  const autoToggle = document.getElementById("autoToggle");
+  if (autoToggle) autoToggle.checked = true;
+
+  showSettingsSaveState("reset");
+}
+
+function setTheme(newTheme) {
+  theme = "dark";
+  localStorage.setItem("gameTheme", "dark");
+  applyTheme();
+}
 
 function applyTheme() {
 
-  document.body.classList.toggle(
-    "dark",
-    theme === "dark"
-  );
+  theme = "dark";
+  document.body.classList.add("dark");
 
   const lightButton =
     document.getElementById(
@@ -8257,6 +8569,11 @@ function applyTheme() {
 
   }
 
+  const themeToggle = document.getElementById("themeToggle");
+  if (themeToggle) {
+    themeToggle.checked = theme === "dark";
+  }
+
 }
 
 
@@ -8282,7 +8599,7 @@ function updateTimer() {
 
 
 function openSettings() {
-  setTimeout(refreshSettingsAdminButton, 0);
+  setTimeout(() => showSettingsSaveState("saved"), 0);
 
   applyTheme();
 
@@ -8442,6 +8759,7 @@ function changeStartTimerSetting() {
   );
 
   syncTimerControls();
+  markSettingsSaved();
 
 }
 
@@ -8476,6 +8794,7 @@ function changeStartCustomTimer() {
   );
 
   syncTimerControls();
+  markSettingsSaved();
 
 }
 
@@ -8525,6 +8844,7 @@ function changeTimerSetting() {
   );
 
   syncTimerControls();
+  markSettingsSaved();
 }
 
 function changeCustomTimer() {
@@ -8552,6 +8872,7 @@ function changeCustomTimer() {
     "answerTime",
     answerTime
   );
+  markSettingsSaved();
 }
 
 
@@ -8608,6 +8929,7 @@ function changeAuto() {
       : "false"
   );
 
+  markSettingsSaved();
 }
 
 
@@ -11929,61 +12251,51 @@ function init() {
 
 /* ===== QUICK THEME ===== */
 function toggleThemeQuick() {
-  setTheme(
-    theme === "dark"
-      ? "light"
-      : "dark"
-  );
+  theme = "dark";
+  applyTheme();
 }
 
 function updateStartThemeIcon() {
-  const button =
-    document.getElementById(
-      "startThemeToggle"
-    );
-
-  if (!button) return;
-
-  button.textContent =
-    theme === "dark"
-      ? "☀"
-      : "☾";
-
-  button.title =
-    theme === "dark"
-      ? "Включить светлую тему"
-      : "Включить тёмную тему";
+  const button = document.getElementById("startThemeToggle");
+  if (button) button.classList.add("hidden");
 }
 
 /* ===== SETTINGS TABS ===== */
 function showSettingsTab(tab) {
-  const isCollection =
-    tab === "collection";
+  const mainPanel = document.getElementById("settingsMainPanel");
+  const collectionPanel = document.getElementById("settingsCollectionPanel");
+  const developerPanel = document.getElementById("settingsDeveloperPanel");
+  const modal = document.getElementById("settingsModal");
 
-  document
-    .getElementById("settingsMainPanel")
-    .classList
-    .toggle("active", !isCollection);
+  const isMain = tab === "main";
+  const isCollection = tab === "collection";
+  const isDeveloper = tab === "developer";
 
-  document
-    .getElementById("settingsCollectionPanel")
-    .classList
-    .toggle("active", isCollection);
+  mainPanel?.classList.toggle("active", isMain);
+  collectionPanel?.classList.toggle("active", isCollection);
+  developerPanel?.classList.toggle("active", isDeveloper);
 
-  document
-    .getElementById("settingsMainTab")
-    .classList
-    .toggle("active", !isCollection);
-
-  document
-    .getElementById("settingsCollectionTab")
-    .classList
-    .toggle("active", isCollection);
+  modal?.classList.toggle("settings-wide", isCollection);
+  modal?.classList.toggle("settings-dev-width", isDeveloper);
 
   if (isCollection) {
     refreshHintQuestionOptions();
     renderHintCollection();
   }
+  if (isDeveloper) {
+    refreshSettingsAdminButton();
+    applyDeveloperMode();
+  }
+}
+
+function toggleSettingsCollection() {
+  const isCollection = document.getElementById("settingsCollectionPanel")?.classList.contains("active");
+  showSettingsTab(isCollection ? "main" : "collection");
+}
+
+function toggleSettingsDeveloper() {
+  const isDeveloper = document.getElementById("settingsDeveloperPanel")?.classList.contains("active");
+  showSettingsTab(isDeveloper ? "main" : "developer");
 }
 
 /* ===== HINT COLLECTION ===== */
@@ -13843,6 +14155,36 @@ document.addEventListener(
   },
   true
 );
+
+
+function showDeveloperSubview(view){
+  const home=document.getElementById("developerHomeView");
+  const rules=document.getElementById("developerRulesView");
+  if(!home||!rules) return;
+  home.classList.toggle("active",view!=="rules");
+  rules.classList.toggle("active",view==="rules");
+  if(view==="rules"){
+    const search=document.getElementById("developerRulesSearch");
+    if(search){ search.value=""; }
+    filterDeveloperRules();
+  }
+}
+
+function filterDeveloperRules(){
+  const input=document.getElementById("developerRulesSearch");
+  const body=document.getElementById("developerRulesBody");
+  const empty=document.getElementById("developerRulesEmpty");
+  if(!body) return;
+  const q=(input?.value||"").trim().toLowerCase();
+  let visible=0;
+  [...body.querySelectorAll("tr")].forEach(row=>{
+    const hay=row.textContent.toLowerCase();
+    const show=!q||hay.includes(q);
+    row.style.display=show?"":"none";
+    if(show) visible++;
+  });
+  if(empty) empty.classList.toggle("hidden",visible!==0);
+}
 
 </script>
 
