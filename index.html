@@ -1,5 +1,5 @@
 <!--
-KTO БЫСТРЕЕ — v12.16 FULL KNIVES GRIDS PRE-RELEASE
+KTO БЫСТРЕЕ — v12.17 HEADER + APPROVED KNIVES PALETTES PRE-RELEASE
 Integrated:
 - approved START UI spacing lock: 18px between modes and Start button
 - 15 sequential inter-round phrases
@@ -5423,13 +5423,7 @@ function saveReactionLiveText(){}
 
     <div class="topbar-left">
 
-      <button
-        class="back-start-btn"
-        onclick="goToStartPage()"
-        title="Назад к настройке игроков"
-      >
-        ←
-      </button>
+      
 
       <h1>КТО БЫСТРЕЕ?</h1>
 
@@ -5717,13 +5711,7 @@ function saveReactionLiveText(){}
           </div>
         </div>
 
-        <button
-          type="button"
-          class="secondary collection-export-btn"
-          onclick="exportHintCollection()"
-        >
-          Скачать JSON
-        </button>
+        
       </div>
 
 
@@ -10345,22 +10333,22 @@ const KNIVES_DIFFICULTIES = {
 
 const KNIVES_PASTEL_PALETTES = {
   easy: [
-    "#F2C6C2","#F5D2B8","#F4DCA8","#E9C6CE","#EFC9B4","#F1D5C8",
-    "#EEC7BE","#F5D9BE","#F1C7C9","#E9D0C0","#F4CCB6","#EDD4C7",
-    "#F3CBC3","#F0D7B7","#EAC8C2","#F6D4C5","#EED0BA","#F1C4BD"
+    "#F47D86","#F39A83","#F6B47C","#F7C982","#D8D4A2","#C8D39B",
+    "#E6D5BA","#D8CDE8","#C7E0EC","#E8D8D0","#F3D7C7","#DAD7D2",
+    "#F08086","#F3A188","#F6BA86","#E8D2A6","#C9D2A6","#E7C9CE"
   ],
   medium: [
-    "#BFD8E8","#C7D6EE","#CFC5E8","#BFDCD2","#C6E0DD","#C9D8E2",
-    "#C7CFE7","#BED7D5","#D1C8E3","#C3D9E8","#C8DFD2","#C5D0E0",
-    "#BAD2E4","#C7C4E4","#BFD9D0","#CCDCE7","#C4D4EA","#C8D6DD",
-    "#BFD4E2","#CAD1E8","#C4DDD8","#C9C5E1","#BDD9E5","#C8D7D1"
+    "#7BC6BC","#78C1C8","#80BFD2","#8FB8D8","#9EB4D2","#B6B5DE",
+    "#BFD89C","#A4D6B0","#8CC8C6","#76B8C8","#8AB1D0","#A7AFD2",
+    "#D2D98D","#C7D99E","#B7D3AE","#91CACA","#83BFD1","#9FB1D7",
+    "#D6C7E2","#B7B8DE","#C4D6A1","#90C7BC","#77BBC4","#9FC4D8"
   ],
   hard: [
-    "#D7B8CB","#BBAFD8","#AFC9D9","#AFCFC6","#D3BEA7","#C9B4C8",
-    "#B2BDD6","#A9C8C4","#D6B5B0","#C6B5D5","#B1C5D0","#B6CCB5",
-    "#D1B6C1","#B8AED0","#AAC4D6","#A9C8BD","#CEB9A7","#C4AFC5",
-    "#AEBBD2","#A6C4C3","#D0B0AE","#C0B2CF","#AFC2CB","#B3C7B1",
-    "#CCB3BD","#B5ACCB","#A9BFD1","#A7C2B8","#C9B6A8","#BEADC0"
+    "#9C69A5","#6E91B7","#7FA1AD","#A5A86D","#D0A33B","#C77676",
+    "#9B727B","#507B99","#77A7A2","#A1A36C","#C6A17F","#C76350",
+    "#BE5967","#CDB59A","#AFA59B","#C5A5A8","#936AA0","#5F79B2",
+    "#B0628E","#B8C6CE","#D68A2A","#C7B9AB","#B37678","#8D668D",
+    "#5B8C93","#71B8B2","#A3AAA0","#D4B5A0","#A96767","#7E9A85"
   ]
 };
 
@@ -16435,29 +16423,29 @@ function filterDeveloperRules(){
    v12.16 — полные ряды карточек + палитра на каждый уровень
 ========================================================= */
 .knives-difficulty-dot[data-level="easy"]{
-  border-color:#E3AFA8!important;
+  border-color:#F08086!important;
 }
 .knives-difficulty-dot[data-level="easy"].active{
-  background:#E9B9B2!important;
-  border-color:#F2CEC8!important;
+  background:#F39A83!important;
+  border-color:#F7C982!important;
   box-shadow:0 0 0 4px rgba(233,185,178,.18)!important;
 }
 
 .knives-difficulty-dot[data-level="medium"]{
-  border-color:#9FC6D6!important;
+  border-color:#78C1C8!important;
 }
 .knives-difficulty-dot[data-level="medium"].active{
-  background:#AFCFDC!important;
-  border-color:#CAE0E9!important;
+  background:#80BFD2!important;
+  border-color:#B6B5DE!important;
   box-shadow:0 0 0 4px rgba(175,207,220,.18)!important;
 }
 
 .knives-difficulty-dot[data-level="hard"]{
-  border-color:#B699C4!important;
+  border-color:#9C69A5!important;
 }
 .knives-difficulty-dot[data-level="hard"].active{
-  background:#BDA5C9!important;
-  border-color:#D4C1DD!important;
+  background:#6E91B7!important;
+  border-color:#C0A6CC!important;
   box-shadow:0 0 0 4px rgba(189,165,201,.18)!important;
 }
 
@@ -16477,5 +16465,17 @@ function filterDeveloperRules(){
   .knives-deck{
     grid-template-columns:repeat(6,minmax(0,1fr))!important;
   }
+}
+</style>
+
+<style>
+/* v12.17 — шапка и утверждённые палитры */
+.topbar .new-game-btn,
+.header .new-game-btn,
+.new-game-btn{
+  min-height:40px;
+  padding:0 15px;
+  border-radius:11px;
+  font-weight:900;
 }
 </style>
