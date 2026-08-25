@@ -1,7 +1,17 @@
 <!--
+KTO БЫСТРЕЕ — v10.5 RELEASE
+Integrated:
+- approved START UI spacing lock: 18px between modes and Start button
+- 15 sequential inter-round phrases
+- gasoline queue/crash looping victory effect
+- previous v10.x game logic retained
+-->
+<!--
   КТО БЫСТРЕЕ? — VERSION 10
-  Интегрированная версия после визуального ревью.
-  База визуала: утверждённая версия 9.
+  Полный интегрированный код.
+  Финал: итоги всех раундов + общий счёт.
+  Реакция самооценки: только 👑 и фраза
+  «Величие обнаружено. Скромность — нет.»
 -->
 <!DOCTYPE html>
 <html lang="ru">
@@ -3920,6 +3930,727 @@ body.developer-mode .hint-preview-eye{
   color:var(--muted);
 }
 
+
+/* ===== Настройки времени: select/input занимают один слот ===== */
+.settings-timer-same-slot{
+  width:100%;
+}
+.settings-timer-same-slot > select,
+.settings-timer-same-slot > input{
+  width:100%;
+}
+.custom-timer-same-slot{
+  display:none;
+  min-height:46px;
+  padding:10px 14px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--soft);
+  color:var(--text);
+  font-size:15px;
+}
+.custom-timer-same-slot.show{
+  display:block;
+}
+#timerSelect.hide-for-custom{
+  display:none;
+}
+
+/* ===== Конец раунда: короче, крупнее, следующий таймер сразу здесь ===== */
+.round-transition-progress,
+.round-transition-track{
+  display:none !important;
+}
+.round-transition-panel{
+  padding:38px 40px !important;
+}
+.round-transition-eyebrow{
+  font-size:14px !important;
+  letter-spacing:.14em !important;
+}
+.round-transition-panel h2{
+  margin:12px 0 22px !important;
+  font-size:38px !important;
+  line-height:1.08 !important;
+}
+.round-transition-score span{
+  font-size:15px !important;
+}
+.round-transition-score strong{
+  font-size:46px !important;
+}
+.round-transition-main{
+  min-height:98px !important;
+  margin-top:22px !important;
+  padding:13px 18px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:2px !important;
+}
+.round-next-label{
+  font-size:13px !important;
+  line-height:1.2 !important;
+  letter-spacing:.08em !important;
+  color:var(--muted) !important;
+  font-weight:950 !important;
+}
+.round-next-time{
+  display:block !important;
+  margin:2px 0 !important;
+  font-size:30px !important;
+  line-height:1 !important;
+  color:var(--text) !important;
+}
+.round-next-action{
+  font-size:12px !important;
+  color:var(--muted) !important;
+  font-weight:900 !important;
+}
+
+
+/* =========================================================
+   Конец раунда — автоматический переход через 3 секунды
+========================================================= */
+.round-auto-card{
+  cursor:default !important;
+  opacity:1 !important;
+  pointer-events:none !important;
+}
+.round-auto-count{
+  display:block;
+  margin-top:6px;
+  font-size:24px;
+  line-height:1;
+  font-weight:1000;
+  color:var(--text);
+}
+
+
+/* =========================================================
+   Количество карточек — лимит только внутри "Своё число"
+========================================================= */
+#cardsCountHint{
+  display:none !important;
+}
+
+#customCardsInline::placeholder{
+  color:rgba(255,255,255,.38) !important;
+  opacity:1 !important;
+  font-weight:700 !important;
+}
+
+
+/* =========================================================
+   СБОРНИК — уже сыгранные вопросы
+========================================================= */
+.question-used-counter{
+  margin:-4px 0 8px;
+  font-size:11px;
+  font-weight:800;
+  color:var(--muted);
+}
+
+.collection-question-item{
+  display:grid !important;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:7px;
+  padding:9px 8px !important;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  border-radius:8px;
+  transition:background .15s ease,color .15s ease;
+}
+
+.collection-question-item.used{
+  background:rgba(92,200,112,.12);
+  color:#83df92 !important;
+}
+
+.collection-question-number{
+  color:inherit;
+  opacity:.75;
+}
+
+.collection-question-text{
+  min-width:0;
+}
+
+.collection-question-used{
+  padding:3px 6px;
+  border-radius:999px;
+  background:rgba(92,200,112,.18);
+  color:#8ee59b;
+  font-size:9px;
+  line-height:1;
+  font-weight:950;
+  white-space:nowrap;
+}
+
+/* Сборник: поиск */
+.collection-search-wrap{position:relative;margin:8px 0 10px}
+.collection-search-input{width:100%;min-height:40px;padding:9px 36px 9px 34px;border:1px solid rgba(255,255,255,.13);border-radius:10px;background:rgba(255,255,255,.055);color:var(--text);font:inherit;font-size:13px;outline:none}
+.collection-search-input::placeholder{color:rgba(255,255,255,.38)}
+.collection-search-input:focus{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.075)}
+.collection-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.45);font-size:18px;pointer-events:none}
+.collection-search-clear{display:none;position:absolute;right:7px;top:50%;transform:translateY(-50%);width:26px;height:26px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.09);color:rgba(255,255,255,.65);font-size:17px;cursor:pointer}
+.collection-search-clear.show{display:block}
+.collection-question-item.search-hidden{display:none!important}
+
+
+/* =========================================================
+   Игроки — единый белый текст на цветных карточках
+========================================================= */
+.player-card,
+.player-card *,
+.player-button,
+.player-button *,
+.answer-player,
+.answer-player *{
+  color:#fff !important;
+}
+
+.player-card .player-name,
+.player-button .player-name,
+.answer-player .player-name{
+  color:#fff !important;
+}
+
+.player-card .score,
+.player-button .score,
+.answer-player .score,
+.player-score{
+  color:#fff !important;
+}
+
+.player-card .player-hint,
+.player-button .player-hint,
+.answer-player .player-hint,
+.player-answer-hint{
+  color:rgba(255,255,255,.66) !important;
+}
+
+/* Не позволяем contrast-классам снова сделать текст чёрным */
+.player-card.light,
+.player-card.light *,
+.player-button.light,
+.player-button.light *,
+.answer-player.light,
+.answer-player.light *,
+.player-card.dark-text,
+.player-card.dark-text *,
+.player-button.dark-text,
+.player-button.dark-text *{
+  color:#fff !important;
+}
+
+
+/* =========================================================
+   ФИНАЛ — итоги всех раундов
+========================================================= */
+.final-round-history{
+  width:min(560px,100%);
+  margin:18px auto 20px;
+  padding:14px 16px;
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+}
+.final-rounds-title{
+  margin-bottom:9px;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.12em;
+}
+.final-round-row,
+.final-total-row{
+  display:grid;
+  grid-template-columns:90px 1fr;
+  align-items:center;
+  gap:10px;
+  padding:7px 0;
+}
+.final-round-row + .final-round-row{
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.final-round-name{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:850;
+}
+.final-round-scores,
+.final-total-row > div{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  font-size:13px;
+  font-weight:800;
+}
+.final-round-scores i,
+.final-total-row i{
+  color:rgba(255,255,255,.3);
+  font-style:normal;
+}
+.final-round-scores .round-win{
+  color:#fff;
+}
+.final-round-scores .round-win b{
+  font-size:17px;
+}
+.final-total-row{
+  margin-top:8px;
+  padding-top:11px;
+  border-top:1px solid rgba(255,255,255,.14);
+  font-weight:950;
+}
+.final-total-row > span{
+  color:var(--text);
+  font-size:11px;
+  letter-spacing:.08em;
+}
+.final-total-row > div{
+  color:#fff;
+  font-size:16px;
+}
+
+
+/* =========================================================
+   ФИНАЛ — компактные итоги без повторения имён
+========================================================= */
+.final-round-history{
+  width:min(560px,100%);
+  margin:18px auto 20px;
+  padding:14px 16px;
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+}
+
+.final-rounds-title{
+  margin-bottom:10px;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.12em;
+  text-align:center;
+}
+
+.final-round-table-head,
+.final-round-table-row,
+.final-round-table-total{
+  display:grid;
+  grid-template-columns:
+    86px
+    repeat(var(--players), minmax(58px,1fr));
+  align-items:center;
+  column-gap:8px;
+}
+
+.final-round-table-head{
+  padding:0 0 7px;
+}
+
+.final-player-name{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  text-align:center;
+}
+
+.final-round-table-row{
+  min-height:34px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+
+.final-round-label{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:850;
+}
+
+.final-round-value{
+  color:rgba(255,255,255,.7);
+  font-size:15px;
+  font-weight:850;
+  text-align:center;
+}
+
+.final-round-value.round-win{
+  color:#fff;
+  font-size:18px;
+  font-weight:1000;
+}
+
+.final-round-table-total{
+  margin-top:6px;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.14);
+}
+
+.final-round-table-total > span{
+  color:#fff;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.07em;
+}
+
+.final-round-table-total strong{
+  color:#fff;
+  font-size:18px;
+  text-align:center;
+}
+
+@media(max-width:560px){
+  .final-round-history{
+    padding:12px 10px;
+  }
+
+  .final-round-table-head,
+  .final-round-table-row,
+  .final-round-table-total{
+    grid-template-columns:
+      70px
+      repeat(var(--players), minmax(44px,1fr));
+    column-gap:5px;
+  }
+
+  .final-player-name{
+    font-size:10px;
+  }
+}
+
+
+/* Самооценка: только короны, плотнее и заметнее */
+.esteem-rise{
+  filter:
+    drop-shadow(0 0 8px rgba(255,211,77,.38));
+}
+
+
+/* =========================================================
+   БЕНЗИН — очередь к колонке + авария + повтор
+========================================================= */
+.gas-road{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:190px;
+  background:#1d1d1d;
+  border-top:2px solid #292929;
+}
+
+.gas-lane{
+  position:absolute;
+  left:28px;
+  right:28px;
+  bottom:55px;
+  height:3px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,.24) 0 52px,
+      transparent 52px 92px
+    );
+}
+
+.gas-station{
+  position:absolute;
+  z-index:4;
+  right:28px;
+  bottom:68px;
+  font-size:76px;
+  filter:
+    drop-shadow(
+      0 7px 8px rgba(0,0,0,.5)
+    );
+}
+
+.gas-sign{
+  position:absolute;
+  z-index:4;
+  right:24px;
+  bottom:157px;
+  padding:7px 11px;
+  border-radius:9px;
+  background:#282828;
+  color:#bbb;
+  font-size:11px;
+  font-weight:900;
+}
+
+.gas-queue{
+  position:absolute;
+  inset:0;
+  z-index:3;
+}
+
+.gas-car{
+  position:absolute;
+  left:-90px;
+  bottom:50px;
+  width:56px;
+  height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:
+    left .72s
+    cubic-bezier(.22,.75,.25,1);
+  will-change:left;
+}
+
+.gas-car-icon{
+  display:block;
+  font-size:47px;
+
+  /* Emoji-машины исходно смотрят влево.
+     Разворачиваем их носом к колонке справа. */
+  transform:scaleX(-1);
+
+  filter:
+    drop-shadow(
+      0 6px 4px rgba(0,0,0,.55)
+    );
+}
+
+.gas-car.gas-hit
+.gas-car-icon{
+  animation:
+    gasHit .55s ease;
+}
+
+.gas-car.gas-victim
+.gas-car-icon{
+  animation:
+    gasVictim .55s ease;
+}
+
+@keyframes gasHit{
+  0%{
+    transform:
+      scaleX(-1)
+      rotate(0);
+  }
+
+  35%{
+    transform:
+      scaleX(-1)
+      translateX(-15px)
+      rotate(-10deg);
+  }
+
+  70%{
+    transform:
+      scaleX(-1)
+      translateX(4px)
+      rotate(7deg);
+  }
+
+  100%{
+    transform:
+      scaleX(-1);
+  }
+}
+
+@keyframes gasVictim{
+  0%{
+    transform:
+      scaleX(-1);
+  }
+
+  40%{
+    transform:
+      scaleX(-1)
+      translateX(-12px)
+      rotate(8deg);
+  }
+
+  100%{
+    transform:
+      scaleX(-1);
+  }
+}
+
+.gas-explosion{
+  position:absolute;
+  z-index:8;
+  bottom:84px;
+  font-size:28px;
+  opacity:0;
+  pointer-events:none;
+}
+
+.gas-explosion.gas-boom{
+  animation:
+    gasBoom 1.45s
+    ease-out forwards;
+}
+
+@keyframes gasBoom{
+  0%{
+    opacity:0;
+    transform:scale(.15);
+  }
+
+  12%{
+    opacity:1;
+    transform:
+      scale(2.4)
+      rotate(-8deg);
+  }
+
+  32%{
+    opacity:1;
+    transform:
+      scale(1.65)
+      rotate(6deg);
+  }
+
+  65%{
+    opacity:.9;
+    transform:scale(2);
+  }
+
+  100%{
+    opacity:0;
+    transform:
+      scale(2.7)
+      translateY(-20px);
+  }
+}
+
+.gas-spark{
+  position:absolute;
+  z-index:9;
+  font-size:24px;
+  opacity:0;
+  pointer-events:none;
+}
+
+.gas-spark.gas-fly{
+  animation:
+    gasSpark 1.15s
+    ease-out forwards;
+}
+
+@keyframes gasSpark{
+  0%{
+    opacity:1;
+    transform:
+      translate(0,0)
+      scale(.6);
+  }
+
+  100%{
+    opacity:0;
+    transform:
+      translate(
+        var(--gas-x),
+        var(--gas-y)
+      )
+      rotate(var(--gas-r))
+      scale(1.25);
+  }
+}
+
+.gas-crash-label{
+  position:absolute;
+  z-index:10;
+  bottom:150px;
+  padding:7px 11px;
+  border-radius:9px;
+  background:#351f1f;
+  border:
+    1px solid #724040;
+  color:#ffc0c0;
+  font-size:12px;
+  font-weight:950;
+  opacity:0;
+  transform:translateY(7px);
+}
+
+.gas-crash-label.gas-show{
+  animation:
+    gasCrashLabel
+    1.8s ease forwards;
+}
+
+@keyframes gasCrashLabel{
+  0%{
+    opacity:0;
+  }
+
+  15%,
+  70%{
+    opacity:1;
+    transform:none;
+  }
+
+  100%{
+    opacity:0;
+    transform:
+      translateY(-8px);
+  }
+}
+
+
+/* =========================================================
+   START SCREEN — фиксированный воздух перед CTA
+   Не менять геометрию остальных блоков.
+========================================================= */
+#startScreen .start-btn,
+#startScreen #startBtn,
+#startScreen button.start-game-btn,
+#startScreen .start-game-button{
+  margin-top:18px !important;
+}
+
+
+/* Exact CTA spacing */
+.start-main-button{margin-top:18px !important;}
+
+/* =========================================================
+   START UI LOCK — FINAL OVERRIDE
+   Режимы -> кнопка старта: ровно 18px.
+========================================================= */
+@media (min-width:860px){
+  #startScreen .start-main-button{
+    grid-column:1 / -1 !important;
+    grid-row:3 !important;
+    margin-top:18px !important;
+  }
+}
+
+
+/* =========================================================
+   v10.6 — убрать остаточный разделитель над блоком режимов
+========================================================= */
+#startScreen .question-mode-wrap,
+#startScreen .mode-wrap,
+#startScreen .modes-wrap,
+#startScreen .question-mode-section{
+  border-top:none !important;
+}
+
+#startScreen .question-mode-wrap::before,
+#startScreen .question-mode-wrap::after,
+#startScreen .mode-wrap::before,
+#startScreen .mode-wrap::after,
+#startScreen .modes-wrap::before,
+#startScreen .modes-wrap::after,
+#startScreen .question-mode-section::before,
+#startScreen .question-mode-section::after{
+  content:none !important;
+  display:none !important;
+  border:0 !important;
+}
+
 </style>
 </head>
 
@@ -4002,14 +4733,15 @@ body.developer-mode .hint-preview-eye{
           </select>
         </div>
 
-      <div class="start-players-column">
-<div id="playersSetup" class="players-setup"></div>
+      </div>
 
+      <div class="start-players-column">
+        <div id="playersSetup" class="players-setup"></div>
       </div>
 
     </div>
 
-        <div class="question-mode-wrap">
+    <div class="question-mode-wrap">
 
           <div class="question-mode-label">
             Режим
@@ -4088,7 +4820,7 @@ body.developer-mode .hint-preview-eye{
 
         </div>
 
-        <button class="primary start-main-button" onclick="startGame()">
+        <button class="primary start-main-button" onclick="startGame()" style="margin-top:18px;">
           Начать игру
         </button>
 
@@ -4364,26 +5096,31 @@ body.developer-mode .hint-preview-eye{
             Время на ответ
           </label>
 
-          <select
-            id="timerSelect"
-            onchange="changeTimerSetting()"
-          >
-            <option value="5">5 секунд</option>
-            <option value="10">10 секунд</option>
-            <option value="30">30 секунд</option>
-            <option value="custom">Своё число</option>
-          </select>
+          <div class="settings-timer-same-slot">
+            <select
+              id="timerSelect"
+              onchange="changeTimerSetting()"
+            >
+              <option value="69">69 секунд</option>
+              <option value="60">60 секунд</option>
+              <option value="55">55 секунд</option>
+              <option value="50">50 секунд</option>
+              <option value="custom">Своё число</option>
+            </select>
 
-          <input
-            id="customTimer"
-            class="custom-timer-input hidden"
-            type="number"
-            min="1"
-            max="120"
-            value="30"
-            placeholder="сек."
-            oninput="changeCustomTimer()"
-          >
+            <input
+              id="customTimer"
+              class="custom-timer-same-slot"
+              type="number"
+              min="1"
+              max="300"
+              value="69"
+              placeholder="сек."
+              oninput="changeCustomTimer()"
+              onblur="finishSettingsCustomTime()"
+              onkeydown="settingsCustomTimeKey(event)"
+            >
+          </div>
 
         </div>
 
@@ -4661,6 +5398,14 @@ body.developer-mode .hint-preview-eye{
           Все вопросы
         </div>
 
+        <div class="collection-search-wrap">
+  <span class="collection-search-icon">⌕</span>
+  <input id="collectionQuestionSearch" class="collection-search-input" type="search"
+    placeholder="Найти вопрос…" autocomplete="off" oninput="filterCollectionQuestions()">
+  <button id="collectionSearchClear" class="collection-search-clear" type="button"
+    onclick="clearCollectionQuestionSearch()" aria-label="Очистить поиск">×</button>
+</div>
+
         <div
           id="questionOverview"
           class="q-list"
@@ -4732,6 +5477,8 @@ body.developer-mode .hint-preview-eye{
     </h2>
 
     <div id="winnerText"></div>
+      <div id="finalRoundHistory" class="final-round-history"></div>
+
 
     <div
       id="effectCaption"
@@ -5646,6 +6393,43 @@ let currentRoundNumber = 1;
 let gameRoundsTotal = 3;
 let cardsPerRound = 3;
 let lastMilestoneScore = {};
+let roundHistory = [];
+
+const roundWinnerPhrases = [
+  "тащит раунд",
+  "ну хорош",
+  "разошёлся чёт",
+  "пошла жара",
+  "тащит уверенно",
+  "вот это наглость",
+  "решил унизить",
+  "устроил разъёб",
+  "кто его пустил",
+  "остановите его",
+  "всё, разыгрался",
+  "понесло человека",
+  "решил добить",
+  "решил не щадить",
+  "кто-нибудь остановите"
+];
+
+let roundWinnerPhraseIndex = 0;
+
+function getNextRoundWinnerPhrase() {
+  const phrase =
+    roundWinnerPhrases[
+      roundWinnerPhraseIndex
+      % roundWinnerPhrases.length
+    ];
+
+  roundWinnerPhraseIndex =
+    (
+      roundWinnerPhraseIndex + 1
+    )
+    % roundWinnerPhrases.length;
+
+  return phrase;
+}
 
 
 
@@ -6131,6 +6915,7 @@ function newGame() {
   roundActive = false;
   lastRoundWinnerId = null;
   lastMilestoneScore = {};
+  roundHistory = [];
 
   players.forEach(player => {
     player.score = 0;
@@ -6141,6 +6926,8 @@ function newGame() {
 
   renderPlayerCards();
   renderProgress();
+  answerTime = 69;
+  timerSeconds = 69;
   startNextLetter();
 }
 
@@ -6857,73 +7644,167 @@ function nextRoundAfterPoint() {
 function showRoundResult() {
 
   clearInterval(timerInterval);
+  clearInterval(roundIntroTimer);
 
-  const screen = document.getElementById("roundResultScreen");
-  const maxScore = Math.max(...players.map(player => player.score));
-  const leaders = players.filter(player => player.score === maxScore);
+  const screen =
+    document.getElementById("roundResultScreen");
 
-  document.getElementById("roundResultEyebrow").textContent =
-    "РАУНД " + currentRoundNumber + " / " + gameRoundsTotal + " ЗАВЕРШЁН";
+  const maxScore =
+    Math.max(...players.map(player => player.score));
 
-  document.getElementById("roundResultTitle").textContent =
+  const leaders =
+    players.filter(player => player.score === maxScore);
+
+  const existingRound =
+    roundHistory.find(item => item.round === currentRoundNumber);
+
+  if (!existingRound) {
+    roundHistory.push({
+      round: currentRoundNumber,
+      scores: players.map(player => ({
+        id: player.id,
+        name: player.name,
+        score: player.score
+      }))
+    });
+  }
+
+  document.getElementById(
+    "roundResultEyebrow"
+  ).textContent =
+    "РАУНД "
+    +
+    currentRoundNumber
+    +
+    " / "
+    +
+    gameRoundsTotal
+    +
+    " ЗАВЕРШЁН";
+
+  document.getElementById(
+    "roundResultTitle"
+  ).textContent =
     leaders.length === 1
-      ? leaders[0].name + " забирает раунд ✦"
-      : "НИЧЬЯ В РАУНДЕ ✦";
+      ? leaders[0].name + " — " + getNextRoundWinnerPhrase() + " ✦"
+      : "НИЧЬЯ ✦";
 
-  document.getElementById("roundResultScores").innerHTML =
+  document.getElementById(
+    "roundResultScores"
+  ).innerHTML =
     players.map(player => `
       <div class="round-transition-score ${
-        leaders.some(item => item.id === player.id) ? "winner" : ""
+        leaders.some(item => item.id === player.id)
+          ? "winner"
+          : ""
       }">
         <span>${escapeHtml(player.name)}</span>
         <strong>${player.score}</strong>
       </div>
     `).join("");
 
-  document.getElementById("roundResultProgressText").textContent =
-    cardsPerRound + " / " + cardsPerRound + " карточек сыграно";
+  const nextRound =
+    currentRoundNumber + 1;
 
-  document.getElementById("roundResultProgressBar").style.width = "100%";
-
-  const nextRound = currentRoundNumber + 1;
   const nextSeconds =
     nextRound === 1
       ? 69
-      : Math.max(30, 60 - ((nextRound - 2) * 5));
+      : Math.max(
+          30,
+          60 - ((nextRound - 2) * 5)
+        );
 
-  const button = document.getElementById("roundContinueButton");
+  const button =
+    document.getElementById(
+      "roundContinueButton"
+    );
 
-  if (nextRound === gameRoundsTotal) {
+  /* Кнопка больше не кнопка: используем её как информационную плашку. */
+  button.disabled = true;
+  button.classList.add("round-auto-card");
+
+  let count = 3;
+
+  const renderAutoCard = () => {
     button.innerHTML =
-      '<span class="round-next-small">🔥 ДАЛЬШЕ — ФИНАЛЬНЫЙ РАУНД · '
+      '<span class="round-next-label">'
+      +
+      (
+        nextRound === gameRoundsTotal
+          ? "🔥 ФИНАЛЬНЫЙ РАУНД"
+          : "РАУНД " + nextRound + " / " + gameRoundsTotal
+      )
+      +
+      '</span>'
+      +
+      '<strong class="round-next-time">'
       + nextSeconds
-      + ' СЕК.</span><strong>НАЧАТЬ ФИНАЛЬНЫЙ РАУНД</strong>';
-  } else {
-    button.innerHTML =
-      '<span class="round-next-small">ДАЛЬШЕ — РАУНД '
-      + nextRound
-      + ' / '
-      + gameRoundsTotal
-      + ' · '
-      + nextSeconds
-      + ' СЕК.</span><strong>НАЧАТЬ РАУНД '
-      + nextRound
-      + '</strong>';
-  }
+      + ' СЕК.</strong>'
+      +
+      '<span class="round-auto-count">'
+      + count
+      + '</span>';
+  };
+
+  renderAutoCard();
 
   screen.classList.remove("hidden");
+
+  roundIntroTimer =
+    setInterval(() => {
+
+      count--;
+
+      if (count > 0) {
+        renderAutoCard();
+        return;
+      }
+
+      clearInterval(roundIntroTimer);
+
+      /* Та же самая плашка, без второго окна и без клика. */
+      button.innerHTML =
+        '<span class="round-next-label">'
+        +
+        (
+          nextRound === gameRoundsTotal
+            ? "🔥 ФИНАЛЬНЫЙ РАУНД"
+            : "РАУНД " + nextRound + " / " + gameRoundsTotal
+        )
+        +
+        '</span>'
+        +
+        '<strong class="round-next-time">'
+        + nextSeconds
+        + ' СЕК.</strong>'
+        +
+        '<span class="round-auto-count">ПОЕХАЛИ!</span>';
+
+      setTimeout(
+        startNextRoundAutomatically,
+        450
+      );
+
+    }, 1000);
 }
 
 function continueAfterRoundResult() {
+  /* Оставлено как совместимость со старой разметкой.
+     Теперь переход автоматический. */
+  startNextRoundAutomatically();
+}
+
+
+function startNextRoundAutomatically() {
+
+  const screen =
+    document.getElementById("roundResultScreen");
 
   if (currentRoundNumber >= gameRoundsTotal) {
-    document.getElementById("roundResultScreen")?.classList.add("hidden");
+    screen?.classList.add("hidden");
     finishGame();
     return;
   }
-
-  const screen = document.getElementById("roundResultScreen");
-  const button = document.getElementById("roundContinueButton");
 
   currentRoundNumber++;
   completedCount = 0;
@@ -6938,43 +7819,17 @@ function continueAfterRoundResult() {
   const roundSeconds =
     currentRoundNumber === 1
       ? 69
-      : Math.max(30, 60 - ((currentRoundNumber - 2) * 5));
+      : Math.max(
+          30,
+          60 - ((currentRoundNumber - 2) * 5)
+        );
 
   timerSeconds = roundSeconds;
+  answerTime = roundSeconds;
 
-  let count = 3;
-  button.disabled = true;
-  button.innerHTML =
-    '<span class="round-next-small">РАУНД '
-    + currentRoundNumber
-    + ' / '
-    + gameRoundsTotal
-    + ' · '
-    + roundSeconds
-    + ' СЕК.</span><strong class="round-inline-countdown">3</strong>';
+  screen?.classList.add("hidden");
 
-  clearInterval(roundIntroTimer);
-
-  roundIntroTimer = setInterval(() => {
-    count--;
-
-    const countdown = button.querySelector(".round-inline-countdown");
-
-    if (count > 0) {
-      if (countdown) countdown.textContent = count;
-      return;
-    }
-
-    if (count === 0) {
-      if (countdown) countdown.textContent = "ПОЕХАЛИ!";
-      return;
-    }
-
-    clearInterval(roundIntroTimer);
-    button.disabled = false;
-    screen.classList.add("hidden");
-    startNextLetter();
-  }, 650);
+  startNextLetter();
 }
 
 function showRoundIntro() {
@@ -7305,7 +8160,7 @@ function closeSettings() {
 
 function syncTimerControls() {
 
-  const standardValues = [5, 10, 30];
+  const standardValues = [69, 60, 55, 50];
 
   const isStandard =
     standardValues.includes(
@@ -7366,14 +8221,22 @@ function syncTimerControls() {
   }
 
 
-  if (settingsCustom) {
+  if (settingsCustom && settingsSelect) {
 
     settingsCustom.value =
       String(answerTime);
 
+    const customMode =
+      !isStandard;
+
     settingsCustom.classList.toggle(
-      "hidden",
-      isStandard
+      "show",
+      customMode
+    );
+
+    settingsSelect.classList.toggle(
+      "hide-for-custom",
+      customMode
     );
 
   }
@@ -7455,29 +8318,41 @@ function changeStartCustomTimer() {
 function changeTimerSetting() {
 
   const select =
-    document.getElementById(
-      "timerSelect"
+    document.getElementById("timerSelect");
+
+  const input =
+    document.getElementById("customTimer");
+
+  if (!select || !input) return;
+
+  if (select.value === "custom") {
+
+    input.value = String(answerTime || 69);
+
+    select.classList.add(
+      "hide-for-custom"
     );
 
-  if (
-    select.value === "custom"
-  ) {
+    input.classList.add(
+      "show"
+    );
 
-    document
-      .getElementById(
-        "customTimer"
-      )
-      .classList
-      .remove("hidden");
+    setTimeout(
+      () => {
+        input.focus();
+        input.select();
+      },
+      0
+    );
 
     return;
-
   }
 
   answerTime =
-    Number(
-      select.value
-    );
+    Number(select.value);
+
+  timerSeconds =
+    answerTime;
 
   localStorage.setItem(
     "answerTime",
@@ -7485,20 +8360,18 @@ function changeTimerSetting() {
   );
 
   syncTimerControls();
-
 }
-
 
 function changeCustomTimer() {
 
   const input =
-    document.getElementById(
-      "customTimer"
-    );
+    document.getElementById("customTimer");
+
+  if (!input) return;
 
   const value =
     Math.min(
-      120,
+      300,
       Math.max(
         1,
         Math.round(
@@ -7507,22 +8380,53 @@ function changeCustomTimer() {
       )
     );
 
-  answerTime =
-    value;
-
-  input.value =
-    String(value);
+  answerTime = value;
+  timerSeconds = value;
 
   localStorage.setItem(
     "answerTime",
     answerTime
   );
-
-  syncTimerControls();
-
 }
 
 
+function finishSettingsCustomTime() {
+
+  const input =
+    document.getElementById("customTimer");
+
+  if (!input) return;
+
+  changeCustomTimer();
+
+  input.value =
+    String(answerTime);
+}
+
+
+function settingsCustomTimeKey(event) {
+
+  if (event.key === "Enter") {
+    event.preventDefault();
+    event.currentTarget.blur();
+  }
+
+  if (event.key === "Escape") {
+    const select =
+      document.getElementById("timerSelect");
+
+    const input =
+      document.getElementById("customTimer");
+
+    if (select && input) {
+      input.classList.remove("show");
+      select.classList.remove("hide-for-custom");
+      select.value = "69";
+      answerTime = 69;
+      timerSeconds = 69;
+    }
+  }
+}
 
 function changeAuto() {
 
@@ -7546,7 +8450,35 @@ function changeAuto() {
    СБОРНИК
 ========================================================= */
 
+function filterCollectionQuestions() {
+  const input = document.getElementById("collectionQuestionSearch");
+  const clear = document.getElementById("collectionSearchClear");
+  if (!input) return;
+  const query = input.value.trim().toLocaleLowerCase("ru-RU");
+
+  document.querySelectorAll("#questionOverview .collection-question-item").forEach(item => {
+    item.classList.toggle(
+      "search-hidden",
+      query !== "" && !(item.dataset.searchText || "").includes(query)
+    );
+  });
+
+  if (clear) clear.classList.toggle("show", query !== "");
+}
+
+function clearCollectionQuestionSearch() {
+  const input = document.getElementById("collectionQuestionSearch");
+  if (!input) return;
+  input.value = "";
+  filterCollectionQuestions();
+  input.focus();
+}
+
+
 function openCollection() {
+
+  const searchInput = document.getElementById("collectionQuestionSearch");
+  if (searchInput) searchInput.value = "";
 
   const alphabet =
     document.getElementById(
@@ -7612,6 +8544,27 @@ function openCollection() {
 
   questionList.innerHTML = "";
 
+  const usedQuestionsCount =
+    questions.filter(
+      q => uniqueQuestionSet.has(q)
+    ).length;
+
+  const usedCounter =
+    document.getElementById(
+      "questionUsedCounter"
+    );
+
+  if (usedCounter) {
+    usedCounter.textContent =
+      "Сыграно "
+      +
+      usedQuestionsCount
+      +
+      " из "
+      +
+      questions.length;
+  }
+
 
   questions.forEach(
     (q,index) => {
@@ -7622,14 +8575,37 @@ function openCollection() {
         );
 
 
-      div.textContent =
+      const wasUsed =
+        uniqueQuestionSet.has(q);
+
+      div.className =
+        "collection-question-item";
+
+      div.dataset.searchText =
+        q.toLocaleLowerCase("ru-RU");
+
+      if (wasUsed) {
+        div.classList.add("used");
+      }
+
+      div.innerHTML =
+        '<span class="collection-question-number">'
+        +
+        (index + 1)
+        +
+        '.</span>'
+        +
+        '<span class="collection-question-text">'
+        +
+        escapeHtml(q)
+        +
+        '</span>'
+        +
         (
-          index + 1
-        )
-        +
-        ". "
-        +
-        q;
+          wasUsed
+            ? '<span class="collection-question-used">✓ сыграно</span>'
+            : ''
+        );
 
 
       questionList.appendChild(
@@ -7639,6 +8615,8 @@ function openCollection() {
     }
   );
 
+
+  filterCollectionQuestions();
 
   document
     .getElementById(
@@ -7798,6 +8776,123 @@ function restartGame() {
    ФИНАЛ
 ========================================================= */
 
+
+function renderFinalRoundHistory() {
+
+  const wrap =
+    document.getElementById("finalRoundHistory");
+
+  if (!wrap) return;
+
+  const ordered =
+    [...roundHistory]
+      .sort((a,b) => a.round - b.round);
+
+  if (!ordered.length) {
+    wrap.innerHTML = "";
+    return;
+  }
+
+  const playerOrder =
+    players.map(player => ({
+      id: player.id,
+      name: player.name
+    }));
+
+  const roundRows =
+    ordered.map((item, index) => {
+
+      const previousScores =
+        index === 0
+          ? {}
+          : Object.fromEntries(
+              ordered[index - 1].scores.map(
+                score => [score.id, score.score]
+              )
+            );
+
+      const roundValues =
+        playerOrder.map(player => {
+
+          const current =
+            item.scores.find(
+              score => score.id === player.id
+            )?.score || 0;
+
+          const previous =
+            previousScores[player.id] || 0;
+
+          return current - previous;
+        });
+
+      const maxRound =
+        Math.max(...roundValues);
+
+      return `
+        <div
+          class="final-round-table-row"
+          style="--players:${playerOrder.length}"
+        >
+          <span class="final-round-label">
+            Раунд ${item.round}
+          </span>
+
+          ${roundValues.map(value => `
+            <span class="final-round-value ${
+              value === maxRound
+                ? "round-win"
+                : ""
+            }">
+              ${value}
+            </span>
+          `).join("")}
+        </div>
+      `;
+    }).join("");
+
+  const totalValues =
+    playerOrder.map(player => {
+      return (
+        players.find(
+          item => item.id === player.id
+        )?.score || 0
+      );
+    });
+
+  wrap.innerHTML = `
+    <div class="final-rounds-title">
+      ИТОГИ ПО РАУНДАМ
+    </div>
+
+    <div
+      class="final-round-table-head"
+      style="--players:${playerOrder.length}"
+    >
+      <span></span>
+
+      ${playerOrder.map(player => `
+        <span class="final-player-name">
+          ${escapeHtml(player.name)}
+        </span>
+      `).join("")}
+    </div>
+
+    ${roundRows}
+
+    <div
+      class="final-round-table-total"
+      style="--players:${playerOrder.length}"
+    >
+      <span>ОБЩИЙ СЧЁТ</span>
+
+      ${totalValues.map(value => `
+        <strong>${value}</strong>
+      `).join("")}
+    </div>
+  `;
+}
+
+
 function finishGame() {
 
   clearInterval(timerInterval);
@@ -7805,6 +8900,23 @@ function finishGame() {
   roundActive = false;
 
   disablePlayerCards();
+
+  const existingFinalRound =
+    roundHistory.find(item => item.round === currentRoundNumber);
+
+  if (!existingFinalRound) {
+    roundHistory.push({
+      round: currentRoundNumber,
+      scores: players.map(player => ({
+        id: player.id,
+        name: player.name,
+        score: player.score
+      }))
+    });
+  }
+
+  renderFinalRoundHistory();
+
 
   const maxScore =
     Math.max(...players.map(p => p.score));
@@ -9868,36 +10980,12 @@ function selfEsteemEffect(
   isTie
 ) {
 
-  const texts = [
-    "О, смотри, это твоя самооценка растёт)))",
-    "Самооценка пробила потолок."
-  ];
-
-
   if (!isTie) {
 
     document.getElementById(
       "effectCaption"
     ).textContent =
-      texts[
-        selfEsteemTextIndex
-        %
-        texts.length
-      ];
-
-
-    selfEsteemTextIndex =
-      (
-        selfEsteemTextIndex + 1
-      )
-      %
-      texts.length;
-
-
-    localStorage.setItem(
-      "selfEsteemTextIndex",
-      selfEsteemTextIndex
-    );
+      "Величие обнаружено. Скромность — нет.";
 
   }
 
@@ -9910,14 +10998,12 @@ function selfEsteemEffect(
           "effects"
         );
 
-      const symbols = [
-        "📈","↑","+100","👑","⭐"
-      ];
+      if (!container) return;
 
 
       for (
         let i = 0;
-        i < 16;
+        i < 26;
         i++
       ) {
 
@@ -9927,7 +11013,7 @@ function selfEsteemEffect(
               ".esteem-rise"
             )
             .length
-          >= 42
+          >= 72
         ) {
           break;
         }
@@ -9942,9 +11028,7 @@ function selfEsteemEffect(
           "esteem-rise";
 
         e.textContent =
-          symbols[
-            i % symbols.length
-          ];
+          "👑";
 
         e.style.left =
           Math.random()
@@ -9955,22 +11039,31 @@ function selfEsteemEffect(
 
         e.style.fontSize =
           (
-            26
+            24
             +
             Math.random()
             *
-            32
+            40
           )
           +
           "px";
 
         e.style.animationDuration =
           (
-            7
+            4.8
             +
             Math.random()
             *
-            4
+            3.2
+          )
+          +
+          "s";
+
+        e.style.animationDelay =
+          (
+            Math.random()
+            *
+            .35
           )
           +
           "s";
@@ -9982,7 +11075,7 @@ function selfEsteemEffect(
         victoryTimeouts.push(
           setTimeout(
             () => e.remove(),
-            12000
+            9000
           )
         );
 
@@ -9996,12 +11089,11 @@ function selfEsteemEffect(
   victoryIntervals.push(
     setInterval(
       spawn,
-      6500
+      3400
     )
   );
 
 }
-
 
 /* ---------- БЕНЗИН ---------- */
 
@@ -10010,128 +11102,413 @@ function gasEffect(
 ) {
 
   if (!isTie) {
-
     document.getElementById(
       "effectCaption"
     ).textContent =
       "Че стоишь? Это не очередь на бензин. Идём играть!";
-
   }
 
+  const container =
+    document.getElementById("effects");
 
-  const spawn =
+  if (!container) return;
+
+  const road =
+    document.createElement("div");
+  road.className = "gas-road";
+
+  const lane =
+    document.createElement("div");
+  lane.className = "gas-lane";
+  road.appendChild(lane);
+
+  const station =
+    document.createElement("div");
+  station.className = "gas-station";
+  station.textContent = "⛽";
+
+  const sign =
+    document.createElement("div");
+  sign.className = "gas-sign";
+  sign.textContent = "ОЧЕРЕДЬ СЮДА →";
+
+  const queue =
+    document.createElement("div");
+  queue.className = "gas-queue";
+
+  container.append(
+    road,
+    queue,
+    sign,
+    station
+  );
+
+  const icons = [
+    "🚗","🚙","🚕","🚓","🚐"
+  ];
+
+  const gap = 68;
+  let cars = [];
+  let cycle = 0;
+  let stopped = false;
+
+  const later =
+    (fn, ms) => {
+      const id =
+        setTimeout(fn, ms);
+
+      victoryTimeouts.push(id);
+      return id;
+    };
+
+  const stationFront =
+    () => window.innerWidth - 175;
+
+  const slot =
+    index =>
+      Math.max(
+        28,
+        stationFront() - index * gap
+      );
+
+  const relayout =
     () => {
+      if (stopped) return;
 
-      const container =
-        document.getElementById(
-          "effects"
+      cars.forEach(
+        (car, index) => {
+          if (
+            !car.classList.contains(
+              "gas-hit"
+            )
+          ) {
+            car.style.left =
+              slot(index) + "px";
+          }
+        }
+      );
+    };
+
+  const addCar =
+    () => {
+      if (stopped) return;
+
+      const car =
+        document.createElement("div");
+
+      car.className =
+        "gas-car";
+
+      const icon =
+        document.createElement("span");
+
+      icon.className =
+        "gas-car-icon";
+
+      icon.textContent =
+        icons[
+          cars.length
+          % icons.length
+        ];
+
+      car.appendChild(icon);
+      queue.appendChild(car);
+      cars.push(car);
+
+      requestAnimationFrame(
+        () => {
+          car.style.left =
+            slot(cars.length - 1)
+            + "px";
+        }
+      );
+    };
+
+  const particles =
+    x => {
+
+      const boom =
+        document.createElement("div");
+
+      boom.className =
+        "gas-explosion";
+
+      boom.textContent =
+        "💥";
+
+      boom.style.left =
+        (x - 12) + "px";
+
+      queue.appendChild(boom);
+
+      requestAnimationFrame(
+        () =>
+          boom.classList.add(
+            "gas-boom"
+          )
+      );
+
+      later(
+        () => boom.remove(),
+        1600
+      );
+
+
+      [
+        "✨","💥","✨",
+        "🔥","💫","🔥"
+      ].forEach(
+        (emoji, index) => {
+
+          const spark =
+            document.createElement(
+              "div"
+            );
+
+          spark.className =
+            "gas-spark";
+
+          spark.textContent =
+            emoji;
+
+          spark.style.left =
+            x + "px";
+
+          spark.style.bottom =
+            "105px";
+
+          const angle =
+            (
+              Math.PI * 2 / 6
+            )
+            * index;
+
+          spark.style.setProperty(
+            "--gas-x",
+            (
+              Math.cos(angle)
+              *
+              (
+                55
+                +
+                Math.random() * 45
+              )
+            )
+            + "px"
+          );
+
+          spark.style.setProperty(
+            "--gas-y",
+            (
+              -35
+              -
+              Math.abs(
+                Math.sin(angle)
+              )
+              * 80
+            )
+            + "px"
+          );
+
+          spark.style.setProperty(
+            "--gas-r",
+            (
+              -100
+              +
+              Math.random() * 200
+            )
+            + "deg"
+          );
+
+          queue.appendChild(
+            spark
+          );
+
+          requestAnimationFrame(
+            () =>
+              spark.classList.add(
+                "gas-fly"
+              )
+          );
+
+          later(
+            () => spark.remove(),
+            1300
+          );
+        }
+      );
+    };
+
+  const restart =
+    () => {
+      later(
+        () => {
+          if (stopped) return;
+
+          cars.forEach(
+            car => car.remove()
+          );
+
+          cars = [];
+          cycle++;
+          runCycle();
+        },
+        3300
+      );
+    };
+
+  const crash =
+    () => {
+      if (
+        stopped
+        ||
+        cars.length < 2
+      ) {
+        restart();
+        return;
+      }
+
+      const rear =
+        cars[cars.length - 1];
+
+      const victim =
+        cars[cars.length - 2];
+
+      const victimX =
+        parseFloat(
+          victim.style.left
         );
 
-      const symbols = [
-        "⛽","💸","🪙","⛽","💰"
-      ];
+      rear.style.left =
+        (
+          victimX
+          -
+          gap * .38
+        )
+        + "px";
 
+      later(
+        () => {
+          if (stopped) return;
+
+          rear.classList.add(
+            "gas-hit"
+          );
+
+          victim.classList.add(
+            "gas-victim"
+          );
+
+          particles(
+            victimX + 25
+          );
+
+          const label =
+            document.createElement(
+              "div"
+            );
+
+          label.className =
+            "gas-crash-label";
+
+          label.textContent =
+            cycle % 2
+              ? "ДТП В ОЧЕРЕДИ 😭"
+              : "НУ ВСЁ, ПРИЕХАЛИ";
+
+          label.style.left =
+            Math.max(
+              20,
+              victimX - 45
+            )
+            + "px";
+
+          queue.appendChild(
+            label
+          );
+
+          requestAnimationFrame(
+            () =>
+              label.classList.add(
+                "gas-show"
+              )
+          );
+
+          later(
+            () => label.remove(),
+            2000
+          );
+        },
+        650
+      );
+
+      restart();
+    };
+
+  const runCycle =
+    () => {
+      if (stopped) return;
+
+      const capacity =
+        Math.max(
+          6,
+          Math.min(
+            13,
+            Math.floor(
+              (
+                window.innerWidth
+                - 230
+              )
+              / gap
+            )
+          )
+        );
 
       for (
         let i = 0;
-        i < 14;
+        i < capacity;
         i++
       ) {
-
-        if (
-          container
-            .querySelectorAll(
-              ".gas-float"
-            )
-            .length
-          >= 38
-        ) {
-          break;
-        }
-
-
-        const e =
-          document.createElement(
-            "div"
-          );
-
-        e.className =
-          "gas-float";
-
-        e.textContent =
-          symbols[
-            i % symbols.length
-          ];
-
-        e.style.left =
-          Math.random()
-          *
-          100
-          +
-          "%";
-
-        e.style.fontSize =
-          (
-            28
-            +
-            Math.random()
-            *
-            32
-          )
-          +
-          "px";
-
-        e.style.setProperty(
-          "--drift",
-          (
-            -80
-            +
-            Math.random()
-            *
-            160
-          )
-          +
-          "px"
+        later(
+          addCar,
+          i * 520
         );
-
-        e.style.animationDuration =
-          (
-            8
-            +
-            Math.random()
-            *
-            4
-          )
-          +
-          "s";
-
-        container.appendChild(
-          e
-        );
-
-        victoryTimeouts.push(
-          setTimeout(
-            () => e.remove(),
-            13000
-          )
-        );
-
       }
 
+      /* Лишняя машина приезжает последней
+         и становится виновником аварии. */
+      later(
+        addCar,
+        capacity * 520 + 350
+      );
+
+      later(
+        crash,
+        capacity * 520 + 1750
+      );
     };
 
+  const onResize =
+    () => relayout();
 
-  spawn();
+  window.addEventListener(
+    "resize",
+    onResize
+  );
 
-  victoryIntervals.push(
-    setInterval(
-      spawn,
-      7000
+  /* При следующем победном эффекте clearVictoryLoops()
+     очистит DOM и таймеры. Этот флаг не даёт старому
+     циклу продолжить работу после очистки. */
+  victoryTimeouts.push(
+    setTimeout(
+      () => {},
+      0
     )
   );
 
-}
+  runCycle();
 
+}
 
 /* ---------- СОВЫ — ТОЛЬКО НИЧЬЯ ---------- */
 
@@ -12111,48 +13488,6 @@ document.addEventListener(
 
 
 
-function applyStartAestheticLayoutV2() {
-  const start =
-    document.getElementById("startScreen") ||
-    document.querySelector(".start-screen");
-
-  if (!start) return;
-
-  const layout = start.querySelector(".start-layout");
-  const settings = start.querySelector(".start-settings-column");
-  const modeWrap = start.querySelector(".question-mode-wrap");
-
-  if (!layout || !settings || !modeWrap) return;
-
-  let playersColumn =
-    layout.querySelector(".players-column");
-
-  if (!playersColumn) {
-    playersColumn = document.createElement("div");
-    playersColumn.className = "players-column";
-    layout.insertBefore(playersColumn, modeWrap);
-  }
-
-  const playerCards =
-    Array.from(
-      settings.querySelectorAll(".player-setup-card")
-    );
-
-  playerCards.forEach(card => {
-    playersColumn.appendChild(card);
-  });
-
-  // Убираем пустой вертикальный хвост в левой колонке,
-  // если карточки игроков были её единственным нижним содержимым.
-  settings.querySelectorAll(".players-column").forEach(x => x.remove());
-}
-
-document.addEventListener(
-  "DOMContentLoaded",
-  applyStartAestheticLayoutV2
-);
-
-
 function getAvailableCardsLimit() {
   if (
     questionMode
@@ -12181,8 +13516,12 @@ function updateCardsCountHint() {
   }
 
   if (hint) {
-    hint.textContent =
-      "Доступно сейчас: до "
+    hint.textContent = "";
+  }
+
+  if (input) {
+    input.placeholder =
+      "Своё число · до "
       +
       limit
       +
@@ -12205,16 +13544,7 @@ function handleCardsCountChoice() {
     const limit =
       getAvailableCardsLimit();
 
-    const current =
-      Number(input.value || 10);
-
-    input.value =
-      String(
-        Math.max(
-          1,
-          Math.min(limit, current)
-        )
-      );
+    input.value = "";
 
     select.classList.add("hide-for-custom");
     input.classList.add("show");
@@ -12241,8 +13571,12 @@ function finishCustomCardsCount() {
   const limit =
     getAvailableCardsLimit();
 
+  if (input.value.trim() === "") {
+    return;
+  }
+
   let value =
-    Number(input.value || 1);
+    Number(input.value);
 
   value =
     Math.max(
