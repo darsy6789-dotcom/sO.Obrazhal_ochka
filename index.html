@@ -1,5 +1,5 @@
 <!--
-KTO БЫСТРЕЕ — v10.10 FINAL PRE-RELEASE
+KTO БЫСТРЕЕ — v11.5 DEV PASSWORD + TOOLS REVIEW
 Integrated:
 - approved START UI spacing lock: 18px between modes and Start button
 - 15 sequential inter-round phrases
@@ -4898,6 +4898,82 @@ body.developer-mode .hint-preview-eye{
   .developer-rules-table th:first-child{width:35%}
 }
 
+
+/* =========================================================
+   v11.5 — protected DEV + clean developer tools
+========================================================= */
+#settingsBackdrop .modal.settings-dev-width{width:min(760px,calc(100% - 28px))}
+#settingsBackdrop .modal.settings-question-full{width:min(1180px,calc(100% - 28px));max-height:92vh}
+
+.developer-title-icon{width:34px;height:34px;color:#c58be6;display:inline-grid;vertical-align:middle;margin-right:7px}
+.developer-title-icon svg,
+.developer-row-icon svg,
+.developer-auth-lock svg,
+.developer-placeholder-icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+
+.developer-auth-card{
+  max-width:520px;margin:10px auto 6px;padding:22px;border:1px solid var(--surface2);
+  border-radius:16px;background:linear-gradient(135deg,rgba(111,97,168,.08),rgba(255,255,255,0))
+}
+.developer-auth-lock{width:46px;height:46px;color:#c58be6;margin-bottom:10px}
+.developer-auth-title{font-size:21px;font-weight:950}
+.developer-auth-sub{margin-top:5px;color:var(--muted);font-size:12px;line-height:1.4}
+.developer-password-label{display:block;margin:18px 0 7px;font-size:12px;font-weight:900;color:var(--muted)}
+.developer-password-input{width:100%;min-height:48px;border:1px solid var(--surface2);border-radius:11px;background:var(--surface);color:var(--text);padding:0 13px;font-size:18px;letter-spacing:.08em}
+.developer-password-message{min-height:20px;margin-top:7px;font-size:12px;color:#e39595}
+.developer-login-btn{width:100%;margin-top:4px;min-height:45px}
+
+.developer-clean-section{border-top:1px solid var(--surface2);padding-top:13px;margin-top:10px}
+.developer-clean-row{width:100%;min-height:72px;display:flex;align-items:center;gap:13px;padding:11px 4px;border:0;border-bottom:1px solid var(--surface2);background:transparent;color:var(--text);text-align:left}
+.developer-clean-row:last-child{border-bottom:0}
+.developer-clean-button{cursor:pointer}
+.developer-clean-button:hover{background:rgba(145,112,215,.055)}
+.developer-row-icon{width:38px;height:38px;flex:0 0 38px;color:#c58be6}
+.developer-row-copy{min-width:0;flex:1}
+.developer-row-copy b{display:block;font-size:16px}
+.developer-row-copy small{display:block;margin-top:4px;color:var(--muted);font-size:11px;line-height:1.35}
+.developer-rude-switch{margin-left:auto}
+.developer-lock-access-btn{display:block;margin:18px auto 0;min-height:40px;padding:0 14px;border:1px solid var(--surface2);border-radius:10px;background:transparent;color:var(--muted);font-size:11px;font-weight:900;cursor:pointer}
+
+.developer-placeholder-card{display:grid;justify-items:center;text-align:center;gap:8px;padding:30px;border:1px solid var(--surface2);border-radius:16px}
+.developer-placeholder-icon{width:52px;height:52px;color:#c58be6}
+.developer-placeholder-card b{font-size:20px}
+.developer-placeholder-card span{color:var(--muted);font-size:12px}
+
+.collection-share-card{margin:0 0 16px;padding:15px;border:1px solid var(--surface2);border-radius:14px}
+.collection-share-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.collection-share-actions,.developer-import-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.collection-share-code,.developer-request-textarea{width:100%;min-height:105px;margin-top:10px;border:1px solid var(--surface2);border-radius:11px;background:var(--surface);color:var(--text);padding:11px;font:12px/1.4 monospace;resize:vertical}
+
+.developer-import-card,.developer-request-preview{border:1px solid var(--surface2);border-radius:15px;padding:16px}
+.developer-request-preview{margin-top:12px}
+.developer-request-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.developer-request-meta>div{padding:10px;border-radius:10px;background:var(--surface2)}
+.developer-request-meta span{display:block;color:var(--muted);font-size:9px;text-transform:uppercase;font-weight:900}
+.developer-request-meta b{display:block;margin-top:3px;font-size:13px}
+.developer-request-items{max-height:330px;overflow:auto;border-top:1px solid var(--surface2)}
+.developer-request-item{padding:10px 2px;border-bottom:1px solid var(--surface2)}
+.developer-request-item b{display:block;font-size:12px}
+.developer-request-item small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+
+.developer-question-toolbar{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px}
+.developer-question-letters{display:flex;gap:5px;flex-wrap:wrap;flex:1}
+.developer-question-letter{min-width:34px;height:34px;border-radius:8px;border:1px solid var(--surface2);background:var(--surface2);color:var(--text);font-weight:900;cursor:pointer}
+.developer-question-letter.active{border-color:#c58be6;color:#dfc8eb;background:#2b2630}
+.developer-question-editor-list{max-height:62vh;overflow:auto;border:1px solid var(--surface2);border-radius:14px}
+.developer-question-editor-row{padding:12px 14px;border-bottom:1px solid var(--surface2)}
+.developer-question-editor-row:last-child{border-bottom:0}
+.developer-question-editor-row b{display:block;font-size:14px}
+.developer-question-editor-row small{display:block;margin-top:5px;color:var(--muted);font-size:11px}
+.developer-question-saved{margin-top:7px;padding:7px 9px;border-radius:8px;background:#2b2630;color:#dfc8eb;font-size:11px}
+.developer-question-empty{padding:22px;text-align:center;color:var(--muted);font-size:12px}
+
+@media(max-width:620px){
+  .collection-share-grid,.developer-request-meta{grid-template-columns:1fr}
+  .developer-row-copy b{font-size:14px}
+  .developer-clean-row{min-height:64px}
+}
+
 </style>
 
 <style id="sevenFxPrereleaseStyles">
@@ -5382,6 +5458,29 @@ body.developer-mode .hint-preview-eye{
 
 
 
+      <section class="collection-share-card">
+        <div class="section-title">Передать коллекцию</div>
+        <div class="collection-settings-sub">
+          Создай код заявки и отправь его владельцу другой копии игры. Сервер не нужен.
+        </div>
+        <div class="collection-share-grid">
+          <div class="field">
+            <label for="collectionShareSender">От кого</label>
+            <input id="collectionShareSender" type="text" maxlength="60" placeholder="Например: Лёха">
+          </div>
+          <div class="field">
+            <label for="collectionShareTitle">Название заявки</label>
+            <input id="collectionShareTitle" type="text" maxlength="80" placeholder="Мои ответы">
+          </div>
+        </div>
+        <div class="collection-share-actions">
+          <button type="button" class="secondary" onclick="generateCollectionRequestCode()">Создать код заявки</button>
+          <button id="collectionShareCopyBtn" type="button" class="secondary hidden" onclick="copyCollectionRequestCode()">Скопировать код</button>
+        </div>
+        <textarea id="collectionShareCode" class="collection-share-code hidden" readonly aria-label="Код заявки коллекции"></textarea>
+      </section>
+
+
       <div class="collection-search-wrap">
         <div class="collection-search-label">
           Поиск вопроса или темы
@@ -5502,60 +5601,122 @@ body.developer-mode .hint-preview-eye{
     </div>
 
     <div id="settingsDeveloperPanel" class="settings-tab-panel">
-      <div id="developerHomeView" class="developer-subview active">
+
+      <div id="developerAuthView" class="developer-subview">
         <div class="settings-subpage-head developer-nav-head">
           <button type="button" class="settings-back-btn settings-back-btn-large" onclick="showSettingsTab('main')">← Назад</button>
-          <div class="developer-page-title">☠ Для разработчика</div>
+          <div class="developer-page-title">
+            <span class="developer-title-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><path d="M16 26c0-11 7-18 16-18s16 7 16 18c0 8-4 14-9 17v9h-5v-7h-4v7h-5v-9c-5-3-9-9-9-17z"/><circle cx="25" cy="27" r="3"/><circle cx="39" cy="27" r="3"/><path d="M27 37h10"/></svg>
+            </span>
+            Для разработчика
+          </div>
         </div>
 
-        <section class="developer-section-card">
-          <div class="developer-section-heading">РЕЖИМ РАЗРАБОТЧИКА</div>
-          <div class="developer-setting-row">
-            <div>
-              <div class="dev-tools-title">Режим разработчика</div>
-              <div class="collection-settings-sub developer-subtext">Показывает дополнительные инструменты и сохранённые ответы по буквам.</div>
-            </div>
-            <label class="dev-switch">
-              <input id="developerModeToggle" type="checkbox" onchange="toggleDeveloperMode()">
+        <section class="developer-auth-card">
+          <div class="developer-auth-lock" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><rect x="13" y="27" width="38" height="29" rx="6"/><path d="M21 27v-8c0-7 5-12 11-12s11 5 11 12v8"/><circle cx="32" cy="41" r="3"/><path d="M32 44v6"/></svg>
+          </div>
+          <div>
+            <div class="developer-auth-title">Доступ закрыт</div>
+            <div class="developer-auth-sub">Введи DEV-пароль. Сам пароль в коде игры не хранится.</div>
+          </div>
+
+          <label class="developer-password-label" for="developerPasswordInput">Пароль</label>
+          <input
+            id="developerPasswordInput"
+            class="developer-password-input"
+            type="password"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="••••••••••••"
+            onkeydown="if(event.key==='Enter')verifyDeveloperPassword()"
+          >
+          <div id="developerPasswordMessage" class="developer-password-message" aria-live="polite"></div>
+          <button type="button" class="primary developer-login-btn" onclick="verifyDeveloperPassword()">Войти</button>
+        </section>
+      </div>
+
+      <div id="developerHomeView" class="developer-subview">
+        <div class="settings-subpage-head developer-nav-head">
+          <button type="button" class="settings-back-btn settings-back-btn-large" onclick="showSettingsTab('main')">← Назад</button>
+          <div class="developer-page-title">
+            <span class="developer-title-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><path d="M16 26c0-11 7-18 16-18s16 7 16 18c0 8-4 14-9 17v9h-5v-7h-4v7h-5v-9c-5-3-9-9-9-17z"/><circle cx="25" cy="27" r="3"/><circle cx="39" cy="27" r="3"/><path d="M27 37h10"/></svg>
+            </span>
+            Для разработчика
+          </div>
+        </div>
+
+        <section class="developer-clean-section">
+          <div class="developer-section-heading">ОТВЕТКИ И ПРАВИЛА</div>
+
+          <button type="button" class="developer-clean-row developer-clean-button" onclick="showDeveloperSubview('rules')">
+            <span class="developer-row-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><path d="M10 13h44v32H31L19 54v-9h-9z"/><path d="M20 25c2-5 11-5 11 1 0 5-6 5-6 10M25 40h.1M39 24v9M39 39h.1"/></svg>
+            </span>
+            <span class="developer-row-copy">
+              <b>Ответки на ввод</b>
+              <small>Все специальные слова и точные реакции игры</small>
+            </span>
+            <span class="developer-menu-arrow">›</span>
+          </button>
+
+          <div class="developer-clean-row">
+            <span class="developer-row-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><path d="M16 31c7-8 25-8 32 0M21 39c7 5 15 5 22 0M11 11l42 42"/><path d="M19 25l-4-5M45 25l4-5"/></svg>
+            </span>
+            <span class="developer-row-copy">
+              <b>Разрешаю ругаться</b>
+              <small>Разрешить любые имена и отключить фильтр ругательств</small>
+            </span>
+            <label class="dev-switch developer-rude-switch">
+              <input id="developerRudeToggle" type="checkbox" onchange="setDeveloperRudePermission()">
               <span class="dev-slider"></span>
             </label>
           </div>
         </section>
 
-        <section class="developer-section-card">
-          <div class="developer-section-heading">ОТВЕТКИ НА ВВОД</div>
-          <button type="button" class="developer-menu-button" onclick="showDeveloperSubview('rules')">
-            <span>
-              <b>Неприличные слова и специальные имена</b>
-              <small>Посмотреть все слова и точные ответки игры</small>
+        <section class="developer-clean-section">
+          <div class="developer-section-heading">КОНТЕНТ ИГРЫ</div>
+
+          <button type="button" class="developer-clean-row developer-clean-button" onclick="showDeveloperSubview('postcards')">
+            <span class="developer-row-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><rect x="10" y="16" width="44" height="34" rx="4"/><path d="M10 21l22 15 22-15M43 12v8M39 16h8"/></svg>
+            </span>
+            <span class="developer-row-copy">
+              <b>Проверка открыток</b>
+              <small>Поздравления и финальные реакции</small>
+            </span>
+            <span class="developer-menu-arrow">›</span>
+          </button>
+
+          <button type="button" class="developer-clean-row developer-clean-button" onclick="showDeveloperSubview('collectionEditor')">
+            <span class="developer-row-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><path d="M11 24h38v27H11zM16 24v-8h28v8M23 16v-5h14v5"/><path d="M41 43l10-10 5 5-10 10-7 2zM49 35l5 5"/></svg>
+            </span>
+            <span class="developer-row-copy">
+              <b>Редактор коллекции</b>
+              <small>Импорт и модерация заявок от других пользователей</small>
+            </span>
+            <span class="developer-menu-arrow">›</span>
+          </button>
+
+          <button type="button" class="developer-clean-row developer-clean-button" onclick="showDeveloperSubview('questionEditor')">
+            <span class="developer-row-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><rect x="10" y="10" width="35" height="44" rx="4"/><path d="M18 39l9-21 9 21M21 32h12M39 48l12-12 5 5-12 12-7 2z"/></svg>
+            </span>
+            <span class="developer-row-copy">
+              <b>Редактор вопросов</b>
+              <small>Все вопросы и сохранённые изменения по буквам</small>
             </span>
             <span class="developer-menu-arrow">›</span>
           </button>
         </section>
 
-        <section class="developer-section-card">
-          <div class="developer-section-heading">ПРОЧЕЕ</div>
-          <div class="dev-admin-row developer-admin-contained">
-            <div class="dev-admin-row-text">
-              <b>Админские правила имён</b>
-              <small>Внутренняя настройка разрешения ругательств.</small>
-            </div>
-            <button id="settingsAdminButton" class="settings-admin-button" type="button" onclick="toggleAdminRudeFromSettings()" title="Админ: разрешить любые имена" aria-label="Админ: разрешить любые имена">😈</button>
-          </div>
-
-          <div class="dev-final-test-row developer-test-contained">
-            <button class="secondary dev-final-test-open" type="button" onclick="openVictoryReactionTester()">🎉 Проверить финальные реакции</button>
-          </div>
-        </section>
-
-        <div id="developerOverview" class="developer-overview hidden developer-section-card developer-overview-card">
-          <div class="developer-overview-head">
-            <b>Мои буквы</b>
-            <span id="developerHintTotal">0 сохранено</span>
-          </div>
-          <div id="developerLetterChips" class="developer-letter-chips"></div>
-          <div id="developerLetterDetails" class="developer-letter-details">Нажми на букву, чтобы посмотреть сохранённые ответы.</div>
-        </div>
+        <button type="button" class="developer-lock-access-btn" onclick="lockDeveloperAccess()">
+          Закрыть доступ разработчика
+        </button>
       </div>
 
       <div id="developerRulesView" class="developer-subview">
@@ -5609,6 +5770,65 @@ body.developer-mode .hint-preview-eye{
         </div>
         <div id="developerRulesEmpty" class="developer-rules-empty hidden">Ничего не найдено.</div>
       </div>
+
+      <div id="developerPostcardsView" class="developer-subview">
+        <div class="settings-subpage-head developer-nav-head">
+          <button type="button" class="settings-back-btn settings-back-btn-large" onclick="showDeveloperSubview('home')">← Для разработчика</button>
+          <div class="developer-page-title">Проверка открыток</div>
+        </div>
+        <section class="developer-placeholder-card">
+          <div class="developer-placeholder-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><rect x="10" y="16" width="44" height="34" rx="4"/><path d="M10 21l22 15 22-15M43 12v8M39 16h8"/></svg>
+          </div>
+          <b>Раздел готов</b>
+          <span>Сюда позже добавим настройку поздравлений и финальных реакций.</span>
+          <button type="button" class="secondary" onclick="openVictoryReactionTester()">Открыть текущую проверку реакций</button>
+        </section>
+      </div>
+
+      <div id="developerCollectionEditorView" class="developer-subview">
+        <div class="settings-subpage-head developer-nav-head">
+          <button type="button" class="settings-back-btn settings-back-btn-large" onclick="showDeveloperSubview('home')">← Для разработчика</button>
+          <div class="developer-page-title">Редактор коллекции</div>
+        </div>
+
+        <section class="developer-import-card">
+          <div class="developer-section-heading">ВХОДЯЩАЯ ЗАЯВКА</div>
+          <div class="collection-settings-sub">Вставь код, который пользователь создал в своей «Моей коллекции».</div>
+          <textarea id="developerCollectionRequestInput" class="developer-request-textarea" placeholder="KTB1.…"></textarea>
+          <div class="developer-import-actions">
+            <button type="button" class="primary" onclick="previewCollectionRequest()">Проверить заявку</button>
+            <button type="button" class="secondary" onclick="clearCollectionRequestPreview()">Очистить</button>
+          </div>
+        </section>
+
+        <section id="developerCollectionRequestPreview" class="developer-request-preview hidden">
+          <div class="developer-request-meta">
+            <div><span>От кого</span><b id="developerRequestSender">—</b></div>
+            <div><span>Название</span><b id="developerRequestTitle">—</b></div>
+            <div><span>Ответов</span><b id="developerRequestCount">0</b></div>
+          </div>
+          <div id="developerRequestItems" class="developer-request-items"></div>
+          <div class="developer-import-actions">
+            <button type="button" class="primary" onclick="acceptCollectionRequest()">Принять новые ответы</button>
+            <button type="button" class="secondary" onclick="clearCollectionRequestPreview()">Отклонить</button>
+          </div>
+        </section>
+      </div>
+
+      <div id="developerQuestionEditorView" class="developer-subview">
+        <div class="settings-subpage-head developer-nav-head">
+          <button type="button" class="settings-back-btn settings-back-btn-large" onclick="showDeveloperSubview('home')">← Для разработчика</button>
+          <div class="developer-page-title">Редактор вопросов</div>
+        </div>
+
+        <div class="developer-question-toolbar">
+          <div id="developerQuestionLetters" class="developer-question-letters"></div>
+          <input id="developerQuestionSearch" type="search" class="developer-rules-search" placeholder="Найти вопрос…" oninput="renderDeveloperQuestionEditor()">
+        </div>
+        <div id="developerQuestionEditorList" class="developer-question-editor-list"></div>
+      </div>
+
     </div>
   </div>
 
@@ -9239,8 +9459,6 @@ function returnToStartForNewGame() {
   refreshQuestionModeCounts();
   renderHintCollection();
   updateStartThemeIcon();
-  applyDeveloperMode();
-
   if (questionMode) {
     setQuestionMode(questionMode);
   }
@@ -12260,6 +12478,246 @@ function updateStartThemeIcon() {
   if (button) button.classList.add("hidden");
 }
 
+
+/* =========================================================
+   v11.5 — DEV PASSWORD / COLLECTION REQUESTS / QUESTION EDITOR
+========================================================= */
+const DEV_PBKDF2_SALT_HEX = "3d2d4bfd01d251a7adbad91d886af48a";
+const DEV_PBKDF2_VERIFIER_HEX = "f81f945e1c819a5856ba72bd63a6e3dc8b37aae82823176903a04de7900a6bac";
+const DEV_PBKDF2_ITERATIONS = 250000;
+
+let developerSessionAuthorized = false;
+let pendingCollectionRequest = null;
+let developerQuestionLetter = "А";
+
+function hexToBytesDev(hex){
+  const out = new Uint8Array(hex.length / 2);
+  for(let i=0;i<out.length;i++) out[i]=parseInt(hex.slice(i*2,i*2+2),16);
+  return out;
+}
+function bytesToHexDev(bytes){
+  return [...bytes].map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+async function verifyDeveloperPassword(){
+  const input=document.getElementById("developerPasswordInput");
+  const message=document.getElementById("developerPasswordMessage");
+  const password=input?.value || "";
+  if(!password){
+    if(message) message.textContent="Введи пароль.";
+    return;
+  }
+  if(message) message.textContent="Проверяю…";
+  try{
+    const key=await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(password),
+      "PBKDF2",
+      false,
+      ["deriveBits"]
+    );
+    const bits=await crypto.subtle.deriveBits(
+      {
+        name:"PBKDF2",
+        salt:hexToBytesDev(DEV_PBKDF2_SALT_HEX),
+        iterations:DEV_PBKDF2_ITERATIONS,
+        hash:"SHA-256"
+      },
+      key,
+      256
+    );
+    const verifier=bytesToHexDev(new Uint8Array(bits));
+    if(verifier===DEV_PBKDF2_VERIFIER_HEX){
+      developerSessionAuthorized=true;
+      if(input) input.value="";
+      if(message) message.textContent="";
+      syncDeveloperRudeToggle();
+      showDeveloperSubview("home");
+    }else{
+      if(message) message.textContent="Пароль не подошёл.";
+      if(input){ input.value=""; input.focus(); }
+    }
+  }catch(error){
+    if(message) message.textContent="Не удалось проверить пароль в этом браузере.";
+  }
+}
+
+function lockDeveloperAccess(){
+  developerSessionAuthorized=false;
+  pendingCollectionRequest=null;
+  const input=document.getElementById("developerPasswordInput");
+  const message=document.getElementById("developerPasswordMessage");
+  if(input) input.value="";
+  if(message) message.textContent="";
+  showDeveloperSubview("auth");
+}
+
+function syncDeveloperRudeToggle(){
+  const toggle=document.getElementById("developerRudeToggle");
+  if(toggle) toggle.checked=adminAllowsAnyName();
+}
+function setDeveloperRudePermission(){
+  const toggle=document.getElementById("developerRudeToggle");
+  if(!toggle) return;
+  localStorage.setItem("trainerAdminAllowsRude",toggle.checked?"true":"false");
+  if(!toggle.checked) revalidateSavedNames();
+  else document.querySelectorAll('[id^="nameMessage"]').forEach(el=>el.textContent="");
+  showSettingsSaveState("saved");
+}
+
+function utf8ToBase64(value){
+  const bytes=new TextEncoder().encode(value);
+  let binary="";
+  bytes.forEach(b=>binary+=String.fromCharCode(b));
+  return btoa(binary);
+}
+function base64ToUtf8(value){
+  const binary=atob(value);
+  const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+function generateCollectionRequestCode(){
+  const sender=(document.getElementById("collectionShareSender")?.value||"").trim() || "Без имени";
+  const title=(document.getElementById("collectionShareTitle")?.value||"").trim() || "Моя коллекция";
+  const items=getHintCollection();
+  const payload={
+    type:"KTO_COLLECTION_REQUEST",
+    version:1,
+    sender,
+    title,
+    createdAt:Date.now(),
+    items
+  };
+  const code="KTB1."+utf8ToBase64(JSON.stringify(payload));
+  const area=document.getElementById("collectionShareCode");
+  const copy=document.getElementById("collectionShareCopyBtn");
+  if(area){
+    area.value=code;
+    area.classList.remove("hidden");
+  }
+  copy?.classList.remove("hidden");
+}
+async function copyCollectionRequestCode(){
+  const area=document.getElementById("collectionShareCode");
+  if(!area?.value) return;
+  try{
+    await navigator.clipboard.writeText(area.value);
+  }catch(error){
+    area.focus();
+    area.select();
+    document.execCommand("copy");
+  }
+  alert("Код заявки скопирован.");
+}
+
+function parseCollectionRequestCode(raw){
+  const code=String(raw||"").trim();
+  if(!code.startsWith("KTB1.")) throw new Error("Неизвестный формат кода.");
+  const data=JSON.parse(base64ToUtf8(code.slice(5)));
+  if(data?.type!=="KTO_COLLECTION_REQUEST" || !Array.isArray(data.items)) throw new Error("Это не заявка коллекции.");
+  data.items=data.items.filter(item =>
+    item &&
+    typeof item.mode==="string" &&
+    typeof item.question==="string" &&
+    typeof item.letter==="string" &&
+    typeof item.answer==="string"
+  );
+  return data;
+}
+
+function previewCollectionRequest(){
+  const raw=document.getElementById("developerCollectionRequestInput")?.value||"";
+  try{
+    pendingCollectionRequest=parseCollectionRequestCode(raw);
+  }catch(error){
+    pendingCollectionRequest=null;
+    alert(error.message || "Не удалось прочитать заявку.");
+    return;
+  }
+  document.getElementById("developerRequestSender").textContent=pendingCollectionRequest.sender||"Без имени";
+  document.getElementById("developerRequestTitle").textContent=pendingCollectionRequest.title||"Без названия";
+  document.getElementById("developerRequestCount").textContent=pendingCollectionRequest.items.length;
+  const list=document.getElementById("developerRequestItems");
+  if(list){
+    list.innerHTML=pendingCollectionRequest.items.length
+      ? pendingCollectionRequest.items.map(item=>`
+          <div class="developer-request-item">
+            <b>${escapeHtml(item.answer)} · ${escapeHtml(String(item.letter||"").toUpperCase())}</b>
+            <small>${escapeHtml(item.question)} · ${escapeHtml(item.mode)}</small>
+          </div>`).join("")
+      : '<div class="developer-question-empty">В заявке нет сохранённых ответов.</div>';
+  }
+  document.getElementById("developerCollectionRequestPreview")?.classList.remove("hidden");
+}
+
+function clearCollectionRequestPreview(){
+  pendingCollectionRequest=null;
+  const input=document.getElementById("developerCollectionRequestInput");
+  if(input) input.value="";
+  document.getElementById("developerCollectionRequestPreview")?.classList.add("hidden");
+}
+
+function acceptCollectionRequest(){
+  if(!pendingCollectionRequest) return;
+  const current=getHintCollection();
+  const existing=new Set(current.map(item=>hintStorageKey(item.mode,item.question,item.letter)));
+  let added=0;
+  pendingCollectionRequest.items.forEach(item=>{
+    const key=hintStorageKey(item.mode,item.question,item.letter);
+    if(existing.has(key)) return;
+    current.push({
+      mode:item.mode,
+      question:item.question,
+      letter:String(item.letter||"").trim().toUpperCase(),
+      answer:String(item.answer||"").trim(),
+      updatedAt:Date.now()
+    });
+    existing.add(key);
+    added++;
+  });
+  setHintCollection(current);
+  renderHintCollection();
+  clearCollectionRequestPreview();
+  alert(`Принято новых ответов: ${added}. Совпадения не перезаписывались.`);
+}
+
+function renderDeveloperQuestionLetters(){
+  const wrap=document.getElementById("developerQuestionLetters");
+  if(!wrap) return;
+  const letters="АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ".split("");
+  wrap.innerHTML=letters.map(letter=>`
+    <button type="button" class="developer-question-letter ${letter===developerQuestionLetter?"active":""}" onclick="selectDeveloperQuestionLetter('${letter}')">${letter}</button>
+  `).join("");
+}
+function selectDeveloperQuestionLetter(letter){
+  developerQuestionLetter=letter;
+  renderDeveloperQuestionLetters();
+  renderDeveloperQuestionEditor();
+}
+function renderDeveloperQuestionEditor(){
+  const list=document.getElementById("developerQuestionEditorList");
+  if(!list) return;
+  const q=(document.getElementById("developerQuestionSearch")?.value||"").trim().toLowerCase();
+  const questions=Array.isArray(allQuestions)?allQuestions:[];
+  const hints=getHintCollection().filter(item=>String(item.letter||"").toUpperCase()===developerQuestionLetter);
+  const rows=questions.filter(question=>!q || String(question).toLowerCase().includes(q));
+  list.innerHTML=rows.length
+    ? rows.map(question=>{
+        const saved=hints.filter(item=>item.question===question);
+        return `
+          <div class="developer-question-editor-row">
+            <b>${escapeHtml(question)}</b>
+            <small>Буква ${developerQuestionLetter}</small>
+            ${saved.length
+              ? saved.map(item=>`<div class="developer-question-saved">${escapeHtml(item.answer)} <span>· ${escapeHtml(item.mode)}</span></div>`).join("")
+              : '<div class="developer-question-saved" style="opacity:.55">Сохранённых изменений для этой буквы нет</div>'}
+          </div>`;
+      }).join("")
+    : '<div class="developer-question-empty">Вопросы не найдены.</div>';
+}
+
+
 /* ===== SETTINGS TABS ===== */
 function showSettingsTab(tab) {
   const mainPanel = document.getElementById("settingsMainPanel");
@@ -12283,8 +12741,15 @@ function showSettingsTab(tab) {
     renderHintCollection();
   }
   if (isDeveloper) {
-    refreshSettingsAdminButton();
-    applyDeveloperMode();
+    if (developerSessionAuthorized) {
+      syncDeveloperRudeToggle();
+      showDeveloperSubview("home");
+    } else {
+      showDeveloperSubview("auth");
+      setTimeout(() => document.getElementById("developerPasswordInput")?.focus(), 0);
+    }
+  } else {
+    modal?.classList.remove("settings-question-full");
   }
 }
 
@@ -14158,15 +14623,35 @@ document.addEventListener(
 
 
 function showDeveloperSubview(view){
-  const home=document.getElementById("developerHomeView");
-  const rules=document.getElementById("developerRulesView");
-  if(!home||!rules) return;
-  home.classList.toggle("active",view!=="rules");
-  rules.classList.toggle("active",view==="rules");
+  if(!developerSessionAuthorized && view!=="auth") view="auth";
+
+  const map={
+    auth:"developerAuthView",
+    home:"developerHomeView",
+    rules:"developerRulesView",
+    postcards:"developerPostcardsView",
+    collectionEditor:"developerCollectionEditorView",
+    questionEditor:"developerQuestionEditorView"
+  };
+
+  document.querySelectorAll("#settingsDeveloperPanel .developer-subview").forEach(el=>{
+    el.classList.toggle("active",el.id===map[view]);
+  });
+
+  const modal=document.getElementById("settingsModal");
+  modal?.classList.toggle("settings-question-full",view==="questionEditor");
+
   if(view==="rules"){
     const search=document.getElementById("developerRulesSearch");
-    if(search){ search.value=""; }
+    if(search) search.value="";
     filterDeveloperRules();
+  }
+  if(view==="home"){
+    syncDeveloperRudeToggle();
+  }
+  if(view==="questionEditor"){
+    renderDeveloperQuestionLetters();
+    renderDeveloperQuestionEditor();
   }
 }
 
