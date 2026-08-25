@@ -2988,6 +2988,9 @@ body.developer-mode .hint-preview-eye{
 .round-text{
   margin:0 !important;
   text-align:center !important;
+  font-size:15px !important;
+  font-weight:900 !important;
+  letter-spacing:1.15px !important;
 }
 .round-stats-text{
   width:100%;
@@ -4652,6 +4655,41 @@ body.developer-mode .hint-preview-eye{
 }
 
 </style>
+
+<style id="sevenFxPrereleaseStyles">
+/* v10.6 — 4FX prerelease + clean round panel */
+#startScreen.fx-exit-flip{animation:fxExitFlip .72s cubic-bezier(.65,0,.25,1) both;transform-origin:50% 50%;backface-visibility:hidden}
+#startScreen.fx-exit-zoom{animation:fxExitZoom .62s cubic-bezier(.72,0,.24,1) both;transform-origin:50% 36%}
+#startScreen.fx-exit-combo{animation:fxExitCombo .82s cubic-bezier(.68,0,.2,1) both;transform-origin:50% 58%}
+#startScreen.fx-exit-combo::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:9999;border-radius:50%;background:radial-gradient(circle at 50% 62%,rgba(255,255,255,.08) 0 8%,rgba(173,139,207,.22) 20%,rgba(115,84,151,.18) 37%,rgba(255,255,255,0) 65%);animation:fxComboLens .82s ease both}
+@keyframes fxExitFlip{0%{transform:perspective(1200px) rotateY(0) scale(1);opacity:1;filter:none}45%{transform:perspective(1200px) rotateY(78deg) scale(.96);opacity:.96}100%{transform:perspective(1200px) rotateY(102deg) scale(.9);opacity:0;filter:blur(3px)}}
+@keyframes fxExitZoom{0%{transform:scale(1);opacity:1;filter:none}20%{transform:scale(.94)}100%{transform:scale(5.8);opacity:0;filter:blur(8px)}}
+@keyframes fxExitCombo{0%{transform:scale(1);opacity:1;filter:none}18%{transform:scale(.97)}42%{transform:scale(1.03);filter:blur(.5px)}100%{transform:scale(5.2) rotate(.7deg);opacity:0;filter:blur(9px)}}
+@keyframes fxComboLens{0%{opacity:0;transform:scale(.08)}25%{opacity:1}100%{opacity:0;transform:scale(2.5)}}
+
+#gameScreen.fx-entry-fall .topbar,#gameScreen.fx-entry-fall .progress,#gameScreen.fx-entry-fall .main-cards,#gameScreen.fx-entry-fall .timer-area,#gameScreen.fx-entry-fall #playersContainer,#gameScreen.fx-entry-fall .controls{animation:fxFall .58s cubic-bezier(.2,.8,.25,1.12) both}
+#gameScreen.fx-entry-pop .topbar,#gameScreen.fx-entry-pop .progress,#gameScreen.fx-entry-pop .main-cards,#gameScreen.fx-entry-pop .timer-area,#gameScreen.fx-entry-pop #playersContainer,#gameScreen.fx-entry-pop .controls{animation:fxPop .52s cubic-bezier(.18,.9,.22,1.25) both}
+#gameScreen.fx-entry-build .topbar{animation:fxFromTop .5s ease-out both}#gameScreen.fx-entry-build .progress{animation:fxFromRight .52s ease-out both}#gameScreen.fx-entry-build .main-cards{animation:fxFromLeft .58s ease-out both}#gameScreen.fx-entry-build .timer-area{animation:fxFromBottom .5s ease-out both}#gameScreen.fx-entry-build #playersContainer{animation:fxFromLeft .55s ease-out both}#gameScreen.fx-entry-build .controls{animation:fxFromRight .55s ease-out both}
+#gameScreen.fx-entry-domino .topbar,#gameScreen.fx-entry-domino .progress,#gameScreen.fx-entry-domino .main-cards,#gameScreen.fx-entry-domino .timer-area,#gameScreen.fx-entry-domino #playersContainer,#gameScreen.fx-entry-domino .controls{animation:fxDomino .46s cubic-bezier(.2,.8,.3,1.15) both;transform-origin:top center}
+
+#gameScreen.fx-entry-fall .topbar,#gameScreen.fx-entry-pop .topbar,#gameScreen.fx-entry-domino .topbar{animation-delay:.04s}
+#gameScreen.fx-entry-fall .progress,#gameScreen.fx-entry-pop .progress,#gameScreen.fx-entry-domino .progress{animation-delay:.11s}
+#gameScreen.fx-entry-fall .main-cards,#gameScreen.fx-entry-pop .main-cards,#gameScreen.fx-entry-domino .main-cards{animation-delay:.18s}
+#gameScreen.fx-entry-fall .timer-area,#gameScreen.fx-entry-pop .timer-area,#gameScreen.fx-entry-domino .timer-area{animation-delay:.26s}
+#gameScreen.fx-entry-fall #playersContainer,#gameScreen.fx-entry-pop #playersContainer,#gameScreen.fx-entry-domino #playersContainer{animation-delay:.34s}
+#gameScreen.fx-entry-fall .controls,#gameScreen.fx-entry-pop .controls,#gameScreen.fx-entry-domino .controls{animation-delay:.42s}
+#gameScreen.fx-entry-build .topbar{animation-delay:.03s}#gameScreen.fx-entry-build .progress{animation-delay:.10s}#gameScreen.fx-entry-build .main-cards{animation-delay:.18s}#gameScreen.fx-entry-build .timer-area{animation-delay:.27s}#gameScreen.fx-entry-build #playersContainer{animation-delay:.35s}#gameScreen.fx-entry-build .controls{animation-delay:.43s}
+
+@keyframes fxFall{0%{opacity:0;transform:translateY(-155px) rotate(-2.5deg)}72%{opacity:1;transform:translateY(9px) rotate(.7deg)}88%{transform:translateY(-4px)}100%{opacity:1;transform:none}}
+@keyframes fxPop{0%{opacity:0;transform:scale(.08) rotate(-6deg)}68%{opacity:1;transform:scale(1.06) rotate(.5deg)}100%{opacity:1;transform:scale(1)}}
+@keyframes fxFromTop{from{opacity:0;transform:translateY(-95px)}to{opacity:1;transform:none}}@keyframes fxFromRight{from{opacity:0;transform:translateX(150px) rotate(2deg)}to{opacity:1;transform:none}}@keyframes fxFromLeft{from{opacity:0;transform:translateX(-150px) rotate(-2deg)}to{opacity:1;transform:none}}@keyframes fxFromBottom{from{opacity:0;transform:translateY(110px)}to{opacity:1;transform:none}}
+@keyframes fxDomino{0%{opacity:0;transform:perspective(700px) rotateX(-86deg) translateY(-12px)}70%{opacity:1;transform:perspective(700px) rotateX(10deg)}100%{opacity:1;transform:none}}
+
+.fx-sequence-badge{position:fixed;right:14px;bottom:14px;z-index:99999;padding:7px 10px;border-radius:999px;background:rgba(104,76,137,.9);color:white;font:700 11px/1 Arial,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.15);pointer-events:none;opacity:0;transform:translateY(5px);transition:.2s}
+.fx-sequence-badge.show{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){#startScreen[class*="fx-exit-"],#gameScreen[class*="fx-entry-"] .topbar,#gameScreen[class*="fx-entry-"] .progress,#gameScreen[class*="fx-entry-"] .main-cards,#gameScreen[class*="fx-entry-"] .timer-area,#gameScreen[class*="fx-entry-"] #playersContainer,#gameScreen[class*="fx-entry-"] .controls{animation-duration:.01ms!important}}
+</style>
+
 </head>
 
 <body>
@@ -4869,7 +4907,6 @@ body.developer-mode .hint-preview-eye{
   <section class="progress">
 
     <div id="roundText" class="round-text"></div>
-    <div id="roundStatsText" class="round-stats-text"></div>
 
     <div id="lettersProgress" class="letters"></div>
 
@@ -6731,6 +6768,56 @@ document.addEventListener(
 
 
 
+
+/* =========================================================
+   4 FX PRERELEASE — последовательность переходов
+   1 fall, 2 pop, 3 build, 4 domino
+========================================================= */
+const START_GAME_FX = [
+  {name:"Падают сверху", exit:null, entry:"fx-entry-fall", delay:120},
+  {name:"Выстрел из центра", exit:null, entry:"fx-entry-pop", delay:120},
+  {name:"Собираются", exit:null, entry:"fx-entry-build", delay:120},
+  {name:"Домино", exit:null, entry:"fx-entry-domino", delay:120}
+];
+let startGameFxIndex = Number(sessionStorage.getItem("startGameFxIndex4") || 0) % START_GAME_FX.length;
+
+function showFxSequenceBadge(label){
+  let badge=document.getElementById("fxSequenceBadge");
+  if(!badge){badge=document.createElement("div");badge.id="fxSequenceBadge";badge.className="fx-sequence-badge";document.body.appendChild(badge)}
+  badge.textContent=label;
+  badge.classList.add("show");
+  clearTimeout(showFxSequenceBadge._t);
+  showFxSequenceBadge._t=setTimeout(()=>badge.classList.remove("show"),1100);
+}
+function clearStartGameFxClasses(){
+  const start=document.getElementById("startScreen"), game=document.getElementById("gameScreen");
+  ["fx-exit-flip","fx-exit-zoom","fx-exit-combo"].forEach(c=>start&&start.classList.remove(c));
+  ["fx-entry-fall","fx-entry-pop","fx-entry-build","fx-entry-domino"].forEach(c=>game&&game.classList.remove(c));
+}
+function runStartToGameTransition(){
+  const start=document.getElementById("startScreen");
+  const game=document.getElementById("gameScreen");
+  const fx=START_GAME_FX[startGameFxIndex];
+  startGameFxIndex=(startGameFxIndex+1)%START_GAME_FX.length;
+  sessionStorage.setItem("startGameFxIndex4",String(startGameFxIndex));
+  clearStartGameFxClasses();
+  if(fx.exit){
+    start.classList.add(fx.exit);
+    setTimeout(()=>{
+      start.classList.add("hidden");
+      start.classList.remove(fx.exit);
+      game.classList.remove("hidden");
+      newGame();
+    },fx.delay);
+  }else{
+    start.classList.add("hidden");
+    game.classList.remove("hidden");
+    game.classList.add(fx.entry);
+    newGame();
+    setTimeout(()=>game.classList.remove(fx.entry),1050);
+  }
+}
+
 /* =========================================================
    ЗАПУСК
 ========================================================= */
@@ -6843,23 +6930,7 @@ function startGame() {
   }
 
 
-  document
-    .getElementById(
-      "startScreen"
-    )
-    .classList
-    .add("hidden");
-
-
-  document
-    .getElementById(
-      "gameScreen"
-    )
-    .classList
-    .remove("hidden");
-
-
-  newGame();
+  runStartToGameTransition();
 
 }
 
