@@ -7139,6 +7139,10 @@ button[data-action="developer-login"]{
   #developerPasswordMessage.v132o-password-snap{animation:none !important;}
 }
 </style>
+
+<style id="v132sContentEditorStyles">
+.v132s-editor-summary{display:grid;grid-template-columns:auto 1fr auto auto;gap:10px;align-items:center;margin:10px 0 14px;padding:12px;border:1px solid #3e3e3e;border-radius:12px;background:#1d1d1d}.v132s-editor-summary>div b{display:block;font-size:22px}.v132s-editor-summary>div small,.v132s-editor-summary>span{font-size:9px;color:#999}.v132s-import-label{display:flex!important;align-items:center;justify-content:center;cursor:pointer}.v132s-import-label input{display:none}.v132s-editor-notice{margin:8px 0;padding:10px 12px;border:1px solid #55745f;border-radius:10px;background:#1d2920;color:#b9d8c0;font-size:10px;font-weight:800}.developer-question-editor-row{position:relative;padding-right:48px!important}.v132s-edit-question{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:1px solid #555;border-radius:9px;background:#29252d;color:#fff;cursor:pointer}.v132s-edit-question:hover{border-color:#9b75ae}.v132s-qmodal{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:20px;background:rgba(0,0,0,.72)}.v132s-qmodal.hidden{display:none}.v132s-qmodal-card{width:min(650px,96vw);padding:18px;border:1px solid #4b4b4b;border-radius:16px;background:#202020;box-shadow:0 24px 80px rgba(0,0,0,.5)}.v132s-qmodal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}.v132s-qmodal-head b{display:block;font-size:18px}.v132s-qmodal-head small{display:block;margin-top:3px;color:#d5a85c;font-size:9px}.v132s-qmodal-head button{width:38px;height:38px;border:0;border-radius:50%;background:#303030;color:#fff;font-size:22px}.v132s-qmodal-card label{display:block;margin:12px 0 6px;color:#aaa;font-size:10px;font-weight:900}.v132s-qmodal-card textarea{width:100%;box-sizing:border-box;padding:11px;border:1px solid #494949;border-radius:10px;background:#181818;color:#fff;font:inherit;resize:vertical}.v132s-original{margin-top:8px;padding:9px 10px;border:1px solid #353535;border-radius:9px;background:#191919;color:#aaa;font-size:10px}.v132s-original span{display:block;margin-bottom:4px;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#777}.v132s-qmodal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}@media(max-width:760px){.v132s-editor-summary{grid-template-columns:1fr 1fr}.v132s-editor-summary>span{grid-column:1/-1}}
+</style>
 </head>
 
 <body>
@@ -7260,10 +7264,10 @@ button[data-action="developer-login"]{
               onclick="setQuestionMode('questions')"
             >
               <span class="question-mode-title">
-                🗂 Темки
+                ⚡ Темки
               </span>
               <span class="question-mode-count"></span>
-              <span class="question-mode-note">Одна тема или микс по порядку</span>
+              <span class="question-mode-note">Выбирай. Миксуй. Погнали.</span>
             
               
             
@@ -7443,7 +7447,7 @@ button[data-action="developer-login"]{
   <section class="timer-area">
 
     <div id="timer">
-      00:30
+      01:09
     </div>
 
     <div id="status"></div>
@@ -7863,7 +7867,7 @@ button[data-action="developer-login"]{
             <span class="developer-menu-arrow">›</span>
           </button>
 
-          <button type="button" class="developer-clean-row developer-clean-button" onclick="showDeveloperSubview('questionEditor')">
+          <button type="button" class="developer-clean-row developer-clean-button" onclick="v132tOpenQuestionEditorPage()">
             <span class="developer-row-icon" aria-hidden="true">
               <svg viewBox="0 0 64 64"><rect x="10" y="10" width="35" height="44" rx="4"/><path d="M18 39l9-21 9 21M21 32h12M39 48l12-12 5 5-12 12-7 2z"/></svg>
             </span>
@@ -8048,15 +8052,36 @@ button[data-action="developer-login"]{
 
       <div id="developerQuestionEditorView" class="developer-subview">
         <div class="settings-subpage-head developer-nav-head">
-          <button type="button" class="settings-back-btn settings-back-btn-large" onclick="showDeveloperSubview('home')">← Для разработчика</button>
+          <button type="button" class="settings-back-btn settings-back-btn-large" onclick="v132tCloseQuestionEditorPage()">← Назад</button>
           <div class="developer-page-title">Редактор вопросов</div>
         </div>
 
-        <div class="developer-question-toolbar">
-          <div id="developerQuestionLetters" class="developer-question-letters"></div>
+        <div class="developer-question-toolbar v132t-question-search-only">
           <input id="developerQuestionSearch" type="search" class="developer-rules-search" placeholder="Найти вопрос…" oninput="renderDeveloperQuestionEditor()">
         </div>
+        <div class="v132s-editor-summary">
+          <div><b id="v132sEditCount">0</b><small>локальных правок</small></div>
+          <span>Сохраняются автоматически в этом браузере</span>
+          <button type="button" class="secondary" onclick="v132sExportEdits()">Скачать резервную копию</button>
+          <label class="secondary v132s-import-label">Импортировать изменения<input id="v132sImportInput" type="file" accept=".json,application/json" onchange="v132sImportEdits(event)"></label>
+        </div>
+        <div id="v132sEditorNotice" class="v132s-editor-notice hidden"></div>
         <div id="developerQuestionEditorList" class="developer-question-editor-list"></div>
+
+        <div id="v132sQuestionModal" class="v132s-qmodal hidden" onclick="if(event.target===this)v132sCloseEditor()">
+          <div class="v132s-qmodal-card">
+            <div class="v132s-qmodal-head"><div><b>Редактировать вопрос</b><small id="v132sEditorStatus">ОРИГИНАЛ</small></div><button type="button" onclick="v132sCloseEditor()">×</button></div>
+            <label>Текст вопроса</label>
+            <textarea id="v132sQuestionText" rows="3"></textarea>
+            <div class="v132s-original"><span>Оригинал</span><div id="v132sOriginalText"></div></div>
+            <label>Ответ / подсказка для буквы <b id="v132sEditorLetter">—</b></label>
+            <textarea id="v132sAnswerText" rows="3" placeholder="Можно оставить пустым, если своей подсказки нет"></textarea>
+            <div class="v132s-qmodal-actions">
+              <button type="button" class="secondary" onclick="v132sResetCurrent()">Вернуть оригинал</button>
+              <button type="button" class="primary" onclick="v132sSaveCurrent()">Сохранить</button>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -9058,7 +9083,7 @@ let answerTime =
   Number(
     localStorage.getItem(
       "answerTime"
-    ) || 30
+    ) || 69
   );
 
 let autoNext =
@@ -11060,7 +11085,7 @@ function markSettingsSaved() {
 
 function resetGameSettings() {
   theme = "dark";
-  answerTime = 30;
+  answerTime = 69;
   timerSeconds = answerTime;
   autoNext = true;
 
@@ -15580,8 +15605,8 @@ function devLaunchKnivesFromEditor(){
 /* =========================================================
    v11.5 — DEV PASSWORD / COLLECTION REQUESTS / QUESTION EDITOR
 ========================================================= */
-const DEV_PBKDF2_SALT_HEX = "3d2d4bfd01d251a7adbad91d886af48a";
-const DEV_PBKDF2_VERIFIER_HEX = "f81f945e1c819a5856ba72bd63a6e3dc8b37aae82823176903a04de7900a6bac";
+const DEV_PBKDF2_SALT_HEX = "c6346e5a6c356ea9f61742fe1029e8b5";
+const DEV_PBKDF2_VERIFIER_HEX = "ed044cc59ea4a6873f9a68fd225cb90cbd49cf10f0e753dcaa041a8fbc5a6308";
 const DEV_PBKDF2_ITERATIONS = 250000;
 
 let developerSessionAuthorized = false;
@@ -19226,8 +19251,8 @@ function v131ApplyThemkiContent(){
   const questionsCount=document.querySelector('[data-mode="questions"] .mode-inline-count');
   const allCount=document.querySelector('[data-mode="all"] .mode-inline-count');
 
-  if(title) title.textContent="🗂 Темки";
-  if(note) note.textContent="Одна тема или микс по порядку";
+  if(title) title.textContent="⚡ Темки";
+  if(note) note.textContent="Выбирай. Миксуй. Погнали.";
   if(questionsCount) questionsCount.textContent=String(questionQuestions.length);
   if(allCount) allCount.textContent=String(allQuestions.length);
 
@@ -23386,6 +23411,1883 @@ if(document.readyState==="loading"){
 }else setTimeout(v132pInitImpulseColor,500);
 </script>
 
+
+
+<style id="v132qBlackQuestionNoStyleStyles">
+/* =========================================================
+   v13.2q — вопрос снова нейтрально-чёрный; DEV «СТИЛЬ» убран
+========================================================= */
+#gameScreen .main-cards > .game-card:first-child,
+#letterGameCard{
+  background:#222222 !important;
+  color:#f3f3f3 !important;
+}
+/* вопрос не участвует в старых визуальных пресетах */
+body[data-v132l-style] #gameScreen .main-cards > .game-card:first-child,
+body[data-v132l-style] #letterGameCard{
+  background:#222222 !important;
+  color:#f3f3f3 !important;
+}
+/* DEV-кнопка выбора стиля больше не нужна */
+#v132dDevLayoutButton{display:none !important;}
+</style>
+<script id="v132qBlackQuestionNoStyleLogic">
+(function(){
+  function cleanupStyleDev(){
+    try{ delete document.body.dataset.v132lStyle; }catch(e){}
+    document.getElementById('v132dDevLayoutButton')?.remove();
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',cleanupStyleDev,{once:true});
+  }else cleanupStyleDev();
+  /* старый STYLE-LAB не должен случайно открыться через прежний обработчик */
+  const oldOpen=window.v132dOpenLayoutLab;
+  window.v132dOpenLayoutLab=function(){
+    cleanupStyleDev();
+    return false;
+  };
+})();
+</script>
+\n<script id="v132sContentEditorScript">\n(function(){\nconst KEY='ktoDevContentEditsV1';\nlet current=null;\nfunction read(){try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');return x&&typeof x==='object'?x:{}}catch(e){return {}}}\nfunction write(x){localStorage.setItem(KEY,JSON.stringify(x)); updateCount()}\nfunction allLists(){const a=[]; try{a.push(['warmup',warmupQuestions],['questions',questionQuestions],['adult',adultQuestions],['all',allQuestions])}catch(e){} return a}\nfunction findModes(q){return allLists().filter(x=>Array.isArray(x[1])&&x[1].includes(q)).map(x=>x[0])}\nfunction replaceQuestion(oldQ,newQ){allLists().forEach(([m,list])=>{if(!Array.isArray(list))return; for(let i=0;i<list.length;i++)if(list[i]===oldQ)list[i]=newQ}); try{QUESTION_MODES.warmup.questions=warmupQuestions;QUESTION_MODES.questions.questions=questionQuestions;QUESTION_MODES.adult.questions=adultQuestions;QUESTION_MODES.all.questions=allQuestions;if(QUESTION_MODES[questionMode])questions=QUESTION_MODES[questionMode].questions}catch(e){}}\nfunction migrateHints(oldQ,newQ){if(oldQ===newQ)return; const items=getHintCollection(); let changed=false; items.forEach(it=>{if(it.question===oldQ){it.question=newQ;changed=true}}); if(changed)setHintCollection(items)}\nfunction applyStored(){const edits=read(); Object.keys(edits).forEach(orig=>{const e=edits[orig]; if(e&&e.text&&e.text!==orig)replaceQuestion(orig,e.text)});}\nfunction updateCount(){const el=document.getElementById('v132sEditCount');if(el)el.textContent=Object.keys(read()).length}\nfunction notice(t){const el=document.getElementById('v132sEditorNotice');if(!el)return;el.textContent=t;el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),2400)}\nwindow.v132sOpenEditor=function(encoded){const q=decodeURIComponent(encoded);const edits=read();const original=Object.keys(edits).find(k=>edits[k]?.text===q)||q;const e=edits[original]||{};current={original,currentText:q,modes:findModes(q)};document.getElementById('v132sQuestionText').value=q;document.getElementById('v132sOriginalText').textContent=original;document.getElementById('v132sEditorLetter').textContent=developerQuestionLetter;document.getElementById('v132sEditorStatus').textContent=e.text||e.answers?'ИЗМЕНЁН':'ОРИГИНАЛ';const hints=getHintCollection().filter(it=>it.question===q&&String(it.letter||'').toUpperCase()===developerQuestionLetter);document.getElementById('v132sAnswerText').value=hints[0]?.answer||e.answers?.[developerQuestionLetter]||'';document.getElementById('v132sQuestionModal').classList.remove('hidden')};\nwindow.v132sCloseEditor=function(){document.getElementById('v132sQuestionModal')?.classList.add('hidden');current=null};\nwindow.v132sSaveCurrent=function(){if(!current)return;const newQ=document.getElementById('v132sQuestionText').value.trim();if(!newQ)return alert('Вопрос не может быть пустым.');const ans=document.getElementById('v132sAnswerText').value.trim();const edits=read();const orig=current.original;const old=current.currentText;const e=edits[orig]||{answers:{}};e.text=newQ;e.answers=e.answers||{};if(ans)e.answers[developerQuestionLetter]=ans;else delete e.answers[developerQuestionLetter];e.updatedAt=Date.now();edits[orig]=e;migrateHints(old,newQ);replaceQuestion(old,newQ);if(ans){const modes=current.modes.length?current.modes:['questions'];const items=getHintCollection();modes.forEach(mode=>{const idx=items.findIndex(it=>it.mode===mode&&it.question===newQ&&String(it.letter||'').toUpperCase()===developerQuestionLetter);const rec={mode,question:newQ,letter:developerQuestionLetter,answer:ans,updatedAt:Date.now()};if(idx>=0)items[idx]=rec;else items.push(rec)});setHintCollection(items)}write(edits);v132sCloseEditor();renderDeveloperQuestionEditor();notice('✓ Сохранено в браузере')};\nwindow.v132sResetCurrent=function(){if(!current)return;const edits=read();const orig=current.original;const now=current.currentText;replaceQuestion(now,orig);migrateHints(now,orig);delete edits[orig];write(edits);v132sCloseEditor();renderDeveloperQuestionEditor();notice('↶ Возвращён оригинал')};\nwindow.v132sExportEdits=function(){const payload={type:'KTO_DEV_CONTENT_EDITS',version:1,exportedAt:new Date().toISOString(),edits:read(),hints:getHintCollection()};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='KTO_BYSTREE_DEV_EDITS_'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);notice('✓ Резервная копия скачана')};\nwindow.v132sImportEdits=function(ev){const f=ev.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const p=JSON.parse(r.result);if(p?.type!=='KTO_DEV_CONTENT_EDITS'||!p.edits)throw new Error();localStorage.setItem(KEY,JSON.stringify(p.edits));if(Array.isArray(p.hints))setHintCollection(p.hints);location.reload()}catch(e){alert('Не удалось импортировать этот JSON.')}};r.readAsText(f);ev.target.value=''};\nconst oldRender=window.renderDeveloperQuestionEditor;window.renderDeveloperQuestionEditor=function(){oldRender();const list=document.getElementById('developerQuestionEditorList');if(!list)return;list.querySelectorAll('.developer-question-editor-row').forEach(row=>{if(row.querySelector('.v132s-edit-question'))return;const b=row.querySelector('b');if(!b)return;const btn=document.createElement('button');btn.type='button';btn.className='v132s-edit-question';btn.title='Редактировать';btn.textContent='✎';btn.onclick=()=>v132sOpenEditor(encodeURIComponent(b.textContent));row.appendChild(btn)});updateCount()};\napplyStored(); updateCount();\n})();\n</script>\n
+<style id="v132tEditorPageDevCleanCss">
+/* =========================================================
+   v13.2t — cleaner DEV auth + standalone question editor
+========================================================= */
+/* Password entry: no redundant DEV heading, no giant lock/title card. */
+#developerAuthView .developer-nav-head .developer-page-title{display:none!important}
+#developerAuthView .developer-nav-head{min-height:44px!important;margin-bottom:8px!important}
+#developerAuthView .developer-auth-card{
+  width:min(590px,100%)!important;
+  padding:16px 18px 18px!important;
+  gap:8px!important;
+  min-height:0!important;
+}
+#developerAuthView .developer-auth-lock,
+#developerAuthView .developer-auth-title{display:none!important}
+#developerAuthView .developer-password-label{margin:0 0 5px!important;font-size:13px!important}
+#developerAuthView .developer-password-input{min-height:54px!important}
+#developerAuthView #developerPasswordMessage{margin-top:8px!important}
+
+/* Editor becomes its own page instead of a giant settings subpanel. */
+#developerQuestionEditorView.v132t-editor-page{
+  position:fixed!important;
+  inset:0!important;
+  z-index:100000!important;
+  display:none!important;
+  overflow:auto!important;
+  padding:22px clamp(16px,4vw,58px) 34px!important;
+  background:#171717!important;
+  color:var(--text)!important;
+}
+#developerQuestionEditorView.v132t-editor-page.active{display:block!important}
+#developerQuestionEditorView.v132t-editor-page .developer-nav-head{
+  position:sticky;top:0;z-index:4;
+  padding:10px 0 14px!important;
+  margin:0 0 8px!important;
+  background:#171717!important;
+}
+#developerQuestionEditorView.v132t-editor-page .developer-page-title{font-size:28px!important}
+#developerQuestionEditorView.v132t-editor-page .v132s-editor-summary{
+  grid-template-columns:auto 1fr auto auto!important;
+  margin:12px 0 16px!important;
+}
+#developerQuestionEditorView.v132t-editor-page .developer-question-editor-list{
+  max-height:none!important;overflow:visible!important;border:0!important;background:transparent!important;
+}
+#developerQuestionEditorView.v132t-editor-page .developer-question-editor-row{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  grid-template-areas:"q edit" "letters edit" "saved edit"!important;
+  gap:8px 16px!important;
+  align-items:center!important;
+  padding:15px 64px 15px 16px!important;
+  margin-bottom:10px!important;
+  border:1px solid #3b3b3b!important;
+  border-radius:13px!important;
+  background:#202020!important;
+}
+#developerQuestionEditorView.v132t-editor-page .developer-question-editor-row>b{
+  grid-area:q;font-size:17px!important;line-height:1.25!important;
+}
+.v132t-question-letters{grid-area:letters;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.v132t-question-letters .v132t-letter{
+  min-width:38px;height:34px;padding:0 10px;border:1px solid #5a5a5a;border-radius:9px;
+  background:#2a2a2a;color:#fff;font-weight:950;cursor:pointer
+}
+.v132t-question-letters .v132t-letter:hover{border-color:#a27abb;background:#302936}
+.v132t-question-letters .v132t-no-letter{font-size:11px;color:#7f7f7f}
+.v132t-question-mode-tags{display:flex;gap:6px;flex-wrap:wrap;margin-left:4px}
+.v132t-question-mode-tags span{font-size:9px;color:#aaa;border:1px solid #404040;border-radius:999px;padding:4px 7px}
+#developerQuestionEditorView.v132t-editor-page .developer-question-saved{grid-area:saved;margin:0!important}
+#developerQuestionEditorView.v132t-editor-page .v132s-edit-question{right:14px!important;width:40px!important;height:40px!important}
+#developerQuestionEditorView .v132t-question-search-only{display:block!important}
+#developerQuestionEditorView .v132t-question-search-only input{width:100%!important;font-size:16px!important;min-height:48px!important}
+body.v132t-editor-open{overflow:hidden!important}
+@media(max-width:760px){
+ #developerQuestionEditorView.v132t-editor-page{padding:12px!important}
+ #developerQuestionEditorView.v132t-editor-page .v132s-editor-summary{grid-template-columns:1fr 1fr!important}
+ #developerQuestionEditorView.v132t-editor-page .v132s-editor-summary>span{grid-column:1/-1!important}
+}
+</style>
+<script id="v132tEditorPageDevCleanScript">
+(function(){
+  const MODE_LABELS={warmup:'Разогрев',questions:'Темки',adult:'18+',all:'Все вопросы'};
+
+  function knownLettersForQuestion(question){
+    const set=new Set();
+    try{
+      if(Array.isArray(V13_WARMUP_DATA)){
+        const item=V13_WARMUP_DATA.find(x=>x&&x.text===question);
+        (item?.letters||[]).forEach(x=>set.add(String(x).toUpperCase()));
+      }
+    }catch(e){}
+    try{
+      if(Array.isArray(V131_THEMKI_DATA)){
+        const item=V131_THEMKI_DATA.find(x=>x&&x.question===question);
+        (item?.letters||[]).forEach(x=>set.add(String(x?.letter||x).toUpperCase()));
+      }
+    }catch(e){}
+    try{
+      getHintCollection().filter(x=>x&&x.question===question).forEach(x=>{
+        const l=String(x.letter||'').trim().toUpperCase(); if(l)set.add(l);
+      });
+    }catch(e){}
+    return [...set];
+  }
+
+  function modesForQuestion(question){
+    const out=[];
+    try{if(Array.isArray(warmupQuestions)&&warmupQuestions.includes(question))out.push('warmup')}catch(e){}
+    try{if(Array.isArray(questionQuestions)&&questionQuestions.includes(question))out.push('questions')}catch(e){}
+    try{if(Array.isArray(adultQuestions)&&adultQuestions.includes(question))out.push('adult')}catch(e){}
+    return out;
+  }
+
+  window.v132tEditQuestionLetter=function(encoded,letter){
+    developerQuestionLetter=String(letter||'').toUpperCase()||developerQuestionLetter||'А';
+    v132sOpenEditor(encoded);
+  };
+
+  window.v132tOpenQuestionEditorPage=function(){
+    if(!developerSessionAuthorized){
+      openSettings(); showSettingsTab('developer'); showDeveloperSubview('auth'); return;
+    }
+    const page=document.getElementById('developerQuestionEditorView');
+    if(!page)return;
+    if(page.parentElement!==document.body)document.body.appendChild(page);
+    page.classList.add('v132t-editor-page','active');
+    document.body.classList.add('v132t-editor-open');
+    document.getElementById('settingsBackdrop')?.classList.add('hidden');
+    const search=document.getElementById('developerQuestionSearch'); if(search)search.value='';
+    renderDeveloperQuestionEditor();
+    setTimeout(()=>search?.focus(),50);
+  };
+
+  window.v132tCloseQuestionEditorPage=function(){
+    const page=document.getElementById('developerQuestionEditorView');
+    page?.classList.remove('active');
+    document.body.classList.remove('v132t-editor-open');
+    openSettings(); showSettingsTab('developer'); showDeveloperSubview('home');
+  };
+
+  /* Replaces the old letter-first editor with question-first rows + all assigned letters. */
+  window.renderDeveloperQuestionLetters=function(){};
+  window.renderDeveloperQuestionEditor=function(){
+    const list=document.getElementById('developerQuestionEditorList');
+    if(!list)return;
+    const q=(document.getElementById('developerQuestionSearch')?.value||'').trim().toLowerCase();
+    const questions=Array.isArray(allQuestions)?[...new Set(allQuestions)]:[];
+    const rows=questions.filter(question=>!q||String(question).toLowerCase().includes(q));
+    const edits=(()=>{try{return JSON.parse(localStorage.getItem('ktoDevContentEditsV1')||'{}')||{}}catch(e){return {}}})();
+    list.innerHTML=rows.length?rows.map(question=>{
+      const letters=knownLettersForQuestion(question);
+      const modes=modesForQuestion(question);
+      const original=Object.keys(edits).find(k=>edits[k]?.text===question)||question;
+      const changed=!!edits[original];
+      const first=letters[0]||'А';
+      const enc=encodeURIComponent(question);
+      const letterHtml=letters.length?letters.map(letter=>`<button type="button" class="v132t-letter" title="Редактировать ответ для буквы ${escapeHtml(letter)}" onclick="v132tEditQuestionLetter('${enc}','${escapeHtml(letter)}')">${escapeHtml(letter)}</button>`).join(''):'<span class="v132t-no-letter">Буквы ещё не закреплены</span>';
+      const modeHtml=modes.length?`<span class="v132t-question-mode-tags">${modes.map(m=>`<span>${escapeHtml(MODE_LABELS[m]||m)}</span>`).join('')}</span>`:'';
+      return `<div class="developer-question-editor-row">
+        <b>${escapeHtml(question)}</b>
+        <div class="v132t-question-letters">${letterHtml}${modeHtml}</div>
+        <div class="developer-question-saved" style="opacity:${changed?'1':'.55'}">${changed?'Есть локальные изменения':'Без локальных изменений'}</div>
+        <button type="button" class="v132s-edit-question" title="Редактировать вопрос" onclick="v132tEditQuestionLetter('${enc}','${escapeHtml(first)}')">✎</button>
+      </div>`;
+    }).join(''):'<div class="developer-question-empty">Вопросы не найдены.</div>';
+    const c=document.getElementById('v132sEditCount'); if(c)c.textContent=Object.keys(edits).length;
+  };
+
+  /* Password reaction #4. Keep existing 1st/2nd behavior. */
+  const previousVerify=window.verifyDeveloperPassword;
+  if(typeof previousVerify==='function'){
+    window.verifyDeveloperPassword=async function(){
+      const before=Number(sessionStorage.getItem('wordGameDevWrongAttempts')||0);
+      await previousVerify();
+      const after=Number(sessionStorage.getItem('wordGameDevWrongAttempts')||0);
+      if(after===4 && after>before){
+        const message=document.getElementById('developerPasswordMessage');
+        if(message){
+          message.textContent='Точно в цель, и строго похуй!!';
+          message.classList.add('v132j-password-error');
+          message.classList.remove('v132o-password-snap');
+          void message.offsetWidth;
+          message.classList.add('v132o-password-snap');
+        }
+      }
+    };
+  }
+
+  function init(){
+    const page=document.getElementById('developerQuestionEditorView');
+    if(page){
+      page.classList.add('v132t-editor-page');
+      if(page.parentElement!==document.body)document.body.appendChild(page);
+    }
+    /* Runtime copy guard for code that re-labels the mode later. */
+    const title=document.querySelector('[data-mode="questions"] .question-mode-title');
+    const note=document.querySelector('[data-mode="questions"] .question-mode-note');
+    if(title)title.textContent='⚡ Темки';
+    if(note)note.textContent='Выбирай. Миксуй. Погнали.';
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
+})();
+</script>
+
+
+<style id="v132uReportingPolishCss">
+/* =========================================================
+   v13.2u — reporting pass
+   1) darker scrollbars + group-colored tabs
+   2) password attempt counter/reaction colors
+   3) editor shows current hint texts per letter
+========================================================= */
+
+/* 1. Scrollbars no longer flash white against the dark UI. */
+#questionOverview,
+#developerQuestionEditorView,
+#developerQuestionEditorView .developer-question-editor-list,
+#collectionBackdrop .q-list{
+  scrollbar-width:thin;
+  scrollbar-color:#5b5660 #252529;
+}
+#questionOverview::-webkit-scrollbar,
+#developerQuestionEditorView::-webkit-scrollbar,
+#developerQuestionEditorView .developer-question-editor-list::-webkit-scrollbar,
+#collectionBackdrop .q-list::-webkit-scrollbar{width:9px;height:9px}
+#questionOverview::-webkit-scrollbar-track,
+#developerQuestionEditorView::-webkit-scrollbar-track,
+#developerQuestionEditorView .developer-question-editor-list::-webkit-scrollbar-track,
+#collectionBackdrop .q-list::-webkit-scrollbar-track{background:#252529;border-radius:999px}
+#questionOverview::-webkit-scrollbar-thumb,
+#developerQuestionEditorView::-webkit-scrollbar-thumb,
+#developerQuestionEditorView .developer-question-editor-list::-webkit-scrollbar-thumb,
+#collectionBackdrop .q-list::-webkit-scrollbar-thumb{
+  background:#5b5660;border:2px solid #252529;border-radius:999px
+}
+#questionOverview::-webkit-scrollbar-thumb:hover,
+#developerQuestionEditorView::-webkit-scrollbar-thumb:hover,
+#developerQuestionEditorView .developer-question-editor-list::-webkit-scrollbar-thumb:hover,
+#collectionBackdrop .q-list::-webkit-scrollbar-thumb:hover{background:#77707e}
+
+/* Group tabs: active state keeps the Excel color family, not universal purple. */
+#collectionBackdrop .v131-collection-theme-tab:nth-child(1).active,
+.v131-workshop-theme-tabs button:nth-child(1).active{
+  border-color:#87c878!important;background:rgba(135,200,120,.10)!important;color:#b9e0b0!important;
+}
+#collectionBackdrop .v131-collection-theme-tab:nth-child(2).active,
+.v131-workshop-theme-tabs button:nth-child(2).active{
+  border-color:#7faee7!important;background:rgba(127,174,231,.10)!important;color:#b4d2f5!important;
+}
+#collectionBackdrop .v131-collection-theme-tab:nth-child(3).active,
+.v131-workshop-theme-tabs button:nth-child(3).active{
+  border-color:#d6b866!important;background:rgba(214,184,102,.10)!important;color:#ead79f!important;
+}
+#collectionBackdrop .v131-collection-theme-tab:nth-child(4).active,
+.v131-workshop-theme-tabs button:nth-child(4).active{
+  border-color:#d574d0!important;background:rgba(213,116,208,.10)!important;color:#e9afe6!important;
+}
+
+/* 3. Password view. */
+#v132uPasswordAttemptCounter{
+  margin:-1px 0 8px!important;color:#8f8f95;font-size:11px;font-weight:850;letter-spacing:.02em;
+}
+#developerPasswordMessage.v132u-pass-rose{border-color:#864c61!important;background:#351f28!important;color:#f1b6c9!important}
+#developerPasswordMessage.v132u-pass-amber{border-color:#8d6b2f!important;background:#302719!important;color:#f0cf87!important}
+#developerPasswordMessage.v132u-pass-teal{border-color:#3d7775!important;background:#192c2b!important;color:#9fdad5!important}
+#developerPasswordMessage.v132u-pass-neutral{border-color:#55545b!important;background:#242329!important;color:#c7c4ce!important}
+
+/* Impulse / scripts list. */
+.v132u-password-script-list{display:grid;gap:9px;margin-top:12px}
+.v132u-password-script-row{
+  display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:12px;align-items:center;
+  min-height:54px;padding:10px 12px;border:1px solid #414147;border-radius:12px;background:#1e1e22;
+}
+.v132u-password-script-row .attempt{font-size:11px;font-weight:950;color:#a9a6af}
+.v132u-password-script-row .phrase{font-size:13px;font-weight:900;line-height:1.3}
+.v132u-password-script-row .motion{font-size:10px;color:#8d8992;white-space:nowrap}
+.v132u-password-script-row.rose{border-color:#704454;background:#2a1c22}.v132u-password-script-row.rose .phrase{color:#efb1c4}
+.v132u-password-script-row.amber{border-color:#755a2c;background:#292216}.v132u-password-script-row.amber .phrase{color:#edcb83}
+.v132u-password-script-row.teal{border-color:#396b69;background:#182625}.v132u-password-script-row.teal .phrase{color:#9fd8d3}
+
+/* 4. Question editor: each assigned letter shows its existing texts. */
+#developerQuestionEditorView.v132t-editor-page .developer-question-editor-row{
+  grid-template-areas:"q edit" "letters edit" "saved edit"!important;
+  align-items:start!important;
+}
+.v132u-letter-blocks{grid-area:letters;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-width:0}
+.v132u-letter-card{
+  min-width:0;display:grid;grid-template-columns:34px minmax(0,1fr) 24px;gap:8px;align-items:start;
+  padding:9px 10px;border:1px solid #414147;border-radius:11px;background:#29292d;color:#fff;text-align:left;cursor:pointer;
+}
+.v132u-letter-card:hover{border-color:#7a6b83;background:#2e2c32}
+.v132u-letter-card .letter{
+  width:32px;height:32px;display:grid;place-items:center;border:1px solid #59565e;border-radius:9px;background:#202024;font-weight:1000;
+}
+.v132u-letter-card .texts{min-width:0;display:grid;gap:4px}
+.v132u-letter-card .texts span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;line-height:1.25;color:#c5c1c9}
+.v132u-letter-card .texts .empty{color:#77737b;font-style:italic}
+.v132u-letter-card .edit{color:#9e98a4;font-size:14px;text-align:right}
+.v132u-question-mode-tags{grid-column:1/-1;display:flex;gap:5px;flex-wrap:wrap;margin-top:1px}
+.v132u-question-mode-tags span{font-size:9px;color:#8f8b94;border:1px solid #3e3d43;border-radius:999px;padding:3px 6px}
+
+/* Modal: two editable built-in answer slots. */
+.v132u-answer-stack{display:grid;gap:9px;margin-top:6px}
+.v132u-answer-slot label{display:block;margin:0 0 4px!important;font-size:10px!important;color:#96929c!important;font-weight:900!important}
+.v132u-answer-slot textarea{width:100%;min-height:72px;resize:vertical}
+.v132u-answer-note{margin:7px 0 0;color:#817d86;font-size:10px;line-height:1.35}
+
+@media(max-width:980px){.v132u-letter-blocks{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){
+  .v132u-letter-blocks{grid-template-columns:1fr}
+  .v132u-password-script-row{grid-template-columns:1fr;gap:5px}.v132u-password-script-row .motion{white-space:normal}
+}
+</style>
+
+<script id="v132uReportingPolishScript">
+(function(){
+  const EDIT_KEY='ktoDevContentEditsV1';
+  const PASSWORD_REACTIONS=[
+    {attempt:1, phrase:'Вы кто такие? Я вас не звал! Идите нахуй!', tone:'rose', motion:'обычное появление'},
+    {attempt:2, phrase:'Че, суки, не попадается, да?))', tone:'amber', motion:'резко'},
+    {attempt:4, phrase:'Точно в цель, и строго похуй!!', tone:'teal', motion:'резко'}
+  ];
+  window.V132U_PASSWORD_REACTIONS=PASSWORD_REACTIONS;
+
+  function readEdits(){
+    try{const x=JSON.parse(localStorage.getItem(EDIT_KEY)||'{}');return x&&typeof x==='object'?x:{}}catch(e){return {}}
+  }
+  function writeEdits(x){localStorage.setItem(EDIT_KEY,JSON.stringify(x));const c=document.getElementById('v132sEditCount');if(c)c.textContent=Object.keys(x).length}
+  function originalFor(question,edits=readEdits()){
+    return Object.keys(edits).find(k=>edits[k]&&edits[k].text===question)||question;
+  }
+  function modesForQuestion(question){
+    const out=[];
+    try{if(Array.isArray(warmupQuestions)&&warmupQuestions.includes(question))out.push('warmup')}catch(e){}
+    try{if(Array.isArray(questionQuestions)&&questionQuestions.includes(question))out.push('questions')}catch(e){}
+    try{if(Array.isArray(adultQuestions)&&adultQuestions.includes(question))out.push('adult')}catch(e){}
+    return out;
+  }
+  function replaceQuestionDeep(oldQ,newQ,original){
+    if(!oldQ||!newQ)return;
+    try{
+      [warmupQuestions,questionQuestions,adultQuestions,allQuestions].forEach(list=>{
+        if(!Array.isArray(list))return;
+        for(let i=0;i<list.length;i++)if(list[i]===oldQ||list[i]===original)list[i]=newQ;
+      });
+      if(typeof QUESTION_MODES==='object'){
+        if(QUESTION_MODES.warmup)QUESTION_MODES.warmup.questions=warmupQuestions;
+        if(QUESTION_MODES.questions)QUESTION_MODES.questions.questions=questionQuestions;
+        if(QUESTION_MODES.adult)QUESTION_MODES.adult.questions=adultQuestions;
+        if(QUESTION_MODES.all)QUESTION_MODES.all.questions=allQuestions;
+        if(QUESTION_MODES[questionMode])questions=QUESTION_MODES[questionMode].questions;
+      }
+    }catch(e){}
+    try{
+      if(Array.isArray(V131_THEMKI_DATA))V131_THEMKI_DATA.forEach(item=>{if(item&&(item.question===oldQ||item.question===original))item.question=newQ});
+    }catch(e){}
+    try{
+      if(Array.isArray(V13_WARMUP_DATA))V13_WARMUP_DATA.forEach(item=>{if(item&&(item.text===oldQ||item.text===original))item.text=newQ});
+    }catch(e){}
+    try{
+      const items=getHintCollection();let changed=false;
+      items.forEach(item=>{if(item&&(item.question===oldQ||item.question===original)){item.question=newQ;changed=true}});
+      if(changed)setHintCollection(items);
+    }catch(e){}
+  }
+  function deepApplyStored(){
+    const edits=readEdits();
+    Object.entries(edits).forEach(([orig,e])=>{if(e&&e.text&&e.text!==orig)replaceQuestionDeep(orig,e.text,orig)});
+  }
+  function baseHints(question,letter){
+    const L=String(letter||'').toUpperCase();
+    const edits=readEdits();const orig=originalFor(question,edits);const e=edits[orig]||{};
+    const stored=e.answerLists&&Array.isArray(e.answerLists[L])?e.answerLists[L].filter(Boolean):null;
+    if(stored)return stored.slice(0,2);
+    try{
+      if(Array.isArray(V131_THEMKI_DATA)){
+        const meta=V131_THEMKI_DATA.find(x=>x&&(x.question===question||x.question===orig));
+        const lm=meta?.letters?.find(x=>String(x?.letter||x).toUpperCase()===L);
+        if(Array.isArray(lm?.hints)&&lm.hints.length)return lm.hints.slice(0,2);
+      }
+    }catch(err){}
+    try{
+      const items=getHintCollection().filter(x=>x&&(x.question===question||x.question===orig)&&String(x.letter||'').toUpperCase()===L);
+      const built=items.filter(x=>x.source==='built-in').sort((a,b)=>(a.builtInIndex||0)-(b.builtInIndex||0)).map(x=>x.answer).filter(Boolean);
+      if(built.length)return built.slice(0,2);
+      const any=items.map(x=>x.answer).filter(Boolean);if(any.length)return any.slice(0,2);
+    }catch(err){}
+    return [];
+  }
+  function assignedLetters(question){
+    const set=new Set();const orig=originalFor(question);
+    try{
+      if(Array.isArray(V131_THEMKI_DATA)){
+        const meta=V131_THEMKI_DATA.find(x=>x&&(x.question===question||x.question===orig));
+        (meta?.letters||[]).forEach(x=>{const l=String(x?.letter||x).toUpperCase();if(l)set.add(l)});
+      }
+    }catch(e){}
+    try{
+      if(Array.isArray(V13_WARMUP_DATA)){
+        const meta=V13_WARMUP_DATA.find(x=>x&&(x.text===question||x.text===orig));
+        (meta?.letters||[]).forEach(x=>{const l=String(x).toUpperCase();if(l)set.add(l)});
+      }
+    }catch(e){}
+    try{getHintCollection().filter(x=>x&&(x.question===question||x.question===orig)).forEach(x=>{const l=String(x.letter||'').toUpperCase();if(l)set.add(l)})}catch(e){}
+    return [...set];
+  }
+
+  /* ---------- editor modal: two real text slots ---------- */
+  let editorCurrent=null;
+  function ensureAnswerFields(){
+    const first=document.getElementById('v132sAnswerText');if(!first)return;
+    if(document.getElementById('v132uAnswerText2'))return;
+    const parent=first.parentElement;
+    const label=[...parent.querySelectorAll('label')].find(x=>x.htmlFor!=='v132sQuestionText'&&x.textContent.includes('Ответ'));
+    if(label)label.innerHTML='Ответы / подсказки для буквы <b id="v132sEditorLetter">—</b>';
+    const stack=document.createElement('div');stack.className='v132u-answer-stack';
+    const slot1=document.createElement('div');slot1.className='v132u-answer-slot';slot1.innerHTML='<label for="v132sAnswerText">Ответ 1</label>';
+    first.parentElement.insertBefore(stack,first);stack.appendChild(slot1);slot1.appendChild(first);
+    first.placeholder='Первый текст для этой буквы';
+    const slot2=document.createElement('div');slot2.className='v132u-answer-slot';slot2.innerHTML='<label for="v132uAnswerText2">Ответ 2</label><textarea id="v132uAnswerText2" rows="3" placeholder="Второй текст для этой буквы"></textarea>';
+    stack.appendChild(slot2);
+    const note=document.createElement('div');note.className='v132u-answer-note';note.textContent='Это те тексты, которые уже привязаны к выбранной букве. Их можно менять прямо здесь.';stack.appendChild(note);
+  }
+  window.v132uOpenEditor=function(encoded,letter){
+    ensureAnswerFields();
+    const q=decodeURIComponent(encoded);const L=String(letter||'').toUpperCase()||'А';
+    const edits=readEdits();const orig=originalFor(q,edits);const e=edits[orig]||{};
+    editorCurrent={original:orig,currentText:q,letter:L,modes:modesForQuestion(q)};
+    const qbox=document.getElementById('v132sQuestionText');if(qbox)qbox.value=q;
+    const obox=document.getElementById('v132sOriginalText');if(obox)obox.textContent=orig;
+    const lbox=document.getElementById('v132sEditorLetter');if(lbox)lbox.textContent=L;
+    const status=document.getElementById('v132sEditorStatus');if(status)status.textContent=e.text||e.answerLists?.[L]?'ИЗМЕНЁН':'ОРИГИНАЛ';
+    const hints=baseHints(q,L);
+    const a1=document.getElementById('v132sAnswerText');const a2=document.getElementById('v132uAnswerText2');
+    if(a1)a1.value=hints[0]||'';if(a2)a2.value=hints[1]||'';
+    document.getElementById('v132sQuestionModal')?.classList.remove('hidden');
+  };
+  window.v132tEditQuestionLetter=function(encoded,letter){
+    developerQuestionLetter=String(letter||'').toUpperCase()||developerQuestionLetter||'А';
+    v132uOpenEditor(encoded,developerQuestionLetter);
+  };
+  window.v132sCloseEditor=function(){document.getElementById('v132sQuestionModal')?.classList.add('hidden');editorCurrent=null};
+  window.v132sSaveCurrent=function(){
+    if(!editorCurrent)return;
+    const newQ=(document.getElementById('v132sQuestionText')?.value||'').trim();if(!newQ)return alert('Вопрос не может быть пустым.');
+    const a1=(document.getElementById('v132sAnswerText')?.value||'').trim();
+    const a2=(document.getElementById('v132uAnswerText2')?.value||'').trim();
+    const answers=[a1,a2].filter(Boolean);
+    const edits=readEdits();const orig=editorCurrent.original;const old=editorCurrent.currentText;const L=editorCurrent.letter;
+    const e=edits[orig]||{};e.text=newQ;e.answerLists=e.answerLists||{};e.answerLists[L]=answers;e.updatedAt=Date.now();edits[orig]=e;
+    replaceQuestionDeep(old,newQ,orig);
+    /* Non-Temki modes use hint collection directly; keep their built-ins in sync. */
+    try{
+      const modes=editorCurrent.modes.length?editorCurrent.modes:['questions'];let items=getHintCollection();
+      modes.filter(m=>m!=='questions').forEach(mode=>{
+        items=items.filter(x=>!(x&&x.mode===mode&&x.question===newQ&&String(x.letter||'').toUpperCase()===L&&x.source==='built-in'));
+        answers.forEach((answer,index)=>items.push({mode,question:newQ,letter:L,answer,source:'built-in',builtInIndex:index,updatedAt:Date.now()}));
+      });
+      setHintCollection(items);
+    }catch(err){}
+    writeEdits(edits);v132sCloseEditor();renderDeveloperQuestionEditor();
+    const n=document.getElementById('v132sEditorNotice');if(n){n.textContent='✓ Сохранено в браузере';n.classList.remove('hidden');setTimeout(()=>n.classList.add('hidden'),2200)}
+  };
+  window.v132sResetCurrent=function(){
+    if(!editorCurrent)return;const edits=readEdits();const orig=editorCurrent.original;const now=editorCurrent.currentText;
+    replaceQuestionDeep(now,orig,orig);delete edits[orig];writeEdits(edits);v132sCloseEditor();renderDeveloperQuestionEditor();
+  };
+
+  /* Temki built-in hints use edited answer lists before original Excel data. */
+  const baseV131GetHints=window.v131GetHintsForPair;
+  if(typeof baseV131GetHints==='function'){
+    window.v131GetHintsForPair=function(question,letter){
+      const originalResult=baseV131GetHints(question,letter)||[];
+      const edits=readEdits();const orig=originalFor(question,edits);const override=edits[orig]?.answerLists?.[String(letter||'').toUpperCase()];
+      if(!Array.isArray(override))return originalResult;
+      const personal=originalResult.filter(x=>x&&x.source!=='built-in');
+      const pair=(typeof v131MetaForPair==='function')?v131MetaForPair(question,letter):null;
+      const built=(typeof v13ShowDeveloperHints==='function'&&v13ShowDeveloperHints())?override.filter(Boolean).map((answer,index)=>({
+        mode:'questions',question,questionId:pair?.meta?.id,theme:pair?.meta?.theme,topic:pair?.meta?.topic,letter:String(letter||'').toUpperCase(),answer,source:'built-in',builtInIndex:index
+      })):[];
+      return [...personal,...built];
+    };
+  }
+
+  /* ---------- question-first rows with existing texts visible ---------- */
+  const MODE_LABELS={warmup:'Разогрев',questions:'Темки',adult:'18+',all:'Все вопросы'};
+  window.renderDeveloperQuestionEditor=function(){
+    const list=document.getElementById('developerQuestionEditorList');if(!list)return;
+    const q=(document.getElementById('developerQuestionSearch')?.value||'').trim().toLowerCase();
+    const questions=Array.isArray(allQuestions)?[...new Set(allQuestions)]:[];const edits=readEdits();
+    const rows=questions.filter(question=>!q||String(question).toLowerCase().includes(q));
+    list.innerHTML=rows.length?rows.map(question=>{
+      const letters=assignedLetters(question);const modes=modesForQuestion(question);const orig=originalFor(question,edits);const changed=!!edits[orig];const enc=encodeURIComponent(question);const first=letters[0]||'А';
+      const blocks=letters.length?letters.map(letter=>{
+        const hints=baseHints(question,letter);const txt=hints.length?hints.map((h,i)=>`<span>${i+1}. ${escapeHtml(h)}</span>`).join(''):'<span class="empty">Текстов пока нет</span>';
+        return `<button type="button" class="v132u-letter-card" onclick="v132tEditQuestionLetter('${enc}','${escapeHtml(letter)}')" title="Редактировать тексты буквы ${escapeHtml(letter)}">
+          <span class="letter">${escapeHtml(letter)}</span><span class="texts">${txt}</span><span class="edit">✎</span>
+        </button>`;
+      }).join(''):'<span class="v132t-no-letter">Буквы ещё не закреплены</span>';
+      const modeHtml=modes.length?`<div class="v132u-question-mode-tags">${modes.map(m=>`<span>${escapeHtml(MODE_LABELS[m]||m)}</span>`).join('')}</div>`:'';
+      return `<div class="developer-question-editor-row"><b>${escapeHtml(question)}</b><div class="v132u-letter-blocks">${blocks}${modeHtml}</div><div class="developer-question-saved" style="opacity:${changed?'1':'.55'}">${changed?'Есть локальные изменения':'Без локальных изменений'}</div><button type="button" class="v132s-edit-question" title="Редактировать вопрос" onclick="v132tEditQuestionLetter('${enc}','${escapeHtml(first)}')">✎</button></div>`;
+    }).join(''):'<div class="developer-question-empty">Вопросы не найдены.</div>';
+    const c=document.getElementById('v132sEditCount');if(c)c.textContent=Object.keys(edits).length;
+  };
+
+  /* ---------- password reactions ---------- */
+  function clearPasswordReaction(){
+    const m=document.getElementById('developerPasswordMessage');if(!m)return;
+    m.textContent='';m.classList.remove('v132j-password-error','v132o-password-snap','v132u-pass-rose','v132u-pass-amber','v132u-pass-teal','v132u-pass-neutral');
+  }
+  function ensurePasswordCounter(){
+    const input=document.getElementById('developerPasswordInput');if(!input)return;
+    let c=document.getElementById('v132uPasswordAttemptCounter');
+    if(!c){c=document.createElement('div');c.id='v132uPasswordAttemptCounter';const wrap=input.closest('.v13-password-wrap')||input;c.textContent='';wrap.parentElement?.insertBefore(c,wrap)}
+    const n=Number(sessionStorage.getItem('wordGameDevWrongAttempts')||0);c.textContent=`Неверных попыток: ${n}`;
+  }
+  function showPasswordReaction(attempt){
+    clearPasswordReaction();ensurePasswordCounter();
+    const m=document.getElementById('developerPasswordMessage');if(!m)return;
+    const reaction=PASSWORD_REACTIONS.find(x=>x.attempt===attempt);if(!reaction)return;
+    m.textContent=reaction.phrase;m.classList.add('v132j-password-error',`v132u-pass-${reaction.tone}`);
+    if(reaction.motion==='резко'){void m.offsetWidth;m.classList.add('v132o-password-snap')}
+  }
+  let v132yPasswordCheckBusy=false;
+  window.verifyDeveloperPassword=async function(){
+    if(v132yPasswordCheckBusy) return;
+    const input=document.getElementById('developerPasswordInput');const password=input?.value||'';
+    if(!password){ensurePasswordCounter();return}
+    v132yPasswordCheckBusy=true;
+    try{
+      const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveBits']);
+      const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:hexToBytesDev(DEV_PBKDF2_SALT_HEX),iterations:DEV_PBKDF2_ITERATIONS,hash:'SHA-256'},key,256);
+      const verifier=bytesToHexDev(new Uint8Array(bits));
+      if(verifier===DEV_PBKDF2_VERIFIER_HEX){
+        developerSessionAuthorized=true;sessionStorage.setItem(V13_DEV_SESSION_KEY,'true');v13WrongPasswordAttempts=0;sessionStorage.setItem('wordGameDevWrongAttempts','0');if(input)input.value='';clearPasswordReaction();ensurePasswordCounter();syncDeveloperRudeToggle();v13SyncDevThreeCards();showDeveloperSubview('home');return;
+      }
+      v13WrongPasswordAttempts=Number(sessionStorage.getItem('wordGameDevWrongAttempts')||0)+1;sessionStorage.setItem('wordGameDevWrongAttempts',String(v13WrongPasswordAttempts));if(input){input.value='';input.focus()}showPasswordReaction(v13WrongPasswordAttempts);
+    }catch(error){clearPasswordReaction();const m=document.getElementById('developerPasswordMessage');if(m){m.textContent='Не удалось проверить пароль в этом браузере.';m.classList.add('v132j-password-error','v132u-pass-neutral')}ensurePasswordCounter()}
+    finally{v132yPasswordCheckBusy=false;}
+  };
+  const baseSubview=window.showDeveloperSubview;
+  if(typeof baseSubview==='function'){
+    window.showDeveloperSubview=function(view){clearPasswordReaction();const result=baseSubview.apply(this,arguments);setTimeout(()=>{clearPasswordReaction();ensurePasswordCounter()},0);return result};
+  }
+
+  /* ---------- Impulse / Scripts tab ---------- */
+  function ensureImpulseScripts(){
+    const tabs=document.querySelector('#v132ImpulsePage .v132-impulse-tabs');if(!tabs)return;
+    if(!tabs.querySelector('[data-tab="scripts"]')){
+      const b=document.createElement('button');b.type='button';b.dataset.tab='scripts';b.textContent='Скрипты';b.addEventListener('click',()=>v132SetImpulseTab('scripts'));tabs.appendChild(b);
+    }
+    const body=document.querySelector('#v132ImpulsePage .v132-impulse-body');if(body&&!document.getElementById('v132ImpulseScriptsPanel')){
+      const p=document.createElement('div');p.id='v132ImpulseScriptsPanel';p.className='v132-impulse-panel';p.dataset.panel='scripts';body.appendChild(p);
+    }
+  }
+  window.v132RenderPasswordScripts=function(){
+    const host=document.getElementById('v132ImpulseScriptsPanel');if(!host)return;
+    host.innerHTML=`<div class="v132-impulse-card"><div class="v132-impulse-head"><b>Пароль DEV · реакции</b><div class="v132-impulse-meta">Счётчик не блокирует вход<br>реакции только на заданных попытках</div></div><div class="v132u-password-script-list">${PASSWORD_REACTIONS.map(r=>`<div class="v132u-password-script-row ${r.tone}"><div class="attempt">Попытка ${r.attempt}</div><div class="phrase">${escapeHtml(r.phrase)}</div><div class="motion">${escapeHtml(r.motion)}</div></div>`).join('')}</div></div>`;
+  };
+  const baseImpulseSet=window.v132SetImpulseTab;
+  if(typeof baseImpulseSet==='function'){
+    window.v132SetImpulseTab=function(tab){ensureImpulseScripts();const r=baseImpulseSet.apply(this,arguments);if(tab==='scripts')v132RenderPasswordScripts();return r};
+  }
+
+  function init(){
+    deepApplyStored();ensureAnswerFields();ensurePasswordCounter();ensureImpulseScripts();
+    if(document.getElementById('developerQuestionEditorView')?.classList.contains('active'))renderDeveloperQuestionEditor();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,80),{once:true});else setTimeout(init,80);
+})();
+</script>
+
+
+<style id="v132wPolishStyles">
+/* =========================================================
+   v13.2w — collection clean add / transient save / inline DEV edit
+========================================================= */
+
+/* 2. Keep the close X in the normal settings header; save status is temporary. */
+#settingsBackdrop .modal-head{
+  flex-wrap:nowrap !important;
+}
+#settingsBackdrop .modal-head h2{
+  flex:0 0 auto !important;
+  margin-right:8px !important;
+}
+#settingsBackdrop .modal-head .settings-reset-pill{
+  order:2;
+}
+#settingsBackdrop .modal-head .settings-save-pill{
+  order:3;
+  opacity:0;
+  transform:translateY(-4px);
+  pointer-events:none;
+  transition:opacity .18s ease, transform .18s ease !important;
+}
+#settingsBackdrop .modal-head .settings-save-pill.v132w-visible{
+  opacity:1;
+  transform:none;
+}
+#settingsBackdrop .modal-head .close-btn{
+  order:4;
+  margin-left:auto !important;
+  flex:0 0 auto;
+}
+@media(max-width:720px){
+  #settingsBackdrop .modal-head{flex-wrap:wrap !important;}
+  #settingsBackdrop .modal-head .close-btn{margin-left:auto !important;}
+}
+
+/* 3. DEV quick editor appears beside the live card, not inside Settings. */
+#v132wInlineHintEditor{
+  position:absolute;
+  z-index:80;
+  right:74px;
+  top:18px;
+  width:min(410px,calc(100vw - 34px));
+  padding:13px;
+  border:1px solid #4f4a55;
+  border-radius:15px;
+  background:#1d1d21;
+  color:#fff;
+  box-shadow:0 18px 44px rgba(0,0,0,.38);
+}
+#v132wInlineHintEditor .v132w-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;
+}
+#v132wInlineHintEditor .v132w-head b{font-size:15px}
+#v132wInlineHintEditor .v132w-close{
+  width:34px;height:34px;border:1px solid #444;border-radius:10px;background:#29292d;color:#fff;font-size:18px;cursor:pointer;
+}
+#v132wInlineHintEditor .v132w-context{
+  display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px;color:#aaa;font-size:10px;
+}
+#v132wInlineHintEditor .v132w-context span{padding:4px 7px;border:1px solid #3c3b40;border-radius:999px}
+#v132wInlineHintEditor label{display:block;margin:8px 0 4px;font-size:10px;font-weight:900;color:#aaa}
+#v132wInlineHintEditor textarea{
+  width:100%;min-height:66px;resize:vertical;padding:10px;border:1px solid #47464d;border-radius:10px;background:#29292d;color:#fff;font:700 13px/1.35 Arial,Helvetica,sans-serif;
+}
+#v132wInlineHintEditor .v132w-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+#v132wInlineHintEditor .v132w-actions button{min-height:39px;padding:0 12px;border-radius:10px;font-weight:900;cursor:pointer}
+#v132wInlineHintEditor .v132w-cancel{border:1px solid #49484f;background:#29292d;color:#ddd}
+#v132wInlineHintEditor .v132w-save{border:1px solid #68a486;background:#28543f;color:#e8fff2}
+#v132wInlineHintEditor .v132w-saved{margin-top:8px;color:#9fd6b1;font-size:10px;font-weight:900}
+@media(max-width:780px){
+  #v132wInlineHintEditor{right:8px;top:8px;}
+}
+</style>
+
+<script id="v132wPolishLogic">
+(function(){
+  const EDIT_KEY='ktoDevContentEditsV1';
+
+  /* 1. Adding to collection must start blank. Existing game answer is not a suggestion. */
+  function patchQuickCollectionAdd(){
+    const base=window.openQuickHintAdd;
+    if(typeof base!=='function'||base.__v132wBlankWrapped) return;
+    function wrapped(){
+      const r=base.apply(this,arguments);
+      setTimeout(()=>{
+        const input=document.getElementById('quickHintAnswer');
+        if(input){
+          input.value='';
+          input.placeholder=currentLetter?`Новый вариант на букву «${String(currentLetter).toUpperCase()}»`:'Новый вариант ответа';
+          input.focus();
+        }
+      },0);
+      return r;
+    }
+    wrapped.__v132wBlankWrapped=true;
+    window.openQuickHintAdd=wrapped;
+  }
+
+  /* 2. Saved status appears only as feedback, then disappears. */
+  let hideTimer=null;
+  function showTransientSavePill(text){
+    const pill=document.getElementById('settingsSaveStatus');
+    const label=document.getElementById('settingsSaveText');
+    if(!pill||!label) return;
+    if(text) label.textContent=text;
+    pill.classList.add('v132w-visible');
+    clearTimeout(hideTimer);
+    hideTimer=setTimeout(()=>pill.classList.remove('v132w-visible'),1400);
+  }
+  const oldShow=window.showSettingsSaveState;
+  window.showSettingsSaveState=function(state='saved',customText=''){
+    if(typeof oldShow==='function') oldShow.apply(this,arguments);
+    const pill=document.getElementById('settingsSaveStatus');
+    if(!pill) return;
+    if(state==='saving'){
+      pill.classList.add('v132w-visible');
+      clearTimeout(hideTimer);
+    }else if(state==='reset'){
+      setTimeout(()=>showTransientSavePill(customText||'Настройки сброшены'),20);
+    }else{
+      setTimeout(()=>showTransientSavePill(customText||'Все изменения сохранены'),20);
+    }
+  };
+  function initSavePill(){
+    const pill=document.getElementById('settingsSaveStatus');
+    if(pill) pill.classList.remove('v132w-visible');
+  }
+
+  function readEdits(){
+    try{const x=JSON.parse(localStorage.getItem(EDIT_KEY)||'{}');return x&&typeof x==='object'?x:{}}catch(e){return {}}
+  }
+  function writeEdits(x){localStorage.setItem(EDIT_KEY,JSON.stringify(x));}
+  function findOriginal(question,edits){
+    if(edits[question]) return question;
+    const hit=Object.entries(edits).find(([,v])=>v&&v.text===question);
+    return hit?hit[0]:question;
+  }
+  function currentGameAnswers(question,letter){
+    const L=String(letter||'').toUpperCase();
+    const edits=readEdits();
+    const orig=findOriginal(question,edits);
+    const override=edits[orig]?.answerLists?.[L];
+    if(Array.isArray(override)) return override.filter(Boolean).slice(0,2);
+    try{
+      if(typeof v131GetHintsForPair==='function'){
+        const xs=(v131GetHintsForPair(question,L)||[]).filter(x=>x&&x.source==='built-in').map(x=>x.answer).filter(Boolean);
+        if(xs.length) return xs.slice(0,2);
+      }
+    }catch(e){}
+    try{
+      const xs=getHintCollection().filter(x=>x&&x.question===question&&String(x.letter||'').toUpperCase()===L&&x.source==='built-in').sort((a,b)=>(a.builtInIndex||0)-(b.builtInIndex||0)).map(x=>x.answer).filter(Boolean);
+      if(xs.length) return xs.slice(0,2);
+    }catch(e){}
+    return [];
+  }
+  function syncNonThemeBuiltIns(question,letter,answers){
+    try{
+      if(typeof getHintCollection!=='function'||typeof setHintCollection!=='function') return;
+      let items=getHintCollection();
+      const L=String(letter||'').toUpperCase();
+      const mode=String(questionMode||'');
+      if(mode&&mode!=='questions'){
+        items=items.filter(x=>!(x&&x.mode===mode&&x.question===question&&String(x.letter||'').toUpperCase()===L&&x.source==='built-in'));
+        answers.forEach((answer,index)=>items.push({mode,question,letter:L,answer,source:'built-in',builtInIndex:index,updatedAt:Date.now()}));
+        setHintCollection(items);
+      }
+    }catch(e){}
+  }
+
+  function closeInlineEditor(){document.getElementById('v132wInlineHintEditor')?.remove();}
+  window.v132wOpenInlineHintEditor=function(){
+    if(!developerSessionAuthorized) return typeof openQuickHintAdd==='function'&&openQuickHintAdd();
+    if(!currentQuestion||!currentLetter) return;
+    closeInlineEditor();
+    const host=document.querySelector('#gameScreen .main-cards')||document.getElementById('gameScreen');
+    if(!host) return;
+    if(getComputedStyle(host).position==='static') host.style.position='relative';
+    const answers=currentGameAnswers(currentQuestion,currentLetter);
+    const panel=document.createElement('div');
+    panel.id='v132wInlineHintEditor';
+    panel.innerHTML=`
+      <div class="v132w-head"><b>Редактировать ответ карточки</b><button type="button" class="v132w-close" aria-label="Закрыть">×</button></div>
+      <div class="v132w-context"><span>${escapeHtml(String(currentLetter).toUpperCase())}</span><span>${escapeHtml(String(currentQuestion))}</span></div>
+      <label>Ответ 1</label><textarea id="v132wAnswer1" rows="3"></textarea>
+      <label>Ответ 2</label><textarea id="v132wAnswer2" rows="3"></textarea>
+      <div class="v132w-actions"><button type="button" class="v132w-cancel">Отмена</button><button type="button" class="v132w-save">Сохранить</button></div>
+      <div class="v132w-saved hidden">✓ Сохранено. Изменение видно и в Редакторе вопросов.</div>`;
+    host.appendChild(panel);
+    panel.querySelector('#v132wAnswer1').value=answers[0]||'';
+    panel.querySelector('#v132wAnswer2').value=answers[1]||'';
+    panel.querySelector('.v132w-close').addEventListener('click',closeInlineEditor);
+    panel.querySelector('.v132w-cancel').addEventListener('click',closeInlineEditor);
+    panel.querySelector('.v132w-save').addEventListener('click',()=>{
+      const a1=panel.querySelector('#v132wAnswer1').value.trim();
+      const a2=panel.querySelector('#v132wAnswer2').value.trim();
+      const answers=[a1,a2].filter(Boolean);
+      const edits=readEdits();
+      const orig=findOriginal(currentQuestion,edits);
+      const e=edits[orig]||{};
+      e.text=e.text||currentQuestion;
+      e.answerLists=e.answerLists||{};
+      e.answerLists[String(currentLetter).toUpperCase()]=answers;
+      e.updatedAt=Date.now();
+      edits[orig]=e;
+      writeEdits(edits);
+      syncNonThemeBuiltIns(currentQuestion,currentLetter,answers);
+      try{if(typeof updateLetterHintState==='function') updateLetterHintState();}catch(err){}
+      try{if(typeof renderDeveloperQuestionEditor==='function') renderDeveloperQuestionEditor();}catch(err){}
+      const saved=panel.querySelector('.v132w-saved');saved.classList.remove('hidden');
+      setTimeout(closeInlineEditor,750);
+    });
+    setTimeout(()=>panel.querySelector('#v132wAnswer1')?.focus(),20);
+  };
+
+  /* In DEV, the exterior pencil edits the live card. Outside DEV it still adds to collection. */
+  function repurposeGamePencil(){
+    const btn=document.getElementById('v132kHintCollectionButton')||document.getElementById('quickAddHintButton');
+    if(!btn||btn.dataset.v132wBound==='1') return;
+    btn.dataset.v132wBound='1';
+    btn.title=developerSessionAuthorized?'Редактировать ответ карточки':'Добавить ответ в коллекцию';
+    btn.setAttribute('aria-label',btn.title);
+    btn.addEventListener('click',ev=>{
+      if(!developerSessionAuthorized) return;
+      ev.preventDefault();ev.stopImmediatePropagation();ev.stopPropagation();
+      v132wOpenInlineHintEditor();
+    },true);
+  }
+  function refreshPencil(){
+    repurposeGamePencil();
+    const btn=document.getElementById('v132kHintCollectionButton')||document.getElementById('quickAddHintButton');
+    if(btn){btn.title=developerSessionAuthorized?'Редактировать ответ карточки':'Добавить ответ в коллекцию';btn.setAttribute('aria-label',btn.title)}
+  }
+
+  const oldUpdate=window.updateLetterHintState;
+  if(typeof oldUpdate==='function'&&!oldUpdate.__v132wWrapped){
+    function wrapped(){const r=oldUpdate.apply(this,arguments);setTimeout(refreshPencil,0);return r}
+    wrapped.__v132wWrapped=true;window.updateLetterHintState=wrapped;
+  }
+
+  function init(){patchQuickCollectionAdd();initSavePill();refreshPencil();}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(init,180),{once:true});
+  else setTimeout(init,180);
+})();
+</script>
+
+
+
+<style id="v132xFixesStyles">
+/* v13.2x — auth cleanup, 69 default, editor TV filter, stray DEV cleanup */
+#v132cDevPageTools{display:none!important;}
+body.v132x-dev-auth #settingsModal .modal-head .settings-save-pill,
+body.v132x-dev-auth #settingsModal .modal-head .settings-reset-pill{display:none!important;}
+#v132uPasswordAttemptCounter{display:none;margin:0 0 7px;color:#9c98a2;font-size:12px;font-weight:800;}
+#v132uPasswordAttemptCounter.v132x-has-attempts{display:block;}
+
+/* Editor TV layout */
+#developerQuestionEditorView.v132t-editor-page .v132x-editor-layout{
+  display:grid;grid-template-columns:210px minmax(0,1fr);gap:18px;align-items:start;
+}
+#developerQuestionEditorView .v132x-editor-tv{
+  position:sticky;top:18px;padding:12px;border:1px solid #343434;border-radius:16px;background:#1d1d1d;
+}
+#developerQuestionEditorView .v132x-tv-title{padding:4px 8px 10px;color:#888;font-size:11px;font-weight:950;letter-spacing:.1em;}
+#developerQuestionEditorView .v132x-tv-mode,
+#developerQuestionEditorView .v132x-tv-theme{
+  width:100%;min-height:48px;margin:0 0 7px;padding:9px 11px;border:1px solid #393939;border-radius:11px;background:#222;color:#eee;text-align:left;font-weight:900;cursor:pointer;transition:.14s ease;
+}
+#developerQuestionEditorView .v132x-tv-mode:hover,
+#developerQuestionEditorView .v132x-tv-theme:hover{transform:translateX(3px);filter:brightness(1.08);}
+#developerQuestionEditorView .v132x-tv-mode.active{border-color:#8f6aa2;background:#2a2330;}
+#developerQuestionEditorView .v132x-tv-sub{display:none;margin:4px 0 10px 12px;padding-left:9px;border-left:1px solid #444;}
+#developerQuestionEditorView .v132x-tv-sub.open{display:block;}
+#developerQuestionEditorView .v132x-tv-theme[data-theme="Общение"].active{border-color:#87c878;color:#a8dda0;}
+#developerQuestionEditorView .v132x-tv-theme[data-theme="Опыт"].active{border-color:#78a8df;color:#a9c9ee;}
+#developerQuestionEditorView .v132x-tv-theme[data-theme="Параметры"].active{border-color:#d6b866;color:#e4cf91;}
+#developerQuestionEditorView .v132x-tv-theme[data-theme="Мозг"].active{border-color:#d27bc3;color:#e7a7dc;}
+#developerQuestionEditorView .v132x-editor-main{min-width:0;}
+#developerQuestionEditorView .v132x-hidden{display:none!important;}
+#developerQuestionEditorView .v132x-editor-current{margin:0 0 12px;color:#aaa;font-size:12px;}
+@media(max-width:800px){
+  #developerQuestionEditorView.v132t-editor-page .v132x-editor-layout{grid-template-columns:1fr;}
+  #developerQuestionEditorView .v132x-editor-tv{position:static;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;}
+  #developerQuestionEditorView .v132x-tv-title{grid-column:1/-1;}
+  #developerQuestionEditorView .v132x-tv-sub{grid-column:1/-1;margin-left:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}
+  #developerQuestionEditorView .v132x-tv-sub.open{display:grid;}
+}
+</style>
+
+<script id="v132xFixesLogic">
+(function(){
+  const PASSWORD5={attempt:5,phrase:'Ти доска с.о.с.и',tone:'violet',motion:'резко'};
+
+  function addFifthReaction(){
+    const arr=window.V132U_PASSWORD_REACTIONS;
+    if(Array.isArray(arr)&&!arr.some(x=>Number(x.attempt)===5)){
+      arr.push(PASSWORD5);arr.sort((a,b)=>Number(a.attempt)-Number(b.attempt));
+    }
+    if(!document.getElementById('v132xPass5Style')){
+      const st=document.createElement('style');st.id='v132xPass5Style';st.textContent=`
+        #developerPasswordMessage.v132u-pass-violet{background:#261d31!important;border-color:#76558f!important;color:#dfc5ef!important}
+        .v132u-password-script-row.violet{border-color:#76558f!important;background:#261d31!important}
+        .v132u-password-script-row.violet .attempt{color:#dfc5ef!important}
+      `;document.head.appendChild(st);
+    }
+  }
+
+  function syncAttemptCounter(){
+    const c=document.getElementById('v132uPasswordAttemptCounter');if(!c)return;
+    const n=Number(sessionStorage.getItem('wordGameDevWrongAttempts')||0);
+    c.textContent=n>0?`Неверных попыток: ${n}`:'';
+    c.classList.toggle('v132x-has-attempts',n>0);
+  }
+
+  function setAuthChrome(view){
+    document.body.classList.toggle('v132x-dev-auth',view==='auth');
+    setTimeout(syncAttemptCounter,0);
+  }
+
+  const oldSubview=window.showDeveloperSubview;
+  if(typeof oldSubview==='function'&&!oldSubview.__v132xWrapped){
+    const wrapped=function(view){const r=oldSubview.apply(this,arguments);setAuthChrome(view);return r};
+    wrapped.__v132xWrapped=true;window.showDeveloperSubview=wrapped;
+  }
+
+  /* Existing versions can carry the old 30-sec reset in localStorage. Migrate once. */
+  function migrate69(){
+    const flag='wordGameV132xDefault69Migrated';
+    if(localStorage.getItem(flag)!=='1'){
+      const raw=localStorage.getItem('answerTime');
+      if(raw===null||raw==='30') localStorage.setItem('answerTime','69');
+      localStorage.setItem(flag,'1');
+      try{answerTime=Number(localStorage.getItem('answerTime')||69);timerSeconds=answerTime;syncTimerControls?.();}catch(e){}
+    }
+  }
+
+  /* Hide obsolete floating DEV toolbox and remove accidental literal \\n text artefacts. */
+  function cleanupStrays(){
+    document.getElementById('v132cDevPageTools')?.remove();
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+    const trash=[];let n;
+    while((n=walker.nextNode())){
+      const t=(n.nodeValue||'').trim();
+      if(t==='\\n\\n'||t==='\\n'||t==='n\\n'||t==='\\n n') trash.push(n);
+    }
+    trash.forEach(n=>n.remove());
+  }
+
+  let editorMode='all';
+  let editorTheme='';
+
+  function ensureEditorTv(){
+    const view=document.getElementById('developerQuestionEditorView');if(!view||view.querySelector('.v132x-editor-layout'))return;
+    const head=view.querySelector('.developer-nav-head');
+    const nodes=[view.querySelector('.developer-question-toolbar'),view.querySelector('.v132s-editor-summary'),view.querySelector('#v132sEditorNotice'),view.querySelector('#developerQuestionEditorList')].filter(Boolean);
+    if(!nodes.length)return;
+    const layout=document.createElement('div');layout.className='v132x-editor-layout';
+    const aside=document.createElement('aside');aside.className='v132x-editor-tv';aside.innerHTML=`
+      <div class="v132x-tv-title">РЕЖИМ</div>
+      <button type="button" class="v132x-tv-mode active" data-mode="all">Все вопросы</button>
+      <button type="button" class="v132x-tv-mode" data-mode="warmup">Разогрев</button>
+      <button type="button" class="v132x-tv-mode" data-mode="questions">Темки</button>
+      <div class="v132x-tv-sub">
+        <button type="button" class="v132x-tv-theme" data-theme="Общение">Общение</button>
+        <button type="button" class="v132x-tv-theme" data-theme="Опыт">Опыт</button>
+        <button type="button" class="v132x-tv-theme" data-theme="Параметры">Параметры</button>
+        <button type="button" class="v132x-tv-theme" data-theme="Мозг">Мозг</button>
+      </div>
+      <button type="button" class="v132x-tv-mode" data-mode="adult">18+</button>`;
+    const main=document.createElement('div');main.className='v132x-editor-main';
+    const cur=document.createElement('div');cur.className='v132x-editor-current';cur.textContent='Показаны: все вопросы';main.appendChild(cur);
+    nodes.forEach(n=>main.appendChild(n));layout.append(aside,main);head?.after(layout);
+    aside.querySelectorAll('.v132x-tv-mode').forEach(btn=>btn.addEventListener('click',()=>{
+      editorMode=btn.dataset.mode||'all';editorTheme='';
+      aside.querySelectorAll('.v132x-tv-mode').forEach(x=>x.classList.toggle('active',x===btn));
+      aside.querySelectorAll('.v132x-tv-theme').forEach(x=>x.classList.remove('active'));
+      aside.querySelector('.v132x-tv-sub')?.classList.toggle('open',editorMode==='questions');
+      window.renderDeveloperQuestionEditor?.();
+    }));
+    aside.querySelectorAll('.v132x-tv-theme').forEach(btn=>btn.addEventListener('click',()=>{
+      editorMode='questions';editorTheme=btn.dataset.theme||'';
+      aside.querySelectorAll('.v132x-tv-mode').forEach(x=>x.classList.toggle('active',x.dataset.mode==='questions'));
+      aside.querySelectorAll('.v132x-tv-theme').forEach(x=>x.classList.toggle('active',x===btn));
+      aside.querySelector('.v132x-tv-sub')?.classList.add('open');
+      window.renderDeveloperQuestionEditor?.();
+    }));
+  }
+
+  function applyEditorFilter(){
+    const view=document.getElementById('developerQuestionEditorView');
+    const list=document.getElementById('developerQuestionEditorList');if(!view||!list)return;
+    const current=view.querySelector('.v132x-editor-current');
+    if(current) current.textContent='Показаны: '+(editorTheme?`Темки → ${editorTheme}`:editorMode==='all'?'все вопросы':editorMode==='warmup'?'Разогрев':editorMode==='questions'?'Темки':editorMode==='adult'?'18+':editorMode);
+    const groups=[...list.querySelectorAll('.v132v-theme-group')];
+    const rows=groups.length?[...list.querySelectorAll('.developer-question-editor-row')]:[...list.children].filter(x=>x.classList?.contains('developer-question-editor-row'));
+    rows.forEach(row=>{
+      const tags=[...row.querySelectorAll('.v132u-question-mode-tags span')].map(x=>(x.textContent||'').trim());
+      let show=true;
+      if(editorMode==='warmup')show=tags.includes('Разогрев');
+      else if(editorMode==='questions')show=tags.includes('Темки');
+      else if(editorMode==='adult')show=tags.includes('18+');
+      row.classList.toggle('v132x-hidden',!show);
+    });
+    groups.forEach(group=>{
+      const theme=group.dataset.theme||'';
+      const hasVisible=[...group.querySelectorAll('.developer-question-editor-row')].some(r=>!r.classList.contains('v132x-hidden'));
+      const themeOk=!editorTheme||theme===editorTheme;
+      group.classList.toggle('v132x-hidden',!(hasVisible&&themeOk));
+    });
+  }
+
+  function hookEditor(){
+    const base=window.renderDeveloperQuestionEditor;if(typeof base!=='function'||base.__v132xWrapped)return;
+    const wrapped=function(){const r=base.apply(this,arguments);setTimeout(()=>{ensureEditorTv();applyEditorFilter();},0);return r};
+    wrapped.__v132xWrapped=true;window.renderDeveloperQuestionEditor=wrapped;
+  }
+
+  function observeCounter(){
+    /* v13.2y: do NOT observe the counter itself. Rewriting text from a MutationObserver
+       caused a self-triggering loop after the first wrong password attempt. */
+    const tryBind=()=>{syncAttemptCounter();return !!document.getElementById('v132uPasswordAttemptCounter')};
+    if(!tryBind()){const o=new MutationObserver(()=>{if(tryBind())o.disconnect()});o.observe(document.body,{childList:true,subtree:true});}
+  }
+
+  function init(){addFifthReaction();migrate69();cleanupStrays();hookEditor();ensureEditorTv();observeCounter();syncAttemptCounter();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,180),{once:true});else setTimeout(init,180);
+})();
+</script>
+
+<style id="v132yFreezeFixStyles">
+/* v13.2y — password freeze fix + gentler settings close */
+#settingsModal .modal-head .close-btn,
+#settingsBackdrop .modal-head .close-btn{
+  width:42px!important;height:42px!important;min-width:42px!important;
+  border-radius:11px!important;background:#2a2a2d!important;
+  border:1px solid #3b3b40!important;font-size:20px!important;
+  box-shadow:none!important;
+}
+#v132ImpulsePage .v132-impulse-tabs [data-tab="scripts"]{
+  border-style:dashed!important;
+}
+</style>
+
+<style id="v132zaPolishStyles">
+/* v13.2za — settings feedback, safer navigation, compact timer, smoother editor */
+/* 1a. Save status: transient pill immediately to the right of Reset. */
+#settingsBackdrop #settingsModal .modal-head .settings-save-pill{
+  grid-column:3!important;
+  display:none!important;
+  justify-self:start!important;
+  align-self:center!important;
+  min-height:38px!important;
+  padding:0 12px!important;
+  margin:0!important;
+  font-size:12px!important;
+  opacity:0;
+  transform:translateY(-3px) scale(.98);
+  transition:opacity .16s ease,transform .16s ease!important;
+  pointer-events:none;
+}
+#settingsBackdrop #settingsModal .modal-head .settings-save-pill.v132w-visible{
+  display:inline-flex!important;
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+/* 1b. 'В игру' is now a light, clearly interactive action. */
+#settingsBackdrop #settingsModal .modal-head .close-btn{
+  color:#171719!important;
+  background:#f0ece6!important;
+  border-color:#f0ece6!important;
+  box-shadow:0 2px 0 rgba(0,0,0,.2)!important;
+  cursor:pointer!important;
+  transition:transform .14s ease,filter .14s ease,box-shadow .14s ease!important;
+}
+#settingsBackdrop #settingsModal .modal-head .close-btn:hover{
+  transform:translateY(-2px)!important;
+  filter:brightness(1.04)!important;
+  box-shadow:0 5px 12px rgba(0,0,0,.24)!important;
+}
+#settingsBackdrop #settingsModal .modal-head .close-btn:active{transform:translateY(0) scale(.98)!important;}
+/* 1c. Timer control: compact dark slot instead of the long white field. */
+#settingsBackdrop .settings-main-line .settings-timer-same-slot{width:148px!important;min-width:148px!important;max-width:148px!important;}
+#settingsBackdrop .settings-main-line .settings-timer-same-slot select,
+#settingsBackdrop .settings-main-line .settings-timer-same-slot input.custom-timer-same-slot{
+  width:148px!important;min-width:148px!important;max-width:148px!important;
+  min-height:42px!important;
+  padding:0 34px 0 13px!important;
+  color:#f2f0f3!important;
+  background:#29292d!important;
+  border:1px solid #4a4850!important;
+  border-radius:11px!important;
+  box-shadow:none!important;
+  font-size:14px!important;
+}
+#settingsBackdrop .settings-main-line .settings-timer-same-slot select:hover,
+#settingsBackdrop .settings-main-line .settings-timer-same-slot input.custom-timer-same-slot:hover{border-color:#71617d!important;background:#2d2c31!important;}
+#settingsBackdrop .settings-main-line .settings-timer-same-slot select:focus,
+#settingsBackdrop .settings-main-line .settings-timer-same-slot input.custom-timer-same-slot:focus{outline:2px solid rgba(183,132,214,.28)!important;outline-offset:1px!important;border-color:#8a6a9d!important;}
+/* 2. Password screen: its Back action lives in the common header beside the gear. */
+#v132zaDevBackHead{
+  display:none;grid-column:2;min-height:42px;padding:0 14px;border-radius:11px;
+  border:1px solid #414146;background:#303034;color:#f1eef2;font-size:13px;font-weight:900;cursor:pointer;
+  transition:transform .14s ease,background .14s ease,border-color .14s ease;
+}
+#v132zaDevBackHead:hover{transform:translateY(-2px);background:#38383d;border-color:#5a5860;}
+#settingsModal:has(#settingsDeveloperPanel.active #developerAuthView.active) #v132zaDevBackHead{display:inline-flex;align-items:center;justify-content:center;}
+#settingsModal:has(#settingsDeveloperPanel.active #developerAuthView.active) .modal-head .settings-reset-pill,
+#settingsModal:has(#settingsDeveloperPanel.active #developerAuthView.active) .modal-head .settings-save-pill{display:none!important;}
+#settingsModal:has(#settingsDeveloperPanel.active #developerAuthView.active) #developerAuthView > .developer-nav-head{display:none!important;}
+#settingsModal:has(#settingsDeveloperPanel.active #developerAuthView.active) .developer-auth-card{margin-top:4px!important;}
+/* 3. Editor mode switching: keep the canvas stable and cross-fade content. */
+#developerQuestionEditorView.v132t-editor-page .v132x-editor-main{min-height:72vh;overflow-anchor:none;}
+#developerQuestionEditorView.v132t-editor-page #developerQuestionEditorList{
+  opacity:1;transform:translateY(0);transition:opacity .16s ease,transform .16s ease;will-change:opacity,transform;overflow-anchor:none;
+}
+#developerQuestionEditorView.v132t-editor-page.v132za-switching #developerQuestionEditorList{opacity:.18;transform:translateY(3px);}
+#developerQuestionEditorView.v132t-editor-page .v132x-editor-current{transition:opacity .16s ease;}
+#developerQuestionEditorView.v132t-editor-page.v132za-switching .v132x-editor-current{opacity:.45;}
+#developerQuestionEditorView.v132t-editor-page .v132x-tv-mode,
+#developerQuestionEditorView.v132t-editor-page .v132x-tv-theme{transition:transform .14s ease,border-color .14s ease,background .14s ease,color .14s ease!important;}
+#developerQuestionEditorView.v132t-editor-page .v132x-tv-mode:active,
+#developerQuestionEditorView.v132t-editor-page .v132x-tv-theme:active{transform:scale(.985);}
+@media(max-width:620px){
+  #settingsBackdrop #settingsModal .modal-head .settings-save-pill.v132w-visible{display:none!important;}
+  #settingsBackdrop .settings-main-line .settings-timer-same-slot,
+  #settingsBackdrop .settings-main-line .settings-timer-same-slot select,
+  #settingsBackdrop .settings-main-line .settings-timer-same-slot input.custom-timer-same-slot{width:138px!important;min-width:138px!important;max-width:138px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+  #developerQuestionEditorView.v132t-editor-page #developerQuestionEditorList,
+  #settingsBackdrop #settingsModal .modal-head .close-btn,#v132zaDevBackHead{transition:none!important;}
+}
+</style>
+<script id="v132zaPolishScript">
+(function(){
+  function ensureDevBackInHeader(){
+    const head=document.querySelector('#settingsModal .modal-head');
+    if(!head||document.getElementById('v132zaDevBackHead'))return;
+    const b=document.createElement('button');
+    b.type='button';b.id='v132zaDevBackHead';b.textContent='← Назад';
+    b.setAttribute('aria-label','Назад к настройкам');
+    b.addEventListener('click',()=>window.showSettingsTab?.('main'));
+    const reset=head.querySelector('.settings-reset-pill');
+    head.insertBefore(b,reset||head.children[1]||null);
+  }
+  function smoothEditorSwitch(){
+    const view=document.getElementById('developerQuestionEditorView');
+    if(!view||view.dataset.v132zaSmooth==='1')return;
+    view.dataset.v132zaSmooth='1';
+    view.addEventListener('click',e=>{
+      const btn=e.target.closest('.v132x-tv-mode,.v132x-tv-theme');
+      if(!btn)return;
+      const y=window.scrollY;
+      view.classList.add('v132za-switching');
+      requestAnimationFrame(()=>window.scrollTo({top:y,left:window.scrollX,behavior:'auto'}));
+      setTimeout(()=>{
+        view.classList.remove('v132za-switching');
+        window.scrollTo({top:y,left:window.scrollX,behavior:'auto'});
+      },145);
+    },true);
+  }
+  function init(){ensureDevBackInHeader();smoothEditorSwitch();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,180),{once:true});
+  else setTimeout(init,180);
+})();
+</script>
+
+<style id="v132zbPolishStyles">
+/* =========================================================
+   v13.2zb — white game return / custom pastel timer / real editor fade
+========================================================= */
+/* 1. Explicitly white return action. */
+#settingsBackdrop #settingsModal .modal-head .close-btn{
+  background:#f6f2ed!important;
+  border-color:#f6f2ed!important;
+  color:#161619!important;
+  box-shadow:0 2px 0 rgba(0,0,0,.22)!important;
+}
+#settingsBackdrop #settingsModal .modal-head .close-btn:hover{
+  background:#fffaf5!important;
+  border-color:#fffaf5!important;
+  color:#111!important;
+  transform:translateY(-2px)!important;
+  box-shadow:0 6px 14px rgba(0,0,0,.28)!important;
+}
+
+/* 2. Custom timer menu. Native select remains as the data/control source but is visually hidden. */
+#settingsBackdrop .settings-timer-same-slot{position:relative!important;width:154px!important;min-width:154px!important;max-width:154px!important;}
+#settingsBackdrop #timerSelect.v132zb-native-hidden{
+  position:absolute!important;
+  width:1px!important;height:1px!important;
+  opacity:0!important;pointer-events:none!important;
+  left:0!important;top:0!important;
+}
+#v132zbTimerPicker{position:relative;width:154px;font-size:14px;}
+#v132zbTimerButton{
+  width:154px;min-height:42px;padding:0 38px 0 13px;
+  border:1px solid #65566f;border-radius:11px;
+  background:#2b2830;color:#f1edf3;
+  display:flex;align-items:center;justify-content:flex-start;
+  font:inherit;text-align:left;cursor:pointer;
+  transition:border-color .14s ease,background .14s ease,transform .14s ease;
+}
+#v132zbTimerButton:hover{background:#302c35;border-color:#8a7297;transform:translateY(-1px);}
+#v132zbTimerButton::after{
+  content:'▾';position:absolute;right:13px;top:50%;transform:translateY(-52%);
+  color:#d8c6df;font-size:16px;line-height:1;pointer-events:none;
+}
+#v132zbTimerPicker.open #v132zbTimerButton::after{content:'▴';}
+#v132zbTimerMenu{
+  position:absolute;z-index:300;left:0;top:calc(100% + 6px);width:154px;
+  padding:5px;border:1px solid #62576a;border-radius:11px;
+  background:#252329;box-shadow:0 12px 28px rgba(0,0,0,.36);
+  opacity:0;transform:translateY(-4px);pointer-events:none;
+  transition:opacity .13s ease,transform .13s ease;
+}
+#v132zbTimerPicker.open #v132zbTimerMenu{opacity:1;transform:none;pointer-events:auto;}
+#v132zbTimerMenu button{
+  width:100%;min-height:37px;padding:7px 10px;border:0;border-radius:8px;
+  background:transparent;color:#eee9f0;text-align:left;font:inherit;cursor:pointer;
+  transition:background .12s ease,color .12s ease;
+}
+#v132zbTimerMenu button:hover{background:#3b3341;color:#fff;}
+#v132zbTimerMenu button.selected{background:#51405a;color:#f7edf9;font-weight:900;}
+#v132zbTimerPicker.hidden-for-custom{display:none!important;}
+#settingsBackdrop .settings-main-line .settings-timer-same-slot input.custom-timer-same-slot{
+  background:#2b2830!important;border-color:#65566f!important;color:#f1edf3!important;
+}
+
+/* 3. Actual two-stage editor transition. */
+#developerQuestionEditorView.v132t-editor-page #developerQuestionEditorList{
+  transition:opacity .18s ease,transform .18s ease!important;
+  opacity:1;transform:translateY(0);
+}
+#developerQuestionEditorView.v132t-editor-page.v132zb-fadeout #developerQuestionEditorList{
+  opacity:0!important;transform:translateY(5px)!important;pointer-events:none;
+}
+#developerQuestionEditorView.v132t-editor-page.v132zb-fadein #developerQuestionEditorList{
+  opacity:0!important;transform:translateY(-4px)!important;
+}
+#developerQuestionEditorView.v132t-editor-page .v132x-editor-current{
+  transition:opacity .16s ease!important;
+}
+#developerQuestionEditorView.v132t-editor-page.v132zb-fadeout .v132x-editor-current,
+#developerQuestionEditorView.v132t-editor-page.v132zb-fadein .v132x-editor-current{opacity:.18!important;}
+#developerQuestionEditorView.v132t-editor-page .v132x-editor-main.v132zb-height-lock{overflow:hidden!important;}
+@media(prefers-reduced-motion:reduce){
+  #developerQuestionEditorView.v132t-editor-page #developerQuestionEditorList,#v132zbTimerMenu,#v132zbTimerButton{transition:none!important;}
+}
+</style>
+<script id="v132zbPolishScript">
+(function(){
+  /* ---------- custom timer picker ---------- */
+  const labels={'69':'69 секунд','60':'60 секунд','55':'55 секунд','50':'50 секунд','custom':'Своё число'};
+  function syncCustomTimerPicker(){
+    const select=document.getElementById('timerSelect');
+    const picker=document.getElementById('v132zbTimerPicker');
+    const button=document.getElementById('v132zbTimerButton');
+    if(!select||!picker||!button)return;
+    const custom=document.getElementById('customTimer');
+    const customOn=custom?.classList.contains('show')||select.classList.contains('hide-for-custom');
+    picker.classList.toggle('hidden-for-custom',!!customOn);
+    const value=select.value||'69';
+    button.textContent=labels[value]||labels['69'];
+    picker.querySelectorAll('#v132zbTimerMenu button').forEach(b=>b.classList.toggle('selected',b.dataset.value===value));
+  }
+  function ensureCustomTimerPicker(){
+    const select=document.getElementById('timerSelect');
+    if(!select||document.getElementById('v132zbTimerPicker'))return;
+    select.classList.add('v132zb-native-hidden');
+    const picker=document.createElement('div');picker.id='v132zbTimerPicker';
+    picker.innerHTML=`<button id="v132zbTimerButton" type="button" aria-haspopup="listbox" aria-expanded="false">69 секунд</button><div id="v132zbTimerMenu" role="listbox">${Object.entries(labels).map(([v,l])=>`<button type="button" role="option" data-value="${v}">${l}</button>`).join('')}</div>`;
+    select.parentElement.insertBefore(picker,select);
+    const trigger=picker.querySelector('#v132zbTimerButton');
+    trigger.addEventListener('click',e=>{e.stopPropagation();const open=picker.classList.toggle('open');trigger.setAttribute('aria-expanded',String(open));});
+    picker.querySelectorAll('#v132zbTimerMenu button').forEach(b=>b.addEventListener('click',()=>{
+      select.value=b.dataset.value;
+      picker.classList.remove('open');trigger.setAttribute('aria-expanded','false');
+      select.dispatchEvent(new Event('change',{bubbles:true}));
+      setTimeout(syncCustomTimerPicker,0);
+    }));
+    document.addEventListener('click',e=>{if(!picker.contains(e.target)){picker.classList.remove('open');trigger.setAttribute('aria-expanded','false');}});
+    syncCustomTimerPicker();
+  }
+  function hookTimerSync(){
+    const base=window.syncTimerControls;
+    if(typeof base==='function'&&!base.__v132zb){
+      const wrapped=function(){const r=base.apply(this,arguments);setTimeout(syncCustomTimerPicker,0);return r};
+      wrapped.__v132zb=true;window.syncTimerControls=wrapped;
+    }
+    const baseFinish=window.finishSettingsCustomTime;
+    if(typeof baseFinish==='function'&&!baseFinish.__v132zb){
+      const wrapped=function(){const r=baseFinish.apply(this,arguments);setTimeout(syncCustomTimerPicker,0);return r};wrapped.__v132zb=true;window.finishSettingsCustomTime=wrapped;
+    }
+  }
+
+  /* ---------- editor: calm fade transition without tiles ---------- */
+  function installEditorTransition(){
+    const view=document.getElementById('developerQuestionEditorView');
+    if(!view||view.dataset.v132zeTransition==='1')return;
+    view.dataset.v132zeTransition='1';
+
+    view.addEventListener('click',function(e){
+      const btn=e.target.closest('.v132x-tv-mode,.v132x-tv-theme');
+      if(!btn||!view.contains(btn))return;
+
+      if(btn.dataset.v132zeReplay==='1'){
+        delete btn.dataset.v132zeReplay;
+        return;
+      }
+
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      const main=view.querySelector('.v132x-editor-main');
+      if(!main){
+        btn.dataset.v132zeReplay='1';
+        btn.click();
+        return;
+      }
+
+      const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      if(reduced){
+        btn.dataset.v132zeReplay='1';
+        btn.click();
+        return;
+      }
+
+      const h=main.getBoundingClientRect().height;
+      main.style.minHeight=h+'px';
+      main.classList.add('v132ze-switching','v132ze-fade-out');
+
+      setTimeout(()=>{
+        btn.dataset.v132zeReplay='1';
+        btn.click();
+
+        requestAnimationFrame(()=>{
+          main.classList.remove('v132ze-fade-out');
+          main.classList.add('v132ze-fade-in');
+          requestAnimationFrame(()=>{
+            main.classList.remove('v132ze-fade-in');
+          });
+        });
+
+        setTimeout(()=>{
+          main.classList.remove('v132ze-switching');
+          main.style.minHeight='';
+        },260);
+      },145);
+    },true);
+  }
+
+  function init(){ensureCustomTimerPicker();hookTimerSync();syncCustomTimerPicker();installEditorTransition();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,200),{once:true});else setTimeout(init,200);
+})();
+</script>
+
+
+<style id="v132zcPolishStyles">
+/* =========================================================
+   v13.2zc — button rules / manual timer / brick editor transition
+========================================================= */
+
+/* 2. "В игру": dark button, light text. Hover must communicate interactivity. */
+#settingsBackdrop #settingsModal .modal-head .close-btn{
+  background:#2a2a2d!important;
+  color:#f7f4f8!important;
+  border:1px solid #4a484f!important;
+  box-shadow:0 5px 13px rgba(0,0,0,.18)!important;
+  transition:
+    transform .15s ease,
+    border-color .15s ease,
+    background .15s ease,
+    box-shadow .15s ease,
+    filter .15s ease!important;
+}
+@media (hover:hover) and (pointer:fine){
+  #settingsBackdrop #settingsModal .modal-head .close-btn:hover{
+    transform:translateY(-3px)!important;
+    background:#323136!important;
+    border-color:#77717c!important;
+    box-shadow:0 10px 20px rgba(0,0,0,.27)!important;
+    filter:brightness(1.04);
+  }
+}
+#settingsBackdrop #settingsModal .modal-head .close-btn:active{
+  transform:translateY(0) scale(.98)!important;
+}
+
+/* 3. Manual time is text entry only: no browser +/- spinner buttons. */
+#settingsBackdrop input#customTimer{
+  -moz-appearance:textfield!important;
+  appearance:textfield!important;
+}
+#settingsBackdrop input#customTimer::-webkit-inner-spin-button,
+#settingsBackdrop input#customTimer::-webkit-outer-spin-button{
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  margin:0!important;
+}
+
+/* 4. Brick/tile transition between editor modes and Темки groups. */
+#developerQuestionEditorView .v132x-editor-main.v132zc-brick-host{
+  position:relative!important;
+  overflow:hidden!important;
+  isolation:isolate;
+}
+#developerQuestionEditorView .v132zc-brick-layer{
+  position:absolute;
+  inset:0;
+  z-index:100;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  grid-template-rows:repeat(4,1fr);
+  gap:3px;
+  padding:1px;
+  pointer-events:none;
+}
+#developerQuestionEditorView .v132zc-brick{
+  display:block;
+  min-width:0;
+  min-height:0;
+  border-radius:5px;
+  background:#28252d;
+  border:1px solid #504658;
+  opacity:0;
+  transform:scale(.72);
+  transition:
+    opacity .14s ease var(--delay),
+    transform .16s cubic-bezier(.2,.8,.2,1) var(--delay);
+}
+#developerQuestionEditorView .v132zc-brick-layer.cover .v132zc-brick{
+  opacity:1;
+  transform:scale(1);
+}
+#developerQuestionEditorView .v132zc-brick-layer.reveal .v132zc-brick{
+  opacity:0;
+  transform:scale(.76);
+  transition-delay:calc(var(--delay) / 2);
+}
+@media(prefers-reduced-motion:reduce){
+  #developerQuestionEditorView .v132zc-brick-layer{display:none!important;}
+}
+</style>
+
+<script id="v132zcPolishScript">
+(function(){
+  function makeManualTimerPlain(){
+    const input=document.getElementById('customTimer');
+    if(!input)return;
+    /* type=text guarantees no native spinner while the old JS keeps reading input.value */
+    input.type='text';
+    input.setAttribute('inputmode','numeric');
+    input.setAttribute('pattern','[0-9]*');
+    input.setAttribute('aria-label','Введите время в секундах');
+  }
+  function init(){makeManualTimerPlain();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,220),{once:true});
+  else setTimeout(init,220);
+})();
+</script>
+
+
+<style id="v132zdLetterEditStyles">
+/* =========================================================
+   v13.2zd — DEV editor can rename an assigned letter
+========================================================= */
+#v132sQuestionModal .v132zd-letter-edit{
+  display:grid;
+  grid-template-columns:auto 82px 1fr;
+  gap:10px;
+  align-items:center;
+  margin:10px 0 4px;
+}
+#v132sQuestionModal .v132zd-letter-edit label{
+  margin:0!important;
+  color:#aaa6af;
+  font-size:12px;
+  font-weight:900;
+}
+#v132sQuestionModal #v132zdLetterInput{
+  width:82px;
+  min-height:44px;
+  padding:8px 10px;
+  border:1px solid #60596a;
+  border-radius:10px;
+  background:#232329;
+  color:#fff;
+  font-size:20px;
+  font-weight:950;
+  text-align:center;
+  text-transform:uppercase;
+  outline:none;
+}
+#v132sQuestionModal #v132zdLetterInput:focus{
+  border-color:#9b74b4;
+  box-shadow:0 0 0 2px rgba(155,116,180,.14);
+}
+#v132sQuestionModal .v132zd-letter-note{
+  color:#77737d;
+  font-size:11px;
+  line-height:1.3;
+}
+@media(max-width:620px){
+  #v132sQuestionModal .v132zd-letter-edit{
+    grid-template-columns:auto 70px;
+  }
+  #v132sQuestionModal .v132zd-letter-note{
+    grid-column:1/-1;
+  }
+}
+</style>
+
+<script id="v132zdLetterEditScript">
+(function(){
+  const EDIT_KEY='ktoDevContentEditsV1';
+  let active=null;
+
+  function readEdits(){
+    try{
+      const x=JSON.parse(localStorage.getItem(EDIT_KEY)||'{}');
+      return x&&typeof x==='object'?x:{};
+    }catch(e){return {}}
+  }
+  function writeEdits(x){
+    localStorage.setItem(EDIT_KEY,JSON.stringify(x));
+  }
+  function normLetter(v){
+    return String(v||'').trim().toUpperCase().replace(/[^А-ЯЁ]/g,'').slice(0,1);
+  }
+  function originalForQuestion(q,edits){
+    return Object.keys(edits).find(k=>edits[k]?.text===q)||q;
+  }
+
+  function ensureLetterInput(){
+    const modal=document.getElementById('v132sQuestionModal');
+    const answer=document.getElementById('v132sAnswerText');
+    if(!modal||!answer)return null;
+    let input=document.getElementById('v132zdLetterInput');
+    if(input)return input;
+
+    const row=document.createElement('div');
+    row.className='v132zd-letter-edit';
+    row.innerHTML=
+      '<label for="v132zdLetterInput">Буква</label>'+
+      '<input id="v132zdLetterInput" maxlength="1" autocomplete="off" spellcheck="false" inputmode="text">'+
+      '<div class="v132zd-letter-note">Можно заменить букву. Ответы останутся привязаны к этой карточке.</div>';
+
+    const stack=answer.closest('.v132u-answer-stack')||answer.parentElement;
+    stack.parentElement.insertBefore(row,stack);
+
+    input=row.querySelector('#v132zdLetterInput');
+    input.addEventListener('input',()=>{
+      const pos=input.selectionStart||1;
+      input.value=normLetter(input.value);
+      try{input.setSelectionRange(Math.min(pos,1),Math.min(pos,1))}catch(e){}
+    });
+    return input;
+  }
+
+  function questionLetters(q){
+    const set=new Set();
+    const edits=readEdits();
+    const orig=originalForQuestion(q,edits);
+    try{
+      if(Array.isArray(V131_THEMKI_DATA)){
+        const meta=V131_THEMKI_DATA.find(x=>x&&(x.question===q||x.question===orig));
+        (meta?.letters||[]).forEach(x=>{const l=normLetter(x?.letter||x);if(l)set.add(l)});
+      }
+    }catch(e){}
+    try{
+      if(Array.isArray(V13_WARMUP_DATA)){
+        const meta=V13_WARMUP_DATA.find(x=>x&&(x.text===q||x.text===orig));
+        (meta?.letters||[]).forEach(x=>{const l=normLetter(x?.letter||x);if(l)set.add(l)});
+      }
+    }catch(e){}
+    try{
+      getHintCollection().forEach(x=>{
+        if(x&&(x.question===q||x.question===orig)){
+          const l=normLetter(x.letter);if(l)set.add(l);
+        }
+      });
+    }catch(e){}
+    return [...set];
+  }
+
+  function migrateLetterRuntime(question,orig,from,to){
+    if(!from||!to||from===to)return;
+
+    try{
+      if(Array.isArray(V131_THEMKI_DATA)){
+        const meta=V131_THEMKI_DATA.find(x=>x&&(x.question===question||x.question===orig));
+        (meta?.letters||[]).forEach(x=>{
+          if(typeof x==='object'&&normLetter(x.letter)===from)x.letter=to;
+        });
+      }
+    }catch(e){}
+
+    try{
+      if(Array.isArray(V13_WARMUP_DATA)){
+        const meta=V13_WARMUP_DATA.find(x=>x&&(x.text===question||x.text===orig));
+        if(meta&&Array.isArray(meta.letters)){
+          meta.letters=meta.letters.map(x=>normLetter(x)===from?to:x);
+        }
+      }
+    }catch(e){}
+
+    try{
+      const items=getHintCollection();
+      let changed=false;
+      items.forEach(x=>{
+        if(x&&(x.question===question||x.question===orig)&&normLetter(x.letter)===from){
+          x.letter=to;changed=true;
+        }
+      });
+      if(changed)setHintCollection(items);
+    }catch(e){}
+  }
+
+  function persistLetterRename(orig,from,to){
+    const edits=readEdits();
+    const e=edits[orig]||{};
+    e.letterRenames=Array.isArray(e.letterRenames)?e.letterRenames:[];
+    e.letterRenames.push({from,to,updatedAt:Date.now()});
+
+    if(e.answerLists&&Object.prototype.hasOwnProperty.call(e.answerLists,from)){
+      e.answerLists[to]=e.answerLists[from];
+      delete e.answerLists[from];
+    }
+    if(e.answers&&Object.prototype.hasOwnProperty.call(e.answers,from)){
+      e.answers[to]=e.answers[from];
+      delete e.answers[from];
+    }
+    e.updatedAt=Date.now();
+    edits[orig]=e;
+    writeEdits(edits);
+  }
+
+  function applyStoredLetterRenames(){
+    const edits=readEdits();
+    Object.entries(edits).forEach(([orig,e])=>{
+      if(!Array.isArray(e?.letterRenames))return;
+      const current=e.text||orig;
+      e.letterRenames.forEach(r=>{
+        const from=normLetter(r.from),to=normLetter(r.to);
+        if(from&&to&&from!==to)migrateLetterRuntime(current,orig,from,to);
+      });
+    });
+  }
+
+  function hookOpen(){
+    const base=window.v132uOpenEditor;
+    if(typeof base!=='function'||base.__v132zdWrapped)return;
+    const wrapped=function(encoded,letter){
+      const q=decodeURIComponent(encoded);
+      const L=normLetter(letter)||'А';
+      active={question:q,oldLetter:L};
+      const result=base.apply(this,arguments);
+      const input=ensureLetterInput();
+      if(input)input.value=L;
+      return result;
+    };
+    wrapped.__v132zdWrapped=true;
+    window.v132uOpenEditor=wrapped;
+  }
+
+  function hookSave(){
+    const base=window.v132sSaveCurrent;
+    if(typeof base!=='function'||base.__v132zdWrapped)return;
+
+    const wrapped=function(){
+      if(!active)return base.apply(this,arguments);
+
+      const input=ensureLetterInput();
+      const newLetter=normLetter(input?.value);
+      const oldLetter=normLetter(active.oldLetter);
+      if(!newLetter){
+        alert('Укажи одну русскую букву.');
+        input?.focus();
+        return;
+      }
+
+      const qBefore=(document.getElementById('v132sQuestionText')?.value||active.question).trim()||active.question;
+      if(newLetter!==oldLetter){
+        const occupied=questionLetters(active.question).filter(x=>x!==oldLetter);
+        if(occupied.includes(newLetter)){
+          alert('Такая буква уже есть у этого вопроса.');
+          input?.focus();
+          return;
+        }
+
+        const editsBefore=readEdits();
+        const orig=originalForQuestion(active.question,editsBefore);
+
+        /* Base save still writes answers under the old slot. Save first, then rename that slot. */
+        const result=base.apply(this,arguments);
+
+        persistLetterRename(orig,oldLetter,newLetter);
+        migrateLetterRuntime(qBefore,orig,oldLetter,newLetter);
+        developerQuestionLetter=newLetter;
+
+        try{window.renderDeveloperQuestionEditor?.()}catch(e){}
+        active=null;
+        return result;
+      }
+
+      active=null;
+      return base.apply(this,arguments);
+    };
+    wrapped.__v132zdWrapped=true;
+    window.v132sSaveCurrent=wrapped;
+  }
+
+  function hookClose(){
+    const base=window.v132sCloseEditor;
+    if(typeof base!=='function'||base.__v132zdWrapped)return;
+    const wrapped=function(){
+      active=null;
+      return base.apply(this,arguments);
+    };
+    wrapped.__v132zdWrapped=true;
+    window.v132sCloseEditor=wrapped;
+  }
+
+  function init(){
+    applyStoredLetterRenames();
+    ensureLetterInput();
+    hookOpen();
+    hookSave();
+    hookClose();
+    try{window.renderDeveloperQuestionEditor?.()}catch(e){}
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',()=>setTimeout(init,260),{once:true});
+  }else{
+    setTimeout(init,260);
+  }
+})();
+</script>
+
+
+<style id="v132zeFixStyles">
+/* =========================================================
+   v13.2ze — restore ? / smooth editor / no point label
+========================================================= */
+
+/* 2. No bricks anymore. */
+#developerQuestionEditorView .v132zc-brick-layer{
+  display:none!important;
+}
+#developerQuestionEditorView .v132x-editor-main{
+  transition:opacity .15s ease, transform .15s ease!important;
+}
+#developerQuestionEditorView .v132x-editor-main.v132ze-switching{
+  overflow:hidden!important;
+}
+#developerQuestionEditorView .v132x-editor-main.v132ze-fade-out{
+  opacity:.08!important;
+  transform:translateY(3px)!important;
+}
+#developerQuestionEditorView .v132x-editor-main.v132ze-fade-in{
+  opacity:.28!important;
+  transform:translateY(-2px)!important;
+}
+@media(prefers-reduced-motion:reduce){
+  #developerQuestionEditorView .v132x-editor-main{
+    transition:none!important;
+  }
+}
+</style>
+
+<script id="v132zeFixScript">
+(function(){
+  /* 1. The external ? is a permanent game control again. */
+  function restoreQuestionMark(){
+    const wrap=document.getElementById('hintQuestionWrap');
+    const button=document.getElementById('hintQuestionButton');
+    const screen=document.getElementById('gameScreen');
+    if(!wrap||!button||!screen)return;
+
+    /* During an active game keep the control present even if a particular
+       question currently has no built-in answer. */
+    if(!screen.classList.contains('hidden')){
+      wrap.classList.remove('hidden');
+      button.style.removeProperty('display');
+      button.style.removeProperty('visibility');
+      button.style.removeProperty('opacity');
+    }
+  }
+
+  const baseUpdate=window.updateLetterHintState;
+  if(typeof baseUpdate==='function'&&!baseUpdate.__v132zeWrapped){
+    const wrapped=function(){
+      const r=baseUpdate.apply(this,arguments);
+      restoreQuestionMark();
+      return r;
+    };
+    wrapped.__v132zeWrapped=true;
+    window.updateLetterHintState=wrapped;
+  }
+
+  const baseStart=window.startNextLetter;
+  if(typeof baseStart==='function'&&!baseStart.__v132zeWrapped){
+    const wrapped=function(){
+      const r=baseStart.apply(this,arguments);
+      setTimeout(restoreQuestionMark,0);
+      return r;
+    };
+    wrapped.__v132zeWrapped=true;
+    window.startNextLetter=wrapped;
+  }
+
+  /* 3. Score is already visible on the player card: don't repeat "Очко: имя". */
+  const baseGive=window.givePoint;
+  if(typeof baseGive==='function'&&!baseGive.__v132zeWrapped){
+    const wrapped=function(){
+      const r=baseGive.apply(this,arguments);
+      const status=document.getElementById('status');
+      if(status && /^Очко\s*:/i.test(String(status.textContent||'').trim())){
+        status.textContent='';
+      }
+      return r;
+    };
+    wrapped.__v132zeWrapped=true;
+    window.givePoint=wrapped;
+  }
+
+  function init(){
+    restoreQuestionMark();
+    const status=document.getElementById('status');
+    if(status && /^Очко\s*:/i.test(String(status.textContent||'').trim())){
+      status.textContent='';
+    }
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',()=>setTimeout(init,220),{once:true});
+  }else{
+    setTimeout(init,220);
+  }
+})();
+</script>
+
+
+<script id="v132zfPasswordAttempt6">
+(function(){
+  function ensureSixthReaction(){
+    const arr=window.V132U_PASSWORD_REACTIONS;
+    if(!Array.isArray(arr))return;
+    const phrase='Ты чё, ебатяй? Я те говорю, вали отсюда!';
+    const existing=arr.find(x=>Number(x.attempt)===6);
+    if(existing){
+      existing.phrase=phrase; existing.tone='rose'; existing.motion='резко';
+    }else{
+      arr.push({attempt:6,phrase,tone:'rose',motion:'резко'});
+      arr.sort((a,b)=>Number(a.attempt)-Number(b.attempt));
+    }
+    try{window.v132RenderPasswordScripts?.()}catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(ensureSixthReaction,220),{once:true});
+  else setTimeout(ensureSixthReaction,220);
+})();
+</script>
 </body>
 </html>
 <style>
@@ -24071,4 +25973,386 @@ function v132mInitThemki(){
 }
 if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>setTimeout(v132mInitThemki,450),{once:true});
 else setTimeout(v132mInitThemki,450);
+</script>
+
+<style id="v132vPolishStyles">
+/* =========================================================
+   v13.2v — hover / settings header / themed editor groups
+========================================================= */
+
+/* 1. Верхние игровые кнопки реагируют одинаково. */
+#gameScreen .top-actions .small-btn{
+  transition:transform .15s ease, border-color .15s ease, background .15s ease, filter .15s ease, box-shadow .15s ease !important;
+}
+@media (hover:hover) and (pointer:fine){
+  #gameScreen .top-actions .small-btn:hover{
+    transform:translateY(-3px) !important;
+    filter:brightness(1.08);
+    box-shadow:0 9px 20px rgba(0,0,0,.24);
+  }
+  #letterGameCard:hover{
+    transform:translateY(-3px) scale(1.006);
+    box-shadow:0 18px 38px rgba(0,0,0,.28);
+  }
+}
+#letterGameCard{
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease !important;
+  cursor:pointer;
+}
+
+/* 2. Save/reset live in the settings header instead of using a whole row. */
+#settingsBackdrop .modal-head{
+  display:flex !important;
+  align-items:center !important;
+  gap:12px !important;
+  flex-wrap:wrap !important;
+}
+#settingsBackdrop .modal-head h2{margin-right:auto !important;}
+#settingsBackdrop .modal-head .settings-save-pill,
+#settingsBackdrop .modal-head .settings-reset-pill{
+  min-height:40px !important;
+  padding:0 13px !important;
+  font-size:12px !important;
+  margin:0 !important;
+}
+#settingsBackdrop .settings-savebar.v132v-in-head{
+  display:contents !important;
+}
+@media(max-width:760px){
+  #settingsBackdrop .modal-head .settings-save-pill,
+  #settingsBackdrop .modal-head .settings-reset-pill{font-size:10px !important;padding:0 10px !important;}
+}
+
+/* 4. Question editor: more readable typography. */
+#developerQuestionEditorView.v132t-editor-page .developer-question-editor-row>b{
+  font-size:18px !important;
+  line-height:1.3 !important;
+}
+#developerQuestionEditorView.v132t-editor-page .v132u-letter-card{
+  font-size:14px !important;
+  line-height:1.35 !important;
+  min-height:76px !important;
+}
+#developerQuestionEditorView.v132t-editor-page .v132u-letter-card .letter{
+  font-size:20px !important;
+}
+#developerQuestionEditorView.v132t-editor-page .v132u-letter-card .texts{
+  font-size:13px !important;
+  line-height:1.4 !important;
+}
+#developerQuestionEditorView.v132t-editor-page .developer-question-saved,
+#developerQuestionEditorView.v132t-editor-page .v132u-question-mode-tags{
+  font-size:11px !important;
+}
+
+/* Themed groups in editor. Only the border/accent changes; surfaces stay dark. */
+.v132v-theme-group{
+  margin:0 0 18px;
+  border:1px solid #3b3b3b;
+  border-left-width:4px;
+  border-radius:16px;
+  overflow:hidden;
+  background:#1b1b1b;
+}
+.v132v-theme-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:13px 16px;
+  background:#202020;
+  border-bottom:1px solid #333;
+}
+.v132v-theme-head b{font-size:18px;letter-spacing:.01em}
+.v132v-theme-head span{font-size:11px;color:#aaa}
+.v132v-theme-group[data-theme="Общение"]{border-left-color:#87c878}
+.v132v-theme-group[data-theme="Общение"] .v132v-theme-head b{color:#a8dda0}
+.v132v-theme-group[data-theme="Опыт"]{border-left-color:#78a8df}
+.v132v-theme-group[data-theme="Опыт"] .v132v-theme-head b{color:#a9c9ee}
+.v132v-theme-group[data-theme="Параметры"]{border-left-color:#d6b866}
+.v132v-theme-group[data-theme="Параметры"] .v132v-theme-head b{color:#e4cf91}
+.v132v-theme-group[data-theme="Мозг"]{border-left-color:#d27bc3}
+.v132v-theme-group[data-theme="Мозг"] .v132v-theme-head b{color:#e7a7dc}
+.v132v-theme-group[data-theme="Остальные"]{border-left-color:#777}
+.v132v-theme-group .developer-question-editor-row:last-child{border-bottom:0 !important}
+</style>
+
+<script id="v132vPolishLogic">
+(function(){
+  /* 2. Move save/reset controls into the Settings header. */
+  function moveSettingsStatusToHead(){
+    const modal=document.getElementById('settingsModal');
+    const head=modal?.querySelector('.modal-head');
+    const bar=modal?.querySelector('.settings-savebar');
+    const close=head?.querySelector('.close-btn');
+    if(!head||!bar||bar.dataset.v132vMoved==='1') return;
+    bar.dataset.v132vMoved='1';
+    bar.classList.add('v132v-in-head');
+    [...bar.children].forEach(node=>head.insertBefore(node,close||null));
+  }
+
+  /* 3. Add the missing third password reaction to the SAME array used by auth + Impulse/Scripts. */
+  function addThirdPasswordReaction(){
+    const arr=window.V132U_PASSWORD_REACTIONS;
+    if(!Array.isArray(arr)) return;
+    if(!arr.some(x=>Number(x.attempt)===3)){
+      arr.push({attempt:3,phrase:'Соси))))',tone:'green',motion:'резко'});
+      arr.sort((a,b)=>Number(a.attempt)-Number(b.attempt));
+    }
+  }
+
+  /* color for the new password line */
+  function ensurePassColorStyle(){
+    if(document.getElementById('v132vPassColor')) return;
+    const s=document.createElement('style');
+    s.id='v132vPassColor';
+    s.textContent=`
+      #developerPasswordMessage.v132u-pass-green{background:#17271d!important;border-color:#4f8b61!important;color:#b9e5c5!important}
+      .v132u-password-script-row.green{border-color:#4f8b61!important;background:#17271d!important}
+      .v132u-password-script-row.green .attempt{color:#9fd6ae!important}
+    `;
+    document.head.appendChild(s);
+  }
+
+  /* 4. Re-group the already-rendered editor rows using V131_THEMKI_DATA.
+        This preserves all existing edit buttons, hint texts and search behavior. */
+  function regroupEditorRows(){
+    const list=document.getElementById('developerQuestionEditorList');
+    if(!list) return;
+    const rows=[...list.querySelectorAll(':scope > .developer-question-editor-row')];
+    if(!rows.length) return;
+
+    const themeMap=new Map();
+    try{
+      if(Array.isArray(V131_THEMKI_DATA)){
+        V131_THEMKI_DATA.forEach(item=>{
+          if(item?.question&&item?.theme) themeMap.set(String(item.question).trim(),String(item.theme));
+        });
+      }
+    }catch(e){}
+
+    /* Edited questions may have a new text; map them back to their original theme. */
+    try{
+      const edits=JSON.parse(localStorage.getItem('ktoDevContentEditsV1')||'{}');
+      Object.entries(edits||{}).forEach(([orig,val])=>{
+        if(val?.text&&themeMap.has(orig)) themeMap.set(String(val.text).trim(),themeMap.get(orig));
+      });
+    }catch(e){}
+
+    const order=['Общение','Опыт','Параметры','Мозг','Остальные'];
+    const grouped=new Map(order.map(k=>[k,[]]));
+    rows.forEach(row=>{
+      const q=(row.querySelector(':scope > b')?.textContent||'').trim();
+      const theme=themeMap.get(q)||'Остальные';
+      if(!grouped.has(theme)) grouped.set(theme,[]);
+      grouped.get(theme).push(row);
+    });
+
+    const frag=document.createDocumentFragment();
+    order.forEach(theme=>{
+      const items=grouped.get(theme)||[];
+      if(!items.length) return;
+      const section=document.createElement('section');
+      section.className='v132v-theme-group';
+      section.dataset.theme=theme;
+      const head=document.createElement('div');
+      head.className='v132v-theme-head';
+      head.innerHTML=`<b>${theme}</b><span>${items.length} вопросов</span>`;
+      section.appendChild(head);
+      items.forEach(row=>section.appendChild(row));
+      frag.appendChild(section);
+    });
+    list.replaceChildren(frag);
+  }
+
+  function hookEditorRender(){
+    const base=window.renderDeveloperQuestionEditor;
+    if(typeof base!=='function'||base.__v132vWrapped) return;
+    function wrapped(){
+      const r=base.apply(this,arguments);
+      setTimeout(regroupEditorRows,0);
+      return r;
+    }
+    wrapped.__v132vWrapped=true;
+    window.renderDeveloperQuestionEditor=wrapped;
+  }
+
+  function init(){
+    moveSettingsStatusToHead();
+    addThirdPasswordReaction();
+    ensurePassColorStyle();
+    hookEditorRender();
+    if(document.getElementById('developerQuestionEditorView')?.classList.contains('active')){
+      try{window.renderDeveloperQuestionEditor();}catch(e){setTimeout(regroupEditorRows,50)}
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(init,120),{once:true});
+  else setTimeout(init,120);
+})();
+</script>
+
+
+<style id="v132zCorrectionsStyles">
+/* =========================================================
+   v13.2z — settings no-title / stable password counter / editor modes
+========================================================= */
+/* 2. Chosen settings header: no big title, no X target. */
+#settingsBackdrop #settingsModal .modal-head{
+  display:grid!important;
+  grid-template-columns:auto auto 1fr auto!important;
+  align-items:center!important;
+  gap:10px!important;
+  padding:18px 24px 14px!important;
+}
+#settingsBackdrop #settingsModal .modal-head h2{
+  margin:0!important;
+  width:44px!important;
+  min-width:44px!important;
+  font-size:0!important;
+  line-height:1!important;
+}
+#settingsBackdrop #settingsModal .modal-head h2::before{
+  content:'⚙';
+  display:grid;
+  place-items:center;
+  width:44px;
+  height:44px;
+  font-size:27px;
+  color:#f2f2f2;
+}
+#settingsBackdrop #settingsModal .modal-head .settings-save-pill{
+  display:none!important;
+}
+#settingsBackdrop #settingsModal .modal-head .settings-reset-pill{
+  grid-column:2!important;
+  min-height:42px!important;
+  padding:0 13px!important;
+  margin:0!important;
+  font-size:12px!important;
+}
+#settingsBackdrop #settingsModal .modal-head .close-btn{
+  grid-column:4!important;
+  width:auto!important;
+  min-width:112px!important;
+  height:44px!important;
+  padding:0 14px!important;
+  border-radius:11px!important;
+  font-size:14px!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+  background:#2a2a2d!important;
+  border:1px solid #424247!important;
+}
+/* Password counter is visible only after the first miss. */
+#v132uPasswordAttemptCounter{
+  display:none!important;
+  margin:0 0 7px!important;
+  color:#a4a0aa!important;
+  font-size:12px!important;
+  font-weight:850!important;
+}
+#v132uPasswordAttemptCounter.v132z-visible{display:block!important;}
+
+/* Theme containers are meaningful ONLY for Темки. */
+#developerQuestionEditorView.v132t-editor-page.v132z-flat-editor .v132v-theme-head{display:none!important;}
+#developerQuestionEditorView.v132t-editor-page.v132z-flat-editor .v132v-theme-group{
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  margin:0!important;
+  overflow:visible!important;
+}
+#developerQuestionEditorView.v132t-editor-page.v132z-flat-editor .v132v-theme-group .developer-question-editor-row{
+  margin-bottom:10px!important;
+}
+@media(max-width:620px){
+  #settingsBackdrop #settingsModal .modal-head{grid-template-columns:auto 1fr auto!important;padding:14px 16px 12px!important;}
+  #settingsBackdrop #settingsModal .modal-head .settings-reset-pill{grid-column:2!important;justify-self:start!important;}
+  #settingsBackdrop #settingsModal .modal-head .close-btn{grid-column:3!important;min-width:96px!important;padding:0 10px!important;}
+}
+</style>
+<script id="v132zCorrectionsScript">
+(function(){
+  function syncCounterNow(){
+    const c=document.getElementById('v132uPasswordAttemptCounter');
+    if(!c)return;
+    const n=Number(sessionStorage.getItem('wordGameDevWrongAttempts')||0);
+    c.textContent=n>0?`Неверных попыток: ${n}`:'';
+    c.classList.toggle('v132z-visible',n>0);
+  }
+
+  /* 1. No MutationObserver: update exactly after a password check. */
+  function hookPasswordCounter(){
+    const base=window.verifyDeveloperPassword;
+    if(typeof base!=='function'||base.__v132zCounter)return;
+    const wrapped=async function(){
+      try{return await base.apply(this,arguments)}
+      finally{syncCounterNow()}
+    };
+    wrapped.__v132zCounter=true;
+    window.verifyDeveloperPassword=wrapped;
+  }
+
+  /* 2. Turn X into an explicit safe navigation action. */
+  function applySettingsHeader(){
+    const modal=document.getElementById('settingsModal');
+    const close=modal?.querySelector('.modal-head .close-btn');
+    const reset=modal?.querySelector('.modal-head .settings-reset-pill');
+    if(close){close.textContent='← В игру';close.setAttribute('aria-label','Вернуться в игру');}
+    if(reset) reset.textContent='↻ Сбросить';
+  }
+
+  function activeEditorMode(){
+    const active=document.querySelector('#developerQuestionEditorView .v132x-tv-mode.active');
+    return active?.dataset.mode||'all';
+  }
+
+  /* 3. Only Темки owns thematic subgroups. Other modes are plain question lists. */
+  function normalizeEditorGroups(){
+    const view=document.getElementById('developerQuestionEditorView');
+    const list=document.getElementById('developerQuestionEditorList');
+    if(!view||!list)return;
+    const mode=activeEditorMode();
+    view.classList.toggle('v132z-flat-editor',mode!=='questions');
+
+    if(mode!=='questions'){
+      const groups=[...list.querySelectorAll(':scope > .v132v-theme-group')];
+      if(groups.length){
+        const rows=[];
+        groups.forEach(g=>rows.push(...g.querySelectorAll(':scope > .developer-question-editor-row')));
+        const frag=document.createDocumentFragment();
+        rows.forEach(r=>frag.appendChild(r));
+        list.replaceChildren(frag);
+      }
+    }
+  }
+
+  function hookEditor(){
+    const base=window.renderDeveloperQuestionEditor;
+    if(typeof base!=='function'||base.__v132zModes)return;
+    const wrapped=function(){
+      const r=base.apply(this,arguments);
+      setTimeout(normalizeEditorGroups,15);
+      return r;
+    };
+    wrapped.__v132zModes=true;
+    window.renderDeveloperQuestionEditor=wrapped;
+
+    document.querySelectorAll('#developerQuestionEditorView .v132x-tv-mode,#developerQuestionEditorView .v132x-tv-theme').forEach(btn=>{
+      if(btn.dataset.v132zBound)return;
+      btn.dataset.v132zBound='1';
+      btn.addEventListener('click',()=>setTimeout(normalizeEditorGroups,35));
+    });
+  }
+
+  function init(){
+    applySettingsHeader();
+    hookPasswordCounter();
+    syncCounterNow();
+    hookEditor();
+    setTimeout(()=>{hookEditor();normalizeEditorGroups();},250);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,120),{once:true});
+  else setTimeout(init,120);
+})();
 </script>
