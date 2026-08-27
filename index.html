@@ -4898,6 +4898,15 @@ body.developer-mode .hint-preview-eye{
 .developer-rules-table td:first-child{font-weight:900;color:#e3c7ef}
 .developer-rules-table tbody tr:hover{background:rgba(145,112,215,.06)}
 .developer-rules-empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}
+
+/* v13.2 — технические правила фильтра имён */
+.developer-filter-tech{margin-top:14px;display:grid;gap:10px}
+.developer-filter-tech-title{font-size:11px;font-weight:1000;letter-spacing:.12em;color:#aaa;text-transform:uppercase}
+.developer-filter-tech-card{border:1px solid #3b3b3f;border-radius:13px;background:#1d1d1f;padding:13px 14px;display:grid;grid-template-columns:42px 1fr;gap:10px 12px;align-items:start}
+.developer-filter-tech-num{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#2b2530;border:1px solid #5e4c69;color:#eadcf2;font-size:12px;font-weight:1000}
+.developer-filter-tech-copy b{display:block;margin-bottom:4px;font-size:13px;color:#f0f0f0}
+.developer-filter-tech-copy p{margin:0;color:#b7b7ba;font-size:12px;line-height:1.45}
+.developer-filter-tech-example{margin-top:7px;padding:8px 10px;border-radius:9px;background:#151517;color:#d7c6df;font:700 11px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}
 @media(max-width:620px){
   #settingsDeveloperPanel{padding:0 15px 18px}
   .developer-nav-head{align-items:flex-start;flex-direction:column;gap:8px}
@@ -7947,6 +7956,28 @@ button[data-action="developer-login"]{
           </table>
         </div>
         <div id="developerRulesEmpty" class="developer-rules-empty hidden">Ничего не найдено.</div>
+
+        <div class="developer-filter-tech" aria-label="Технические правила фильтра имён">
+          <div class="developer-filter-tech-title">Технические правила фильтра</div>
+
+          <div class="developer-filter-tech-card">
+            <div class="developer-filter-tech-num">01</div>
+            <div class="developer-filter-tech-copy">
+              <b>Корневые совпадения</b>
+              <p>Проверяем не только полное слово, но и запрещённые корни внутри имени.</p>
+              <div class="developer-filter-tech-example">хуй · хуе · хуя · хую · хуи · пизд · еб · еба · ебл · ебн · бляд · блят · сука · сучк · сучар · урод · дура · дуро · дурень · мудак · мудил · шлюх</div>
+            </div>
+          </div>
+
+          <div class="developer-filter-tech-card">
+            <div class="developer-filter-tech-num">02</div>
+            <div class="developer-filter-tech-copy">
+              <b>Попытки обхода: латиница / смешанный алфавит / цифры</b>
+              <p>Перед проверкой корней похожие латинские буквы и типовые цифровые подмены приводятся к единому виду.</p>
+              <div class="developer-filter-tech-example">xуй → хуй · хyй → хуй · eбать → ебать · бл9дь → блядь</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="developerPostcardsView" class="developer-subview">
@@ -8756,11 +8787,27 @@ function getSpecialNameResponse(value) {
 }
 
 
+function normalizedRudeCheck(value) {
+  /* ТЕХ. ПРАВИЛО 2: нормализация только для фильтра ругательств.
+     Обычные имена в интерфейсе не переписываем. */
+  const latinLookalikes = {
+    a:"а", c:"с", e:"е", k:"к", m:"м", o:"о", p:"р", t:"т", x:"х", y:"у",
+    b:"в", h:"н"
+  };
+  const digitLookalikes = {
+    "0":"о", "1":"и", "3":"з", "4":"ч", "6":"б", "8":"в", "9":"я"
+  };
+
+  return normalizedName(value)
+    .replace(/ё/g, "е")
+    .replace(/[acekmoptxybh]/g, ch => latinLookalikes[ch] || ch)
+    .replace(/[0134689]/g, ch => digitLookalikes[ch] || ch)
+    .replace(/[\s_\-]+/g, "");
+}
+
 function hasRudeName(value) {
 
-  const compact = normalizedName(value)
-    .replace(/ё/g, "е")
-    .replace(/[\s_\-]+/g, "");
+  const compact = normalizedRudeCheck(value);
 
   const rudeRoots = [
     "хуй",
@@ -9995,15 +10042,20 @@ function startNextLetter() {
             timerInterval
           );
 
-          roundActive =
-            false;
+          if (autoNext) {
+            /* Автопереход = то же действие, что ручной «ПАС!». */
+            skipLetter();
+          } else {
+            roundActive =
+              false;
 
-          disablePlayerCards();
+            disablePlayerCards();
 
-          document.getElementById(
-            "status"
-          ).textContent =
-            "Время вышло — можно отложить букву";
+            document.getElementById(
+              "status"
+            ).textContent =
+              "Время вышло — можно отложить букву";
+          }
 
         }
 
@@ -18140,8 +18192,15 @@ window.startNextLetter = function(){
 
     if(timeLeft<=0){
       clearInterval(timerInterval);
-      /* 00:00 сразу переводит к следующей паре вопрос+буква. */
-      skipLetter();
+      if(autoNext){
+        /* Автопереход = то же действие, что ручной «ПАС!». */
+        skipLetter();
+      }else{
+        roundActive=false;
+        disablePlayerCards();
+        const status=document.getElementById("status");
+        if(status) status.textContent="Время вышло — можно отложить букву";
+      }
     }
   },1000);
 };
@@ -18373,7 +18432,7 @@ function v13OfferHint(){
 
 window.updateTimer = function(){
   v12UpdateTimer();
-  if(timeLeft===10) v13OfferHint();
+  /* Повторяющиеся 10-секундные реплики обрабатывает финальный ИМПУЛЬС-хук. */
 };
 
 window.v13OpenHintPrompt = function(){
@@ -19540,8 +19599,15 @@ window.startNextLetter=function(){
 
     if(timeLeft<=0){
       clearInterval(timerInterval);
-      /* 00:00 сразу переводит к следующей паре вопрос+буква. */
-      skipLetter();
+      if(autoNext){
+        /* Автопереход = то же действие, что ручной «ПАС!». */
+        skipLetter();
+      }else{
+        roundActive=false;
+        disablePlayerCards();
+        const status=document.getElementById("status");
+        if(status) status.textContent="Время вышло — можно отложить букву";
+      }
     }
   },1000);
 };
@@ -26356,3 +26422,52 @@ else setTimeout(v132mInitThemki,450);
   else setTimeout(init,120);
 })();
 </script>
+
+<!-- v13.2 FIX: recurring 10-second impulse + filter rules -->
+<script id="v132RecurringTenSecondImpulseFix">
+(function(){
+  let lastCardKey="";
+  let shownAt=new Set();
+
+  function resetForCardIfNeeded(){
+    const key=String(currentQuestion||"")+"\u0000"+String(currentLetter||"");
+    if(key!==lastCardKey){
+      lastCardKey=key;
+      shownAt=new Set();
+    }
+  }
+
+  function playTenSecondImpulseIfNeeded(){
+    resetForCardIfNeeded();
+
+    const second=Number(timeLeft);
+    const startSecond=Number(answerTime);
+    if(!Number.isFinite(second) || second<=0 || second%10!==0) return;
+    /* Если таймер стартует ровно с 60/50/40, не показываем реплику мгновенно. */
+    if(Number.isFinite(startSecond) && second>=startSecond) return;
+    if(shownAt.has(second)) return;
+
+    shownAt.add(second);
+
+    if(typeof window.v132ConsumeImpulse==="function" && typeof window.v132PlayOffer==="function"){
+      const item=window.v132ConsumeImpulse();
+      window.v132PlayOffer(item);
+      if(typeof window.v132RenderImpulsePage==="function") window.v132RenderImpulsePage();
+      return;
+    }
+
+    /* Запасной путь для старого слоя подсказок, если ИМПУЛЬС ещё не загружен. */
+    if(typeof window.v13OfferHint==="function") window.v13OfferHint();
+  }
+
+  const baseUpdateTimer=window.updateTimer;
+  if(typeof baseUpdateTimer==="function"){
+    window.updateTimer=function(){
+      const result=baseUpdateTimer.apply(this,arguments);
+      playTenSecondImpulseIfNeeded();
+      return result;
+    };
+  }
+})();
+</script>
+
