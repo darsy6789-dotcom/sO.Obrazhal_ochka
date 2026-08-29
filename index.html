@@ -18746,12 +18746,38 @@ window.resetCardsCountControlToDefault = function(){
 --------------------------------------------------------- */
 let v13ReturnToPerks=false;
 
+/* v13.5 navigation guard:
+   The experimental mini-games are opened from Settings, but some of them
+   temporarily hide startScreen/gameScreen/winnerScreen. Remember exactly
+   what was visible before entering "Плюшки", then restore it on the way back. */
+let v13PerksOriginState=null;
+
+function v13CapturePerksOrigin(){
+  const ids=["startScreen","gameScreen","winnerScreen"];
+  v13PerksOriginState={};
+  ids.forEach(id=>{
+    const node=document.getElementById(id);
+    if(node) v13PerksOriginState[id]=node.classList.contains("hidden");
+  });
+}
+
+function v13RestorePerksOrigin(){
+  if(!v13PerksOriginState) return;
+  Object.entries(v13PerksOriginState).forEach(([id,wasHidden])=>{
+    const node=document.getElementById(id);
+    if(node) node.classList.toggle("hidden",!!wasHidden);
+  });
+}
+
 window.v13OpenPerks = function(){
+  v13CapturePerksOrigin();
   closeSettings();
   document.getElementById("v13PerksPage")?.classList.remove("hidden");
 };
+
 window.v13ClosePerks = function(){
   document.getElementById("v13PerksPage")?.classList.add("hidden");
+  v13RestorePerksOrigin();
   openSettings();
 };
 window.v13LaunchKnives = function(){
@@ -18777,6 +18803,9 @@ window.exitKnivesGame = function(){
     clearInterval(knivesRevealTimer);
     document.getElementById("knivesRulesScreen")?.classList.add("hidden");
     document.getElementById("knivesGameScreen")?.classList.add("hidden");
+    /* The Perks page is fixed over the source screen. Restore the source now
+       so closing Perks/Settings can never leave a blank background. */
+    v13RestorePerksOrigin();
     document.getElementById("v13PerksPage")?.classList.remove("hidden");
     return;
   }
@@ -25566,6 +25595,7 @@ function v13CloseBeenNotBeen(){
   document.getElementById('v13BnbEditModal')?.classList.add('hidden');
   document.getElementById('v13BnbResultModal')?.classList.add('hidden');
   document.body.classList.remove('v13-bnb-active');
+  v13RestorePerksOrigin();
   document.getElementById('v13PerksPage')?.classList.remove('hidden');
 }
 function v13BnbRender(){
