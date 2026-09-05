@@ -6608,6 +6608,40 @@ body:has(#voice:not(.hidden)) .app{
   body:has(#voice:not(.hidden)) .app{width:94vw!important}
 }
 
+
+
+/* v27 — Озвучка: арт-фон виден под окнами, компактные настройки, алфавит в подборках */
+.voiceGearBtn{width:48px!important;height:48px!important;padding:0!important;margin-right:8px!important;display:inline-grid!important;place-items:center!important;border-radius:14px!important;vertical-align:middle}
+.voiceGearBtn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;transition:transform .22s ease}
+.voiceGearBtn:hover svg{transform:rotate(28deg)}
+
+/* Затемняем только мягко: боковой pixel-art остаётся читаемым */
+.voiceOverlay{background:rgba(4,4,8,.42)!important;backdrop-filter:blur(1.2px)}
+.voiceOverlay .modalbox{box-shadow:0 28px 90px rgba(0,0,0,.54),0 0 0 1px rgba(178,138,199,.08)}
+
+.voiceSettingsPanel{width:min(860px,92vw)!important;max-height:88vh!important;padding:20px!important;background:linear-gradient(180deg,rgba(29,28,35,.98),rgba(20,19,25,.98))!important;border-color:#5a5261!important}
+.voiceSettingsPanel .modalhead{position:sticky;top:-20px;z-index:5;margin:-20px -20px 18px!important;padding:20px;background:linear-gradient(180deg,#1d1c23 82%,rgba(29,28,35,.94));border-bottom:1px solid #393540}
+.voiceSettingsKicker{font-size:10px;letter-spacing:.14em;color:#c093d2;font-weight:900;margin-bottom:4px}
+.voiceSettingsPanel .modalhead h2{font-size:27px!important}
+.voiceCloseBtn{width:42px!important;height:42px!important;padding:0!important;border-radius:13px!important;display:grid!important;place-items:center!important;font-size:24px!important;line-height:1!important;flex:0 0 auto}
+.voiceSettingsSectionTitle{display:flex;justify-content:space-between;align-items:end;gap:14px;margin:4px 0 12px;padding:0 2px}
+.voiceSettingsSectionTitle b{font-size:15px}.voiceSettingsSectionTitle span{font-size:11px;color:#aaa2ae;text-align:right}
+.voiceThemeGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;margin-top:0!important}
+.voiceThemeToggle{min-height:82px;padding:13px 14px!important;border-radius:14px!important;background:#211f26!important;border-color:#47414c!important;align-items:center!important;transition:.16s!important}
+.voiceThemeToggle:hover{border-color:#75647d!important;background:#27232c!important;transform:translateY(-1px)}
+.voiceThemeToggle:has(input:checked){border-color:#946fa2!important;background:linear-gradient(180deg,#2a222f,#241f29)!important;box-shadow:inset 0 0 0 1px rgba(184,132,200,.16),0 8px 22px rgba(0,0,0,.16)}
+.voiceThemeToggle input{width:18px;height:18px;flex:0 0 auto}.voiceThemeToggle b{font-size:13px!important}.voiceThemeToggle small{font-size:11px!important;color:#bdb5c1!important}
+.voiceSettingsFoot{margin:12px 0 16px!important}.voiceSettingsFoot .btn{background:#765486!important;border-color:#9270a0!important}
+.voiceDevGate,.contentTransfer{border-color:#45404a!important;background:#19181e!important;border-radius:16px!important}
+
+.voiceCollectionPanel{width:min(920px,92vw)!important;max-height:88vh!important;background:linear-gradient(180deg,rgba(29,28,35,.98),rgba(20,19,25,.98))!important;border-color:#5a5261!important}
+.voiceCollectionPanel .modalhead{position:sticky;top:-20px;z-index:5;margin:-20px -20px 16px!important;padding:20px;background:linear-gradient(180deg,#1d1c23 82%,rgba(29,28,35,.94));border-bottom:1px solid #393540}
+.voiceCollectionPanel .search{height:46px!important;border-color:#4d4654!important;background:#16151b!important}
+.voiceList{gap:8px!important}
+.voiceItem{display:grid!important;grid-template-columns:auto 34px minmax(0,1fr);align-items:center;gap:8px;padding:10px 12px!important;border-color:#49434f!important;background:#222127!important}
+.voiceAlphaIndex{font-size:11px;color:#8f8794;text-align:right;font-variant-numeric:tabular-nums}.voiceAlphaText{min-width:0;line-height:1.35}
+
+@media(max-width:800px){.voiceThemeGrid{grid-template-columns:1fr!important}.voiceSettingsPanel,.voiceCollectionPanel{width:96vw!important}.voiceSettingsSectionTitle{display:block}.voiceSettingsSectionTitle span{display:block;text-align:left;margin-top:4px}}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -6705,7 +6739,7 @@ body:has(#voice:not(.hidden)) .app{
       &lt;div class=&quot;sub&quot;&gt;Настало время использовать голос совершенно не по назначению.&lt;/div&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;button class=&quot;btn voiceSettingsBtn&quot; onclick=&quot;openVoiceSettings()&quot;&gt;НАСТРОЙКИ ФРАЗ&lt;/button&gt;
+      &lt;button class=&quot;btn voiceSettingsBtn voiceGearBtn&quot; onclick=&quot;openVoiceSettings()&quot; title=&quot;Настройки фраз&quot; aria-label=&quot;Настройки фраз&quot;&gt;&lt;svg viewBox=&quot;0 0 24 24&quot; aria-hidden=&quot;true&quot;&gt;&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;3.2&quot;/&gt;&lt;path d=&quot;M19.2 13.2a7.6 7.6 0 0 0 0-2.4l2-1.5-2-3.4-2.5 1a8.2 8.2 0 0 0-2-1.2L14.3 3H9.7l-.4 2.7a8.2 8.2 0 0 0-2 1.2l-2.5-1-2 3.4 2 1.5a7.6 7.6 0 0 0 0 2.4l-2 1.5 2 3.4 2.5-1a8.2 8.2 0 0 0 2 1.2l.4 2.7h4.6l.4-2.7a8.2 8.2 0 0 0 2-1.2l2.5 1 2-3.4-2-1.5Z&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;
       &lt;button class=&quot;btn&quot; onclick=&quot;openVoiceCollection()&quot;&gt;ПОДБОРКИ&lt;/button&gt;
       &lt;button class=&quot;btn&quot; onclick=&quot;goHub()&quot;&gt;←&lt;/button&gt;
     &lt;/div&gt;
@@ -6785,24 +6819,24 @@ body:has(#voice:not(.hidden)) .app{
 
 &lt;input id=&quot;contentPackInput&quot; type=&quot;file&quot; accept=&quot;.json,application/json&quot; class=&quot;hidden&quot; onchange=&quot;importContentPack(event)&quot;&gt;
 
-&lt;div id=&quot;voiceSettingsModal&quot; class=&quot;modal hidden&quot;&gt;
-  &lt;div class=&quot;modalbox&quot;&gt;
+&lt;div id=&quot;voiceSettingsModal&quot; class=&quot;modal voiceOverlay hidden&quot;&gt;
+  &lt;div class=&quot;modalbox voiceSettingsPanel&quot;&gt;
     &lt;div class=&quot;modalhead&quot;&gt;
       &lt;div&gt;
-        &lt;h2 style=&quot;margin:0&quot;&gt;Настройки Озвучки&lt;/h2&gt;
-        &lt;div class=&quot;sub&quot;&gt;Тематики фраз и инструменты разработчика.&lt;/div&gt;
+        &lt;div class=&quot;voiceSettingsKicker&quot;&gt;ОЗВУЧКА&lt;/div&gt;&lt;h2 style=&quot;margin:0&quot;&gt;Настройки фраз&lt;/h2&gt;
+        &lt;div class=&quot;sub&quot;&gt;Подборки фраз и инструменты редактирования.&lt;/div&gt;
       &lt;/div&gt;
-      &lt;button class=&quot;btn&quot; onclick=&quot;closeVoiceSettings()&quot;&gt;Закрыть&lt;/button&gt;
+      &lt;button class=&quot;btn voiceCloseBtn&quot; onclick=&quot;closeVoiceSettings()&quot; aria-label=&quot;Закрыть&quot;&gt;×&lt;/button&gt;
     &lt;/div&gt;
 
-    &lt;h3 style=&quot;font-size:14px;margin:14px 0 4px&quot;&gt;ТЕМАТИКИ ФРАЗ&lt;/h3&gt;
+    &lt;div class=&quot;voiceSettingsSectionTitle&quot;&gt;&lt;b&gt;Подборки фраз&lt;/b&gt;&lt;span&gt;Отключённые категории не выпадают в игре.&lt;/span&gt;&lt;/div&gt;
     &lt;div class=&quot;voiceThemeGrid&quot;&gt;
       &lt;label class=&quot;voiceThemeToggle&quot;&gt;&lt;input type=&quot;checkbox&quot; value=&quot;ОГОНЁК&quot; checked&gt;&lt;span&gt;&lt;b&gt;ОГОНЁК&lt;/b&gt;&lt;small&gt;50 саркастичных фраз без игрового жаргона.&lt;/small&gt;&lt;/span&gt;&lt;/label&gt;
       &lt;label class=&quot;voiceThemeToggle&quot;&gt;&lt;input type=&quot;checkbox&quot; value=&quot;РОЛЕВЫЕ&quot; checked&gt;&lt;span&gt;&lt;b&gt;РОЛЕВЫЕ&lt;/b&gt;&lt;small&gt;Длинные сценки, объявления, звонки и мини-монологи.&lt;/small&gt;&lt;/span&gt;&lt;/label&gt;
       &lt;label class=&quot;voiceThemeToggle&quot;&gt;&lt;input type=&quot;checkbox&quot; value=&quot;РАЗГОВОРНЫЕ&quot; checked&gt;&lt;span&gt;&lt;b&gt;РАЗГОВОРНЫЕ&lt;/b&gt;&lt;small&gt;Короткие и средние универсальные реплики.&lt;/small&gt;&lt;/span&gt;&lt;/label&gt;
       &lt;label class=&quot;voiceThemeToggle&quot;&gt;&lt;input type=&quot;checkbox&quot; value=&quot;ЦИТАТЫ&quot; checked&gt;&lt;span&gt;&lt;b&gt;ЦИТАТЫ&lt;/b&gt;&lt;small&gt;Абсурдная псевдомудрость и любимые фразы.&lt;/small&gt;&lt;/span&gt;&lt;/label&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;voiceSettingsFoot&quot;&gt;&lt;button class=&quot;btn&quot; onclick=&quot;applyVoiceThemeSettings(false)&quot;&gt;ПРИМЕНИТЬ ТЕМАТИКИ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;voiceSettingsFoot&quot;&gt;&lt;button class=&quot;btn&quot; onclick=&quot;applyVoiceThemeSettings(false)&quot;&gt;СОХРАНИТЬ ПОДБОРКИ&lt;/button&gt;&lt;/div&gt;
 
     &lt;div class=&quot;voiceDevGate&quot;&gt;
       &lt;div class=&quot;settingline&quot;&gt;
@@ -6972,11 +7006,11 @@ body:has(#voice:not(.hidden)) .app{
 &lt;div class=&quot;sub&quot; style=&quot;margin-top:12px&quot;&gt;В автономном макете реальный пароль основной игры не зашит. При интеграции подключается существующая DEV-проверка.&lt;/div&gt;
 &lt;/div&gt;&lt;/div&gt;
 
-&lt;div id=&quot;voiceCollectionModal&quot; class=&quot;modal hidden&quot;&gt;
-&lt;div class=&quot;modalbox&quot;&gt;
-&lt;div class=&quot;modalhead&quot;&gt;&lt;div&gt;&lt;h2 style=&quot;margin:0&quot;&gt;Подборки «Озвучки»&lt;/h2&gt;&lt;div class=&quot;sub&quot;&gt;Все фразы и режимы подачи.&lt;/div&gt;&lt;/div&gt;&lt;button class=&quot;btn&quot; onclick=&quot;closeVoiceCollection()&quot;&gt;Закрыть&lt;/button&gt;&lt;/div&gt;
+&lt;div id=&quot;voiceCollectionModal&quot; class=&quot;modal voiceOverlay hidden&quot;&gt;
+&lt;div class=&quot;modalbox voiceCollectionPanel&quot;&gt;
+&lt;div class=&quot;modalhead&quot;&gt;&lt;div&gt;&lt;h2 style=&quot;margin:0&quot;&gt;Подборки «Озвучки»&lt;/h2&gt;&lt;div class=&quot;sub&quot;&gt;Все фразы и режимы подачи.&lt;/div&gt;&lt;/div&gt;&lt;button class=&quot;btn voiceCloseBtn&quot; onclick=&quot;closeVoiceCollection()&quot; aria-label=&quot;Закрыть&quot;&gt;×&lt;/button&gt;&lt;/div&gt;
 &lt;h3&gt;Режимы подачи&lt;/h3&gt;&lt;div id=&quot;modeCloud&quot; class=&quot;modeCloud&quot;&gt;&lt;/div&gt;
-&lt;h3&gt;Фразы&lt;/h3&gt;&lt;input id=&quot;voiceSearch&quot; class=&quot;search&quot; placeholder=&quot;Найти фразу...&quot; oninput=&quot;renderVoiceCollection()&quot;&gt;&lt;div id=&quot;voiceList&quot; class=&quot;voiceList&quot;&gt;&lt;/div&gt;
+&lt;h3&gt;Фразы · по алфавиту&lt;/h3&gt;&lt;input id=&quot;voiceSearch&quot; class=&quot;search&quot; placeholder=&quot;Найти фразу...&quot; oninput=&quot;renderVoiceCollection()&quot;&gt;&lt;div id=&quot;voiceList&quot; class=&quot;voiceList&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;&lt;/div&gt;
 
 &lt;script&gt;
@@ -7789,9 +7823,11 @@ function closeVoiceCollection(){voiceCollectionModal.classList.add(&#x27;hidden&
 function renderVoiceCollection(){
   modeCloud.innerHTML=VMODES.map((x,i)=&gt;`&lt;span class=&quot;modePill&quot;&gt;&lt;span style=&quot;display:inline-grid;place-items:center;width:16px;height:16px;margin-right:4px;vertical-align:-3px&quot;&gt;${VMODE_ICONS[x]}&lt;/span&gt;${x}&lt;/span&gt;`).join(&#x27;&#x27;);
   const q=(voiceSearch.value||&#x27;&#x27;).toLowerCase();
-  const list=voicePool().filter(x=&gt;x.text.toLowerCase().includes(q));
+  const list=voicePool()
+    .filter(x=&gt;x.text.toLowerCase().includes(q))
+    .sort((a,b)=&gt;a.text.localeCompare(b.text,&#x27;ru&#x27;,{sensitivity:&#x27;base&#x27;,ignorePunctuation:true,numeric:true}));
   voiceList.innerHTML=list.length
-    ? list.map((x,i)=&gt;`&lt;div class=&quot;voiceItem&quot;&gt;&lt;span class=&quot;voiceCollectionTag&quot;&gt;${x.cat}&lt;/span&gt;&lt;span class=&quot;sub&quot;&gt;${i+1}&lt;/span&gt; ${x.text}&lt;/div&gt;`).join(&#x27;&#x27;)
+    ? list.map((x,i)=&gt;`&lt;div class=&quot;voiceItem&quot;&gt;&lt;span class=&quot;voiceCollectionTag&quot;&gt;${x.cat}&lt;/span&gt;&lt;span class=&quot;voiceAlphaIndex&quot;&gt;${i+1}&lt;/span&gt;&lt;span class=&quot;voiceAlphaText&quot;&gt;${x.text}&lt;/span&gt;&lt;/div&gt;`).join(&#x27;&#x27;)
     : `&lt;div class=&quot;voiceEmpty&quot;&gt;В выбранных тематиках ничего не найдено.&lt;/div&gt;`;
 }
 
