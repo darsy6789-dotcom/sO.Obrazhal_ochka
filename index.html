@@ -6642,6 +6642,90 @@ body:has(#voice:not(.hidden)) .app{
 .voiceAlphaIndex{font-size:11px;color:#8f8794;text-align:right;font-variant-numeric:tabular-nums}.voiceAlphaText{min-width:0;line-height:1.35}
 
 @media(max-width:800px){.voiceThemeGrid{grid-template-columns:1fr!important}.voiceSettingsPanel,.voiceCollectionPanel{width:96vw!important}.voiceSettingsSectionTitle{display:block}.voiceSettingsSectionTitle span{display:block;text-align:left;margin-top:4px}}
+
+
+
+/* v28 — Озвучка: два арта закрывают весь фон без чёрной центральной полосы
+   ВАЖНО: интерфейс, барабан, карточки и размеры игровых элементов не меняются. */
+
+/* Фиолетовый запасной фон на случай медленной загрузки JPG */
+body:has(#voice:not(.hidden)){
+  background:#171322!important;
+}
+
+/* Каждый арт занимает чуть больше половины экрана.
+   Изображения НЕ растягиваются по пропорциям: object-fit:cover сохраняет их форму. */
+body:has(#voice:not(.hidden)) .voiceSideArt{
+  display:block!important;
+  top:0!important;
+  bottom:0!important;
+  width:51vw!important;
+  opacity:1!important;
+  z-index:0!important;
+}
+
+body:has(#voice:not(.hidden)) .voiceSideArtLeft{
+  left:-1vw!important;
+  right:auto!important;
+}
+
+body:has(#voice:not(.hidden)) .voiceSideArtRight{
+  right:-1vw!important;
+  left:auto!important;
+}
+
+body:has(#voice:not(.hidden)) .voiceSideArt img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  image-rendering:pixelated!important;
+}
+
+/* К центру арты мягко затемняются и переходят друг в друга,
+   поэтому под интерфейсом нет резкой склейки. */
+body:has(#voice:not(.hidden)) .voiceSideArtLeft::after{
+  background:linear-gradient(
+    to right,
+    rgba(11,11,16,.02) 0%,
+    rgba(11,11,16,.08) 42%,
+    rgba(11,11,16,.34) 72%,
+    rgba(11,11,16,.58) 100%
+  )!important;
+}
+
+body:has(#voice:not(.hidden)) .voiceSideArtRight::after{
+  background:linear-gradient(
+    to left,
+    rgba(11,11,16,.02) 0%,
+    rgba(11,11,16,.08) 42%,
+    rgba(11,11,16,.34) 72%,
+    rgba(11,11,16,.58) 100%
+  )!important;
+}
+
+/* Центральная оболочка остаётся прозрачной:
+   тёмными остаются только сами игровые карточки. */
+body:has(#voice:not(.hidden)) .app,
+#voice:not(.hidden){
+  background:transparent!important;
+}
+
+/* На обычных ноутбуках НЕ возвращаем старые узкие полосы 86px */
+@media(max-width:1200px) and (min-width:901px){
+  body:has(#voice:not(.hidden)) .voiceSideArt{
+    width:51vw!important;
+    opacity:1!important;
+  }
+}
+
+/* Мобильное поведение оставляем прежним: арты скрываются */
+@media(max-width:900px){
+  body:has(#voice:not(.hidden)) .voiceSideArt{
+    display:none!important;
+  }
+}
+
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -6651,7 +6735,7 @@ body:has(#voice:not(.hidden)) .app{
   &lt;img src=&quot;8365f8b1c41b6c6dd30a433a8d69026d.jpg&quot; alt=&quot;&quot;&gt;
 &lt;/div&gt;
 &lt;div class=&quot;voiceSideArt voiceSideArtRight&quot; aria-hidden=&quot;true&quot;&gt;
-  &lt;img src=&quot;6d48a4ef94da28aac8e83b3a98cae5fa.jpg&quot; alt=&quot;&quot;&gt;
+  &lt;img src=&quot;6d48a4ef94da28aac0ee83b3a98cae5fa.jpg&quot; alt=&quot;&quot;&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;app&quot;&gt;
